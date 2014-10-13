@@ -8,7 +8,6 @@
 class Database {
 	private $_connection;
 	private static $_instance;
-	//The single instance
 
 	/*
 	 Get an instance of the Database
@@ -37,6 +36,10 @@ class Database {
 	// Get mysqli connection
 	public function getConnection() {
 		return $this -> _connection;
+	}
+	
+	public function closeConnection(){
+		$this -> _connection.close();
 	}
 
 }

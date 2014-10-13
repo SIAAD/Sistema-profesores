@@ -9,9 +9,14 @@
 	 */
 	session_start();
 	//conexion
+	require_once('Objetos/conexion.php');
+	$db = new Database();
+	$conexion=db.getConnection();
 	
 	function verificarLogIn($user,$psw){
-		require_once('../Objetos/dbConfig.inc');
+		$sql="SELECT * FROM usuarios WHERE nombre='$user'AND contrasena='$psw'";
+		$res=conexion.querry($sql);
+		var_dump($res);
 		return 1;
 	}
 	
