@@ -14,7 +14,7 @@
 		return 1;
 	}
 	
-	function regresaRoles($idUsuaio){
+	function regresaRol($idUsuaio){
 		return 1;
 	}
 	
