@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>SIAAD</title>
+		<link href="bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+		<script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+	</head>
+
+	<body>
+		<div class="span2 offset2">
+			<form class="span8" name="form01" method="post" action="../index.php">
+				<fieldset>
+					<legend>Inicio de Sesion</legend>
+					<label for="codigo">Codigo</label>
+					<input type="text" id="codigo" placeholder="Codigo" maxlength="7" onkeypress="return validar(event);" required="required"/>
+					<label for="pass">Password</label>
+					<input type="password" id="pass" placeholder="Password" required="required"/>
+					<input type="submit"  id="enviar" value="Iniciar Sesion"/>
+				</fieldset>
+			</form>
+		</div>
+			
+		
+	</body>
+		
+	
+	<script>
+	
+	function validar(evento) {
+			//propiedad which regresa cual tecla o boton de raton fue presionada
+			evento = (evento) ? evento : window.event;
+		    var charCode = (evento.which) ? evento.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		}
+	</script>
+	
+</html>
