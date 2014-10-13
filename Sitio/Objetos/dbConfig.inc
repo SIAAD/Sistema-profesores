@@ -1,4 +1,4 @@
 define('SERVIDOR','localhost');
 define('USR','root');
 define('PASS','');
-define('DB','mydb');
+define('DB','control-profesores');

@@ -3,14 +3,12 @@
 /*
  * Mysql database class - only one connection alowed
  */
+ require_once('dbConfig.inc');
+ 
 class Database {
 	private $_connection;
 	private static $_instance;
 	//The single instance
-	private $_host = "HOSTt";
-	private $_username = "USERNAME";
-	private $_password = "PASSWORd";
-	private $_database = "DATABASE";
 
 	/*
 	 Get an instance of the Database
@@ -25,7 +23,7 @@ class Database {
 
 	// Constructor
 	private function __construct() {
-		$this -> _connection = new mysqli($this -> _host, $this -> _username, $this -> _password, $this -> _database);
+		$this -> _connection = new mysqli(SERVIDOR, USR, PASS, DB);
 		// Error handling
 		if (mysqli_connect_error()) {
 			trigger_error("Failed to conencto to MySQL: " . mysql_connect_error(), E_USER_ERROR);
