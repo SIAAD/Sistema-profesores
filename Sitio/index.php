@@ -11,6 +11,7 @@
 	//conexion
 	
 	function verificarLogIn($user,$psw){
+		require_once('../Objetos/dbConfig.inic');
 		return 1;
 	}
 	
