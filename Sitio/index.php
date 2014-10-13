@@ -11,10 +11,11 @@
 	//conexion
 	
 	function verificarLogIn($user,$psw){
+		require_once('../Objetos/dbConfig.inic');
 		return 1;
 	}
 	
-	function regresaRoles($idUsuaio){
+	function regresaRol($idUsuaio){
 		return 1;
 	}
 	
