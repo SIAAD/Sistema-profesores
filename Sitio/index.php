@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 * @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza
 	 * @since: 09/Oct/2014
@@ -9,8 +8,15 @@
 	 */
 	session_start();
 	//conexion
-	require_once('Objetos/conexion.php');
-	$db = new Database();
+	if(file_exists('Objetos/Conexion.php')){
+		require_once('Objetos/Conexion.php');
+		echo "archivo incluido";
+	}else{
+		echo "No se pudo incluir el archivo";
+		die();
+	}
+	
+	$db = new Conexion();
 	$conexion=db.getConnection();
 	
 	function verificarLogIn($user,$psw){
