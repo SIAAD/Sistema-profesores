@@ -6,33 +6,29 @@
 	 * @param usuario This describes to where the controller is passed to, there are 3 users 'alumno' 'maestro' 'admin'
 	 * @param accion This describes what action is taking depends on each user
 	 */
-	session_start();
-	//conexion
-
-	require_once('Objetos/conexion.php');
-	$conexion=$_connection.getConnection();
-
-	if(file_exists('Objetos/Conexion.php')){
-		require_once('Objetos/Conexion.php');
-	}
-	
-	$db = new Conexion();
-	$conexion=db.getConnection();
-
-	
-	function verificarLogIn($user,$psw){
+	 
+	 function verificarLogIn($user,$psw,$bd){
 		$sql="SELECT * FROM usuarios WHERE nombre='$user'AND contrasena='$psw'";
-		$res=conexion.querry($sql);
+		echo $sql;
+		$res=$bd->query($sql);
 		var_dump($res);
-		return 1;
+		return -1;
 	}
 	
 	function regresaRol($idUsuario){
 		return 1;
 	}
 	
+	$conexion;
+	$bd;
+	session_start();
+	//conexion
+	if(file_exists('Objetos/Conexion.php')){
+		require_once('Objetos/Conexion.php');
+		$conexion=Conexion::getInstance();
+		$bd=$conexion->getConexion();
+	}	
 	if(!isset($_SESSION['idUsuario'])){
-		echo "inicio reconocimiento sesion";
 		if(isset($_POST['enviar'])){
 			if(isset($_POST['codigo'])&&isset($_POST['pass'])){
 				$usr=$_POST['codigo'];
@@ -40,7 +36,7 @@
 				//depurar variables objeto depurador
 				//verificar
 				
-				$idUsuario=verificarLogIn($usr,$psw);
+				$idUsuario=verificarLogIn($usr,$psw,$bd);
 				if($idUsuario>0){
 					//Si existe iniciar sesion
 					//variable de tiempo de sesion

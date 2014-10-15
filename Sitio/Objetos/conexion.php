@@ -20,13 +20,13 @@ class Conexion {
 	}
 
 	// Constructor
-	public function __construct() {
+	private function __construct() {
 		 if(file_exists('Objetos/dbConfig.inc')){
  			require_once('Objetos/dbConfig.inc');
  		}else{
  			echo "No se pudo cargar archivo de configuracion DB";
  		}
-		$this -> _connection = new mysqli(HOST, USR, PASS, DB);
+		$this -> _connection = new mysqli($host,$usr,$pass,$db);
 		//$this -> _connection = new mysqli($host, $usr, $pass, $db);
 		// Error handling
 		
@@ -37,11 +37,11 @@ class Conexion {
 	}
 
 	// Get mysqli connection
-	public function getConnection() {
+	public function getConexion() {
 		return $this -> _connection;
 	}
 	
-	public function closeConnection(){
+	public function closeConexion(){
 		$this -> _connection.close();
 	}
 
