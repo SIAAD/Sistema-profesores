@@ -10,8 +10,7 @@
 	session_start();
 	//conexion
 	require_once('Objetos/conexion.php');
-	$db = new Database();
-	$conexion=db.getConnection();
+	$conexion=$_connection.getConnection();
 	
 	function verificarLogIn($user,$psw){
 		$sql="SELECT * FROM usuarios WHERE nombre='$user'AND contrasena='$psw'";
