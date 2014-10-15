@@ -1,14 +1,14 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+﻿SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `control-profesores` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `control-profesores` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`ciclo`
+-- Table `control-profesores`.`ciclo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`ciclo` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`ciclo` (
   `idCiclo` INT NOT NULL AUTO_INCREMENT,
   `ciclo` VARCHAR(6) NULL,
   `inicio` DATE NULL,
@@ -18,9 +18,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`maestros`
+-- Table `control-profesores`.`maestros`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`maestros` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`maestros` (
   `idMaestros` INT NOT NULL AUTO_INCREMENT,
   `codigo` VARCHAR(45) NULL,
   `nombres` VARCHAR(45) NULL,
@@ -30,9 +30,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`departamento`
+-- Table `control-profesores`.`departamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`departamento` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`departamento` (
   `idDepartamento` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   `clave` VARCHAR(45) NULL,
@@ -42,41 +42,42 @@ CREATE TABLE IF NOT EXISTS `mydb`.`departamento` (
   INDEX `fk_departamento_maestros1_idx` (`idMaestros` ASC),
   CONSTRAINT `fk_departamento_maestros1`
     FOREIGN KEY (`idMaestros`)
-    REFERENCES `mydb`.`maestros` (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`academia`
+-- Table `control-profesores`.`academia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`academia` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`academia` (
   `idAcademia` INT NOT NULL AUTO_INCREMENT,
+  `abreviacion` VARCHAR(45) NULL,
   `nombre` VARCHAR(45) NULL,
   `clave` VARCHAR(45) NULL,
   `idMaestros` INT NOT NULL,
-  `departamento_idDepartamento` INT NOT NULL,
-  PRIMARY KEY (`idAcademia`, `departamento_idDepartamento`),
+  `idDepartamento` INT NOT NULL,
+  PRIMARY KEY (`idAcademia`),
   INDEX `fk_academia_maestros1_idx` (`idMaestros` ASC),
-  INDEX `fk_academia_departamento1_idx` (`departamento_idDepartamento` ASC),
+  INDEX `fk_academia_departamento1_idx` (`idDepartamento` ASC),
   CONSTRAINT `fk_academia_maestros1`
     FOREIGN KEY (`idMaestros`)
-    REFERENCES `mydb`.`maestros` (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_academia_departamento1`
-    FOREIGN KEY (`departamento_idDepartamento`)
-    REFERENCES `mydb`.`departamento` (`idDepartamento`)
+    FOREIGN KEY (`idDepartamento`)
+    REFERENCES `control-profesores`.`departamento` (`idDepartamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`materia`
+-- Table `control-profesores`.`materia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`materia` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`materia` (
   `idMateria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   `clave` VARCHAR(5) NULL,
@@ -85,9 +86,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`curso`
+-- Table `control-profesores`.`curso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`curso` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`curso` (
   `idCurso` INT NOT NULL AUTO_INCREMENT,
   `idCiclo` INT NOT NULL,
   `idMateria` INT NOT NULL,
@@ -98,21 +99,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`curso` (
   INDEX `fk_Curso_Materia1_idx` (`idMateria` ASC),
   CONSTRAINT `fk_Curso_Ciclo1`
     FOREIGN KEY (`idCiclo`)
-    REFERENCES `mydb`.`ciclo` (`idCiclo`)
+    REFERENCES `control-profesores`.`ciclo` (`idCiclo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Curso_Materia1`
     FOREIGN KEY (`idMateria`)
-    REFERENCES `mydb`.`materia` (`idMateria`)
+    REFERENCES `control-profesores`.`materia` (`idMateria`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`edificios`
+-- Table `control-profesores`.`edificios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`edificios` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`edificios` (
   `idEdificios` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   PRIMARY KEY (`idEdificios`))
@@ -120,9 +121,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`aulas`
+-- Table `control-profesores`.`aulas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`aulas` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`aulas` (
   `idAulas` INT NOT NULL AUTO_INCREMENT,
   `aula` VARCHAR(45) NULL,
   PRIMARY KEY (`idAulas`))
@@ -130,9 +131,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`horario`
+-- Table `control-profesores`.`horario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`horario` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`horario` (
   `idHorario` INT NOT NULL AUTO_INCREMENT,
   `idCurso` INT NOT NULL,
   `dia` VARCHAR(1) NULL,
@@ -148,26 +149,26 @@ CREATE TABLE IF NOT EXISTS `mydb`.`horario` (
   INDEX `fk_horario_Aulas1_idx` (`idAulas` ASC),
   CONSTRAINT `fk_horario_Curso1`
     FOREIGN KEY (`idCurso`)
-    REFERENCES `mydb`.`curso` (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_horario_Edificios1`
     FOREIGN KEY (`idEdificios`)
-    REFERENCES `mydb`.`edificios` (`idEdificios`)
+    REFERENCES `control-profesores`.`edificios` (`idEdificios`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_horario_Aulas1`
     FOREIGN KEY (`idAulas`)
-    REFERENCES `mydb`.`aulas` (`idAulas`)
+    REFERENCES `control-profesores`.`aulas` (`idAulas`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`nombramiento`
+-- Table `control-profesores`.`nombramiento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`nombramiento` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`nombramiento` (
   `idNombramiento` INT NOT NULL AUTO_INCREMENT,
   `codigo` VARCHAR(5) NULL,
   `nombre` VARCHAR(45) NULL,
@@ -177,9 +178,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`suplencia`
+-- Table `control-profesores`.`suplencia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`suplencia` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`suplencia` (
   `idSuplencia` INT NOT NULL AUTO_INCREMENT,
   `inicio` DATE NULL,
   `fin` DATE NULL,
@@ -190,21 +191,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`suplencia` (
   INDEX `fk_suplencia_curso1_idx` (`idCurso` ASC),
   CONSTRAINT `fk_suplencia_maestros1`
     FOREIGN KEY (`idMaestros`)
-    REFERENCES `mydb`.`maestros` (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_suplencia_curso1`
     FOREIGN KEY (`idCurso`)
-    REFERENCES `mydb`.`curso` (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`asistencia`
+-- Table `control-profesores`.`asistencia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`asistencia` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`asistencia` (
   `idAsistencia` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATE NULL,
   `dia` VARCHAR(45) NULL,
@@ -214,16 +215,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`asistencia` (
   INDEX `fk_asistencia_curso1_idx` (`idCurso` ASC),
   CONSTRAINT `fk_asistencia_curso1`
     FOREIGN KEY (`idCurso`)
-    REFERENCES `mydb`.`curso` (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`evidencias`
+-- Table `control-profesores`.`evidencias`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`evidencias` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`evidencias` (
   `idEvidencias` INT NOT NULL AUTO_INCREMENT,
   `ruta` VARCHAR(150) NULL,
   `status` SMALLINT NULL,
@@ -234,35 +235,36 @@ CREATE TABLE IF NOT EXISTS `mydb`.`evidencias` (
   INDEX `fk_evidencias_curso1_idx` (`idCurso` ASC),
   CONSTRAINT `fk_evidencias_curso1`
     FOREIGN KEY (`idCurso`)
-    REFERENCES `mydb`.`curso` (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`observaciones`
+-- Table `control-profesores`.`observaciones`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`observaciones` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`observaciones` (
   `idObservaciones` INT NOT NULL AUTO_INCREMENT,
   `observacion` VARCHAR(150) NULL,
   `fechaRealizada` DATE NULL,
   `fechaSolucionada` DATE NULL,
   `idEvidencias` INT NOT NULL,
+  `status` INT NULL,
   PRIMARY KEY (`idObservaciones`),
   INDEX `fk_observaciones_evidencias1_idx` (`idEvidencias` ASC),
   CONSTRAINT `fk_observaciones_evidencias1`
     FOREIGN KEY (`idEvidencias`)
-    REFERENCES `mydb`.`evidencias` (`idEvidencias`)
+    REFERENCES `control-profesores`.`evidencias` (`idEvidencias`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`temporal`
+-- Table `control-profesores`.`temporal`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`temporal` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`temporal` (
   `idTemporal` INT NOT NULL AUTO_INCREMENT,
   `idNombramiento` INT NOT NULL,
   `idMaestros` INT NOT NULL,
@@ -271,21 +273,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`temporal` (
   INDEX `fk_asignatura_maestros1_idx` (`idMaestros` ASC),
   CONSTRAINT `fk_asignatura_homologacion1`
     FOREIGN KEY (`idNombramiento`)
-    REFERENCES `mydb`.`nombramiento` (`idNombramiento`)
+    REFERENCES `control-profesores`.`nombramiento` (`idNombramiento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_asignatura_maestros1`
     FOREIGN KEY (`idMaestros`)
-    REFERENCES `mydb`.`maestros` (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`definitivo`
+-- Table `control-profesores`.`definitivo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`definitivo` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`definitivo` (
   `idDefinitivo` INT NOT NULL AUTO_INCREMENT,
   `idNombramiento` INT NOT NULL,
   `idMaestros` INT NOT NULL,
@@ -294,21 +296,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`definitivo` (
   INDEX `fk_nombramiento_maestros1_idx` (`idMaestros` ASC),
   CONSTRAINT `fk_nombramiento_homologacion1`
     FOREIGN KEY (`idNombramiento`)
-    REFERENCES `mydb`.`nombramiento` (`idNombramiento`)
+    REFERENCES `control-profesores`.`nombramiento` (`idNombramiento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_nombramiento_maestros1`
     FOREIGN KEY (`idMaestros`)
-    REFERENCES `mydb`.`maestros` (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`impartes`
+-- Table `control-profesores`.`impartes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`impartes` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`impartes` (
   `idImpartes` INT NOT NULL AUTO_INCREMENT,
   `inicio` DATE NULL,
   `fin` DATE NULL,
@@ -319,32 +321,34 @@ CREATE TABLE IF NOT EXISTS `mydb`.`impartes` (
   INDEX `fk_impartes_curso1_idx` (`idCurso` ASC),
   CONSTRAINT `fk_impartes_maestros1`
     FOREIGN KEY (`idMaestros`)
-    REFERENCES `mydb`.`maestros` (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_impartes_curso1`
     FOREIGN KEY (`idCurso`)
-    REFERENCES `mydb`.`curso` (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`usuarios`
+-- Table `control-profesores`.`usuarios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`usuarios` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`usuarios` (
   `idUsuarios` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(64) NOT NULL,
+  `nombre` VARCHAR(7) NOT NULL,
   `contraseña` VARCHAR(32) NOT NULL,
+  `correo` VARCHAR(45) NOT NULL,
+  `estatus` INT NOT NULL,
   PRIMARY KEY (`idUsuarios`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`privilegios`
+-- Table `control-profesores`.`privilegios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`privilegios` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`privilegios` (
   `idPrivilegios` INT NOT NULL AUTO_INCREMENT,
   `tipo` INT NULL,
   `descripcion` VARCHAR(45) NULL,
@@ -353,9 +357,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`roles`
+-- Table `control-profesores`.`roles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`roles` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`roles` (
   `idRoles` INT NOT NULL AUTO_INCREMENT,
   `idUsuarios` INT NOT NULL,
   `idPrivilegios` INT NOT NULL,
@@ -364,44 +368,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`roles` (
   INDEX `fk_roles_privilegios1_idx` (`idPrivilegios` ASC),
   CONSTRAINT `fk_roles_usuarios1`
     FOREIGN KEY (`idUsuarios`)
-    REFERENCES `mydb`.`usuarios` (`idUsuarios`)
+    REFERENCES `control-profesores`.`usuarios` (`idUsuarios`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_roles_privilegios1`
     FOREIGN KEY (`idPrivilegios`)
-    REFERENCES `mydb`.`privilegios` (`idPrivilegios`)
+    REFERENCES `control-profesores`.`privilegios` (`idPrivilegios`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`maestrosUsuarios`
+-- Table `control-profesores`.`tipoPermiso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`maestrosUsuarios` (
-  `idMaestrosUsuarios` INT NOT NULL AUTO_INCREMENT,
-  `idMaestros` INT NOT NULL,
-  `idUsuarios` INT NOT NULL,
-  PRIMARY KEY (`idMaestrosUsuarios`),
-  INDEX `fk_maestrosUsuarios_maestros1_idx` (`idMaestros` ASC),
-  INDEX `fk_maestrosUsuarios_usuarios1_idx` (`idUsuarios` ASC),
-  CONSTRAINT `fk_maestrosUsuarios_maestros1`
-    FOREIGN KEY (`idMaestros`)
-    REFERENCES `mydb`.`maestros` (`idMaestros`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_maestrosUsuarios_usuarios1`
-    FOREIGN KEY (`idUsuarios`)
-    REFERENCES `mydb`.`usuarios` (`idUsuarios`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`tipoPermiso`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`tipoPermiso` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`tipoPermiso` (
   `idTipoPermiso` INT NOT NULL AUTO_INCREMENT,
   `tipoPermiso` VARCHAR(45) NULL,
   `cantidadMax` INT NULL,
@@ -410,9 +391,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`permisos`
+-- Table `control-profesores`.`permisos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`permisos` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`permisos` (
   `idPermisos` INT NOT NULL AUTO_INCREMENT,
   `fechaInicio` DATE NULL,
   `fechaFin` DATE NULL,
@@ -423,16 +404,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`permisos` (
   INDEX `fk_permisos_tipoPermiso1_idx` (`idTipoPermiso` ASC),
   CONSTRAINT `fk_permisos_tipoPermiso1`
     FOREIGN KEY (`idTipoPermiso`)
-    REFERENCES `mydb`.`tipoPermiso` (`idTipoPermiso`)
+    REFERENCES `control-profesores`.`tipoPermiso` (`idTipoPermiso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`cursoPermiso`
+-- Table `control-profesores`.`cursoPermiso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`cursoPermiso` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`cursoPermiso` (
   `idCursoPermiso` INT NOT NULL,
   `idPermisos` INT NOT NULL,
   `idCurso` INT NOT NULL,
@@ -441,21 +422,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cursoPermiso` (
   INDEX `fk_cursoPermiso_curso1_idx` (`idCurso` ASC),
   CONSTRAINT `fk_cursoPermiso_permisos1`
     FOREIGN KEY (`idPermisos`)
-    REFERENCES `mydb`.`permisos` (`idPermisos`)
+    REFERENCES `control-profesores`.`permisos` (`idPermisos`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cursoPermiso_curso1`
     FOREIGN KEY (`idCurso`)
-    REFERENCES `mydb`.`curso` (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`carreras`
+-- Table `control-profesores`.`carreras`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`carreras` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`carreras` (
   `idCarreras` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   `clave` VARCHAR(45) NULL,
@@ -464,9 +445,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`materiasCarrera`
+-- Table `control-profesores`.`materiasCarrera`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`materiasCarrera` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`materiasCarrera` (
   `idMateriasCarrera` INT NOT NULL AUTO_INCREMENT,
   `idCarreras` INT NOT NULL,
   `idMateria` INT NOT NULL,
@@ -476,21 +457,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`materiasCarrera` (
   INDEX `fk_MateriasCarrera_materia1_idx` (`idMateria` ASC, `idAcademia` ASC),
   CONSTRAINT `fk_MateriasCarrera_carreras1`
     FOREIGN KEY (`idCarreras`)
-    REFERENCES `mydb`.`carreras` (`idCarreras`)
+    REFERENCES `control-profesores`.`carreras` (`idCarreras`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_MateriasCarrera_materia1`
     FOREIGN KEY (`idMateria`)
-    REFERENCES `mydb`.`materia` (`idMateria`)
+    REFERENCES `control-profesores`.`materia` (`idMateria`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`edificioAulas`
+-- Table `control-profesores`.`edificioAulas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`edificioAulas` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`edificioAulas` (
   `idedificioAulas` INT NOT NULL AUTO_INCREMENT,
   `idEdificios` INT NOT NULL,
   `idAulas` INT NOT NULL,
@@ -499,21 +480,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`edificioAulas` (
   INDEX `fk_edificioAulas_aulas1_idx` (`idAulas` ASC),
   CONSTRAINT `fk_edificioAulas_edificios1`
     FOREIGN KEY (`idEdificios`)
-    REFERENCES `mydb`.`edificios` (`idEdificios`)
+    REFERENCES `control-profesores`.`edificios` (`idEdificios`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_edificioAulas_aulas1`
     FOREIGN KEY (`idAulas`)
-    REFERENCES `mydb`.`aulas` (`idAulas`)
+    REFERENCES `control-profesores`.`aulas` (`idAulas`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`mateirasAcademia`
+-- Table `control-profesores`.`mateirasAcademia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`mateirasAcademia` (
+CREATE TABLE IF NOT EXISTS `control-profesores`.`mateirasAcademia` (
   `idMateirasAcademis` INT NOT NULL AUTO_INCREMENT,
   `idMateria` INT NOT NULL,
   `idAcademia` INT NOT NULL,
@@ -522,58 +503,58 @@ CREATE TABLE IF NOT EXISTS `mydb`.`mateirasAcademia` (
   INDEX `fk_MateirasAcademis_academia1_idx` (`idAcademia` ASC),
   CONSTRAINT `fk_MateirasAcademis_materia1`
     FOREIGN KEY (`idMateria`)
-    REFERENCES `mydb`.`materia` (`idMateria`)
+    REFERENCES `control-profesores`.`materia` (`idMateria`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_MateirasAcademis_academia1`
     FOREIGN KEY (`idAcademia`)
-    REFERENCES `mydb`.`academia` (`idAcademia`)
+    REFERENCES `control-profesores`.`academia` (`idAcademia`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `mydb` ;
+USE `control-profesores` ;
 
 -- -----------------------------------------------------
--- Placeholder table for view `mydb`.`incidencia`
+-- Placeholder table for view `control-profesores`.`incidencia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`incidencia` (`fecha` INT, `abreviacion` INT, `nombre` INT, `seccion` INT);
+CREATE TABLE IF NOT EXISTS `control-profesores`.`incidencia` (`fecha` INT, `abreviacion` INT, `nombre` INT, `seccion` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `mydb`.`horariosImparte`
+-- Placeholder table for view `control-profesores`.`horariosImparte`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`horariosImparte` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `nrc` INT, `seccion` INT, `dia` INT, `inicio` INT, `fin` INT, `nomedificio` INT, `aula` INT, `inicioimparte` INT, `finimparte` INT);
+CREATE TABLE IF NOT EXISTS `control-profesores`.`horariosImparte` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `nrc` INT, `seccion` INT, `dia` INT, `inicio` INT, `fin` INT, `nomedificio` INT, `aula` INT, `inicioimparte` INT, `finimparte` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `mydb`.`jefesDpto`
+-- Placeholder table for view `control-profesores`.`jefesDpto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`jefesDpto` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `abreviacion` INT);
+CREATE TABLE IF NOT EXISTS `control-profesores`.`jefesDpto` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `abreviacion` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `mydb`.`jefesAcademia`
+-- Placeholder table for view `control-profesores`.`jefesAcademia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`jefesAcademia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT);
+CREATE TABLE IF NOT EXISTS `control-profesores`.`jefesAcademia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `mydb`.`horariosSuplencia`
+-- Placeholder table for view `control-profesores`.`horariosSuplencia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`horariosSuplencia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `nrc` INT, `seccion` INT, `dia` INT, `inicio` INT, `fin` INT, `nomedificio` INT, `aula` INT, `iniciosuplencia` INT, `finsuplencia` INT);
+CREATE TABLE IF NOT EXISTS `control-profesores`.`horariosSuplencia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `nrc` INT, `seccion` INT, `dia` INT, `inicio` INT, `fin` INT, `nomedificio` INT, `aula` INT, `iniciosuplencia` INT, `finsuplencia` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `mydb`.`integrantesAcademia`
+-- Placeholder table for view `control-profesores`.`integrantesAcademia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`integrantesAcademia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nommat` INT, `nrc` INT, `seccion` INT, `nomaca` INT);
+CREATE TABLE IF NOT EXISTS `control-profesores`.`integrantesAcademia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nommat` INT, `nrc` INT, `seccion` INT, `nomaca` INT);
 
 -- -----------------------------------------------------
--- Placeholder table for view `mydb`.`carrerasDepartamento`
+-- Placeholder table for view `control-profesores`.`carrerasDepartamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`carrerasDepartamento` (`nombre` INT, `clave` INT, `nomDep` INT);
+CREATE TABLE IF NOT EXISTS `control-profesores`.`carrerasDepartamento` (`nombre` INT, `clave` INT, `nomDep` INT);
 
 -- -----------------------------------------------------
--- View `mydb`.`incidencia`
+-- View `control-profesores`.`incidencia`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`incidencia`;
-USE `mydb`;
+DROP TABLE IF EXISTS `control-profesores`.`incidencia`;
+USE `control-profesores`;
 CREATE  OR REPLACE VIEW `incidencia` AS SELECt asis.fecha, dep.abreviacion,mat.nombre,cur.seccion
 FROM asistencia asis 
 JOIN curso cur ON asis.idCurso=cur.idCurso AND asis.asistencia = 0
@@ -582,10 +563,10 @@ JOIN academia aca ON aca.idAcademia=mat.idAcademia
 JOIN departamento dep ON dep.idDepartamento=aca.idDepartamento;
 
 -- -----------------------------------------------------
--- View `mydb`.`horariosImparte`
+-- View `control-profesores`.`horariosImparte`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`horariosImparte`;
-USE `mydb`;
+DROP TABLE IF EXISTS `control-profesores`.`horariosImparte`;
+USE `control-profesores`;
 CREATE  OR REPLACE VIEW `horariosImparte` AS 
 SELECT ma.codigo,ma.nombres,ma.apellidos,mat.nombre,cu.nrc,cu.seccion,h.dia,h.inicio,h.fin,e.nombre as nomedificio,a.aula,im.inicio as inicioimparte,im.fin as finimparte
 FROM curso cu 
@@ -599,10 +580,10 @@ JOIN maestros ma ON ma.idMaestros = im.idMaestros;
 
 
 -- -----------------------------------------------------
--- View `mydb`.`jefesDpto`
+-- View `control-profesores`.`jefesDpto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`jefesDpto`;
-USE `mydb`;
+DROP TABLE IF EXISTS `control-profesores`.`jefesDpto`;
+USE `control-profesores`;
 CREATE  OR REPLACE VIEW `jefesDpto` AS
 SELECT ma.codigo,ma.nombres,ma.apellidos,d.nombre,d.abreviacion
 FROM maestros ma 
@@ -610,20 +591,20 @@ JOIN departamento d ON ma.idMaestros =  d.idMaestros
 ;
 
 -- -----------------------------------------------------
--- View `mydb`.`jefesAcademia`
+-- View `control-profesores`.`jefesAcademia`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`jefesAcademia`;
-USE `mydb`;
+DROP TABLE IF EXISTS `control-profesores`.`jefesAcademia`;
+USE `control-profesores`;
 CREATE  OR REPLACE VIEW `jefesAcademia` AS
 SELECT ma.codigo,ma.nombres,ma.apellidos,aca.nombre
 FROM maestros ma 
 JOIN academia aca ON ma.idMaestros =  aca.idMaestros;
 
 -- -----------------------------------------------------
--- View `mydb`.`horariosSuplencia`
+-- View `control-profesores`.`horariosSuplencia`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`horariosSuplencia`;
-USE `mydb`;
+DROP TABLE IF EXISTS `control-profesores`.`horariosSuplencia`;
+USE `control-profesores`;
 CREATE  OR REPLACE VIEW `horariosSuplencia` AS 
 SELECT ma.codigo,ma.nombres,ma.apellidos,mat.nombre,cu.nrc,cu.seccion,h.dia,h.inicio,h.fin,e.nombre as nomedificio,a.aula,su.inicio as iniciosuplencia,su.fin as finsuplencia
 FROM curso cu 
@@ -636,10 +617,10 @@ JOIN maestros ma ON ma.idMaestros = su.idMaestros;
 
 
 -- -----------------------------------------------------
--- View `mydb`.`integrantesAcademia`
+-- View `control-profesores`.`integrantesAcademia`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`integrantesAcademia`;
-USE `mydb`;
+DROP TABLE IF EXISTS `control-profesores`.`integrantesAcademia`;
+USE `control-profesores`;
 CREATE  OR REPLACE VIEW `integrantesAcademia` AS
 SELECT ma.codigo,ma.nombres,ma.apellidos,m.nombre as nommat,cu.nrc,cu.seccion,a.nombre as nomaca 
 FROM maestros ma
@@ -649,10 +630,10 @@ JOIN materia m ON m.idMateria = cu.idMateria
 JOIN academia a ON a.idAcademia = m.idAcademia;
 
 -- -----------------------------------------------------
--- View `mydb`.`carrerasDepartamento`
+-- View `control-profesores`.`carrerasDepartamento`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`carrerasDepartamento`;
-USE `mydb`;
+DROP TABLE IF EXISTS `control-profesores`.`carrerasDepartamento`;
+USE `control-profesores`;
 CREATE  OR REPLACE VIEW `carrerasDepartamento` AS
 SELECT ca.nombre,ca.clave,d.nombre as nomDep
 FROM carreras ca

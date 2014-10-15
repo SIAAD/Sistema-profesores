@@ -10,14 +10,9 @@
 	//conexion
 	if(file_exists('Objetos/Conexion.php')){
 		require_once('Objetos/Conexion.php');
-		echo "archivo incluido";
-	}else{
-		echo "No se pudo incluir el archivo";
-		die();
 	}
-	
-	$db = new Conexion();
-	$conexion=db.getConnection();
+	$ObjetoConexion = new Conexion();
+	$conexion=$ObjetoConexion->getConnection();
 	
 	function verificarLogIn($user,$psw){
 		$sql="SELECT * FROM usuarios WHERE nombre='$user'AND contrasena='$psw'";
@@ -26,11 +21,12 @@
 		return 1;
 	}
 	
-	function regresaRol($idUsuaio){
+	function regresaRol($idUsuario){
 		return 1;
 	}
 	
 	if(!isset($_SESSION['idUsuario'])){
+		echo "inicio reconocimiento sesion";
 		if(isset($_POST['enviar'])){
 			if(isset($_POST['codigo'])&&isset($_POST['pass'])){
 				$usr=$_POST['codigo'];
