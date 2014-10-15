@@ -2,10 +2,9 @@
 
 /*
  * Mysql database class - only one connection alowed
- */
- require_once('dbConfig.inc');
+ */ 
  
-class Database {
+class Conexion {
 	private $_connection;
 	private static $_instance;
 
@@ -21,8 +20,14 @@ class Database {
 	}
 
 	// Constructor
-	private function __construct() {
-		$this -> _connection = new mysqli(SERVIDOR, USR, PASS, DB);
+	public function __construct() {
+		 if(file_exists('Objetos/dbConfig.inc')){
+ 			require_once('Objetos/dbConfig.inc');
+ 		}else{
+ 			echo "No se pudo cargar archivo de configuracion DB";
+ 		}
+		//$this -> _connection = new mysqli(HOST, USR, PASS, DB);
+		$this -> _connection = new mysqli($host, $usr, $pass, $db);
 		// Error handling
 		if (mysqli_connect_error()) {
 			trigger_error("Failed to conencto to MySQL: " . mysql_connect_error(), E_USER_ERROR);
