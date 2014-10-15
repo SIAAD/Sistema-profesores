@@ -8,11 +8,17 @@
 	 */
 	session_start();
 	//conexion
+
+	require_once('Objetos/conexion.php');
+	$conexion=$_connection.getConnection();
+
 	if(file_exists('Objetos/Conexion.php')){
 		require_once('Objetos/Conexion.php');
 	}
-	$ObjetoConexion = new Conexion();
-	$conexion=$ObjetoConexion->getConnection();
+	
+	$db = new Conexion();
+	$conexion=db.getConnection();
+
 	
 	function verificarLogIn($user,$psw){
 		$sql="SELECT * FROM usuarios WHERE nombre='$user'AND contrasena='$psw'";
