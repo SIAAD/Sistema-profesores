@@ -1,5 +1,5 @@
 <?php
-var_dump($_POST);
+//var_dump($_POST);
 if (isset($_POST['enviar'])) {
 	if (isset($_POST['codigo'])) {
 		$usuario = $_POST['codigo'];
@@ -10,22 +10,31 @@ if (isset($_POST['enviar'])) {
 				$cnx = new mysqli($host, $usr, $pass, $db);
 				$sql = "SELECT * FROM usuarios WHERE nombre='$usuario' AND contrasena='$password'";
 				$res = $cnx -> query($sql);
-				var_dump($res -> num_rows);
-				var_dump($res);
 				if ($res -> num_rows > 0) {
-					echo "usuario y contrasena aceptados";	
 					$row=mysqli_fetch_row($res);
-					//$row=$res->fech_array();
-					var_dump($row);
+					
 					session_start();
-					$roles = 'roles';
-					//$_SESSION['idUsuario'] = $idUsuario;
+					$_SESSION['idUsuario'] = $row[0];
 					$_SESSION['codigo'] = $usuario;
-					$_SESSION['roles'] = $roles;
+					
+					$sql="SELECT * FROM privilegiosUsuarios WHERE nombre='$usuario'";
+					$res = $cnx -> query($sql);
+					print"resultado de querry roles";
+					var_dump($res);
+					$roles=array();
+					if(mysqli_num_rows($res)>0){
+						while ($row = $res->fetch_row()) {
+        					$roles[]=$row[1];
+    					}
+						var_dump($roles);
+						$_SESSION['roles'] = $roles;	
+					}else{
+						$_SESSION['roles'] = -1;
+					}
+					
 					var_dump($_SESSION);
 					header("Location:index.php");
 				} else {
-					 echo 'usuario incorrecto';
 					 header("Location:view/login.html");
 				}
 				$cnx -> close();
