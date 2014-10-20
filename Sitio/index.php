@@ -14,8 +14,14 @@ if (!isset($_SESSION['codigo'])) {
 	header('Location: view/login.html');
 	exit();
 }
-echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesión</a>"';
-var_dump($_SESSION);
+
+if(!isset($_POST['accion'])){
+	echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesion</a>';
+	echo '<h2>Cargando pagina de inicio personalizada</h2>';
+	var_dump($_SESSION);	
+}else{
+	echo "<h1>Procesando peticion y eligiendo controlador</h1>";
+}
 ?>
 
 
