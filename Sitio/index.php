@@ -15,12 +15,26 @@ if (!isset($_SESSION['codigo'])) {
 	exit();
 }
 
-if(!isset($_POST['accion'])){
-	echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesion</a>';
-	echo '<h2>Cargando pagina de inicio personalizada</h2>';
-	var_dump($_SESSION);	
-}else{
-	echo "<h1>Procesando peticion y eligiendo controlador</h1>";
+if (!isset($_POST['controlador'])) {
+	//echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesion</a>';
+	//echo '<h2>Cargando pagina de inicio personalizada</h2>';
+	//var_dump($_SESSION);
+	header("Location view/paginaInicio.php");
+} else {
+	if (isset($_POST['ctrl']) && preg_match("/[A-Za-z]+/")) {
+		$controlador = $_GET['ctrl'] . 'Ctrl';
+		if (file_exists("ctrls/{$controlador}.php")) {
+			require_once ("ctrls/{$controlador}.php");
+			$ctrl = new $controlador();
+		} else {
+			$error = "{$_GET['ctrl']} no es un controlador valido";
+			require_once ('VISTAS/ERRORES/opcionInvalida.html');
+		}
+	} else {
+		//ctrl default
+		require_once ('ctrls/alumnosCtrl.php');
+		$ctrl = new alumnosCtrl();
+	}
 }
 ?>
 

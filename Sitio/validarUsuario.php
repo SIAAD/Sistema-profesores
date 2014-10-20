@@ -1,5 +1,9 @@
 <?php
-//var_dump($_POST);
+/** @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza Martinez
+ * @since: 20/Oct/2014
+ * @version 1.0
+ */
+ 
 if (isset($_POST['enviar'])) {
 	if (isset($_POST['codigo'])) {
 		$usuario = $_POST['codigo'];
