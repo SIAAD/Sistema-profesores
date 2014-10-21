@@ -16,10 +16,10 @@ if (!isset($_SESSION['codigo'])) {
 }
 
 if (!isset($_POST['controlador'])) {
-	//echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesion</a>';
+	echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesion</a>';
 	//echo '<h2>Cargando pagina de inicio personalizada</h2>';
 	//var_dump($_SESSION);
-	header("Location view/paginaInicio.php");
+	header("Location: view/paginaInicio.php");
 } else {
 	if (isset($_POST['ctrl']) && preg_match("/[A-Za-z]+/")) {
 		$controlador = $_GET['ctrl'] . 'Ctrl';
