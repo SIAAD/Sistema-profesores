@@ -5,4 +5,5 @@
 		function __construct(){
 			//Crea la conexion a la base de datos
 		}
+	 }
 ?>
