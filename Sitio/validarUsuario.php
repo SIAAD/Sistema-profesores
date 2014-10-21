@@ -27,7 +27,8 @@ if (isset($_POST['enviar'])) {
         					$roles[]=$row[1];
     					}
 						var_dump($roles);
-						$_SESSION['roles'] = $roles;	
+						$_SESSION['roles'] = $roles;
+							
 					}else{
 						$_SESSION['roles'] = -1;
 					}
@@ -35,7 +36,7 @@ if (isset($_POST['enviar'])) {
 					var_dump($_SESSION);
 					header("Location:index.php");
 				} else {
-					 header("Location:view/login.html");
+					//	 header("Location:view/login.html");
 				}
 				$cnx -> close();
 			} else {
