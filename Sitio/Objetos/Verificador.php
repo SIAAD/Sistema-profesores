@@ -1,4 +1,8 @@
 <?php
+/** @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza Martinez
+ * @since: 20/Oct/2014
+ * @version 1.0
+ */
 class Verificador {
 
 	public function validaNombreCurso($nombrecurso) {//here we validate the syntaxis of the name of the course

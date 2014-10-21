@@ -5,9 +5,9 @@
  */
  
 if (isset($_POST['enviar'])) {
-	if (isset($_POST['codigo'])) {
+	if (isset($_POST['codigo'])&&!empty($_POST['codigo'])) {
 		$usuario = $_POST['codigo'];
-		if (isset($_POST['pass'])) {
+		if (isset($_POST['pass'])&&!empty($_POST['pass'])) {
 			$password = $_POST['pass'];
 			if (file_exists("Objetos/dbConfig.inc")) {
 				require_once ("Objetos/dbConfig.inc");
