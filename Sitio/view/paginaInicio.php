@@ -1,4 +1,10 @@
 <?php
+
+	session_start();
+    var_dump($_SESSION);
+    $roles = $_SESSION['roles'];
+	$nombre = $_SESSION['codigo'];
+
 /** @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza Martinez
  * @since: 20/Oct/2014
  * @version ALFA
@@ -10,4 +16,5 @@
 	var_dump($_SESSION);
 	
 	//$menuPrincipal=
+
 ?>
