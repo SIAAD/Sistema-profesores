@@ -30,9 +30,7 @@ if (isset($_POST['enviar'])) {
 						while ($row = $res->fetch_row()) {
         					$roles[]=$row[1];
     					}
-						var_dump($roles);
-						$_SESSION['roles'] = $roles;
-							
+						$_SESSION['roles'] = $roles;	
 					}else{
 						$_SESSION['roles'] = -1;
 					}
@@ -41,12 +39,8 @@ if (isset($_POST['enviar'])) {
 					$cnx -> close();
 					header("Location:index.php");
 				} else {
-<<<<<<< HEAD
 					$cnx -> close();
 					 header("Location:view/login.html");
-=======
-					//	 header("Location:view/login.html");
->>>>>>> f0e665f0f39a8a74d0bfc94660398027c3fa22eb
 				}
 				$cnx -> close();
 			} else {
