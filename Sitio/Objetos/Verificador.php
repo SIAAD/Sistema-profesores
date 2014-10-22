@@ -86,5 +86,13 @@ class Verificador {
 
 		return $variables;
 	}
+	public function validaCodigo($codigo){
+		if(preg_match("/^[0-9]{7}/",$codigo)){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
 ?>
