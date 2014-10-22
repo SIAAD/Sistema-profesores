@@ -9,9 +9,17 @@
 		
 		function ejecutar(){
 			if(checarAcciones()){
-				$accion=$_SESSION
-				switch (variable) {
-					case 'value':
+				$accion=$_SESSION['accion'];
+				switch ($accion) {
+					case 'alta':
+						
+						break;
+						
+					case 'baja':
+						
+						break;
+						
+					case 'consulta':
 						
 						break;
 					

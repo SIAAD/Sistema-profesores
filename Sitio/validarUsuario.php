@@ -37,8 +37,10 @@ if (isset($_POST['enviar'])) {
 					}
 					
 					var_dump($_SESSION);
+					$cnx -> close();
 					header("Location:index.php");
 				} else {
+					$cnx -> close();
 					 header("Location:view/login.html");
 				}
 				$cnx -> close();
