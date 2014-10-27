@@ -4,7 +4,7 @@
 	}else{
 		require_once('../Objetos/Verificador.php');
 	}
-
+	
     interface CtrlStr{
     	protected $modelo;
 		protected $verificador;
@@ -25,5 +25,10 @@
 			}
 		}
 		
+		protected function ejecutar();
+		protected function altas();
+		protected function bajas();
+		protected function consultas();
+		protected function modificaciones();		
     }
 ?>
