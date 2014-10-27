@@ -94,5 +94,15 @@ class Verificador {
 			return false;
 		}
 	}
+	
+	public function validaRol($rol){
+		foreach ($rol as $key => $value) {
+			if(preg_match("/^[1-5]{1}/", $value))
+				return true;
+			else
+				return false;
+		}
+		
+	}
 }
 ?>

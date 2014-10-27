@@ -29,6 +29,7 @@ if (!isset($_POST['controlador'])) {
 		if (file_exists("ctrl/{$controlador}.php")) {
 			require_once ("ctrl/{$controlador}.php");
 			$ctrl = new $controlador();
+			$ctrl -> ejecutar();
 		} else {
 			$error = "{$_GET['ctrl']} no es un controlador valido";
 			require_once ('VISTAS/ERRORES/opcionInvalida.html');

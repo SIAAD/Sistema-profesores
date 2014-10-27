@@ -1,9 +1,7 @@
 <?php
 
-	session_start();
-    var_dump($_SESSION);
-    $roles = $_SESSION['roles'];
-	$nombre = $_SESSION['codigo'];
+	
+    
 
 /** @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza Martinez
  * @since: 20/Oct/2014
@@ -11,6 +9,9 @@
  */
     session_start();
 	$codigo=$_SESSION['codigo'];
+    $roles = $_SESSION['roles'];
+	var_dump($_SESSION);
+	//$nombre = $_SESSION['codigo'];
 	echo "<h1>BIENVENIDO $codigo</h1><a href='../logout.php'>Cerrar Sesion</a>";
 	echo '<h2>Cargando pagina de inicio personalizada</h2>';
 	var_dump($_SESSION);

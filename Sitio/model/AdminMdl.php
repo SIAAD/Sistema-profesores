@@ -8,6 +8,10 @@
 			//Crea la conexion a la base de datos
 		}
 		
+		function altaAdmin($datosAdmin){
+			$miQuery = "INSERT INTO usuarios VALUES('{$datosAdmin['nombre']}', '{{$datosAdmin['contrasena']}', '{$datosAdmin['roles']['tipos']}'";
+		}
+		
 		
 	 }
 ?>

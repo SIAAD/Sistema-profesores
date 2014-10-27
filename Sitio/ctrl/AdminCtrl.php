@@ -18,7 +18,7 @@
 		public function ejecutar(){
 			if(checarAcciones()){
 				$accion = $_SESSION['accion'];
-				$objeto = $_SESSION['objeto'];
+				//$objeto = $_SESSION['objeto'];
 				switch ($accion) {
 					case 'alta':
 						if(empty($_POST)){
@@ -48,19 +48,27 @@
 		
 		public function alta(){
 			if($this->isLogged()){
-			if(isset($_POST['nombre']))
-				$nombre = $verificador->validaNombreCurso($_POST['nombre']);
-			else
-				$nombre = false;
-			if(isset($_POST['contrasena']))
-				$contrasena = $verificador->validaCodigo($_POST['nombre']);
-			else
-				$contrasena = false;
-			}
+				if(isset($_POST['nombre']))
+					$nombre = $verificador->validaNombreCurso($_POST['nombre']);
+				else
+					$nombre = false;
+				if(isset($_POST['contrasena']))
+					$contrasena = $verificador->validaCodigo($_POST['contrasena']);
+				else
+					$contrasena = false;
+				if(isset($_POST['roles']))
+					$rol = $verificador->validaRol($_POST['rol']);
+				else 
+					$rol = false;
+				
+				
+				
+				if ($nombre && $contrasena && $rol) {
+					$datosAdmin = array('nombre' => $_POST['nombre'],'contrasena' => $_POST['contrasena'],'roles' => $_POST['roles']['tipos']);
+					$status = $this->model->insertaUsuario($datosAdmin);
+				
+				}
 			
-			if ($nombre && $contrasena) {
-				$datosAdmin = array('nombre' => $_POST['nombre'],'contrasena' => $_POST['contrasena'],'roles' => $_POST['roles']['tipos']);
-				$status = $this->model->insertaUsuario($datosAdmin);
 				
 			}
 			

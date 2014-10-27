@@ -12,6 +12,9 @@
 		function __construct(){
 			$conexion= Conexion::getInstance();
 		}
+		
+		
+		
     }
 
 ?>
