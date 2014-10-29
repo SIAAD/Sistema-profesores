@@ -6,7 +6,23 @@
 			
 		}
 		
-		function altaCarrera(){
+		function altaMateriaCarrera($materia,$carrera){
+			
+		}
+		
+		function bajaMateriaCarrera($materia,$carrera){
+			
+		}
+		
+		function consultaMateriaCarrera(){
+			
+		}
+		
+		function modificacionMateriaCarrera($materia,$carrera){
+			
+		}
+		
+		function altaCarrera($nombre,$clave){
 			
 		}	
 		

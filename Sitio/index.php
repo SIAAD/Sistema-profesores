@@ -13,14 +13,6 @@ if (!isset($_SESSION['codigo'])) {
 	exit();
 }
 
-if(!isset($_SESSION['controlador'])){
-	//echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesion</a>';
-	header("Location: view/paginaInicio.php");
-	//var_dump($_SESSION);
-}
-
-
-
 if (!isset($_POST['controlador'])) {
 	header("Location: view/paginaInicio.php");
 } else {

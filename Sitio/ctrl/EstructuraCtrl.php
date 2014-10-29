@@ -27,84 +27,23 @@ class EstructuraCtrl implements CtrlStr {
 		session_start();
 		if (isset($_SESSION)) {
 			if (checarAcciones()) {
-				$accion = $_SESSION['accion'];
-				$objeto = $_SESSION['objeto'];
+				$accion = $_POST['accion'];
+				$objeto = $_POST['objeto'];
 				switch ($accion) {
 					case 'alta' :
-						switch ($objeto) {
-							case 'carrera' :
-								checarAltaCarrera();
-								break;
-
-							case 'academia' :
-								break;
-
-							case 'materia' :
-								break;
-
-							case 'departamento' :
-								break;
-
-							default :
-								break;
-						}
+						altas($objeto);
 						break;
 
 					case 'baja' :
-						switch ($objeto) {
-							case 'carrera' :
-								break;
-
-							case 'academia' :
-								break;
-
-							case 'materia' :
-								break;
-
-							case 'departamento' :
-								break;
-
-							default :
-								break;
-						}
+						bajas();
 						break;
 
 					case 'consulta' :
-						switch ($objeto) {
-							case 'carrera' :
-								break;
-
-							case 'academia' :
-								break;
-
-							case 'materia' :
-								break;
-
-							case 'departamento' :
-								break;
-
-							default :
-								break;
-						}
+						consultas();
 						break;
 
 					case 'modificacion' :
-						switch ($objeto) {
-							case 'carrera' :
-								break;
-
-							case 'academia' :
-								break;
-
-							case 'materia' :
-								break;
-
-							case 'departamento' :
-								break;
-
-							default :
-								break;
-						}
+						modificaciones();
 						break;
 
 					default :
@@ -121,18 +60,121 @@ class EstructuraCtrl implements CtrlStr {
 
 	}
 
-function checarAltaCarrera(){
-	if(isset($_SESSION['nombre'])&&!empty($_SESSION['nombre'])){
-		$nombre=$_SESSION['nombre'];
-		if(isset($_SESSION['clave'])&&!empty($_SESSION['clave'])){
-			$clave=$_SESSION['clave'];
-		}else{
-			ManejadorErrores::manejarError();
+	private function altas($objeto) {
+		switch($objeto) {
+			case 'carrera' :
+				if (empty($_POST)) {
+					require_once '../view/formularios/altaCarrera.html';
+				} else {
+					if (isset($_POST['nombre']) && !empty($_POST['nombre'])&&is_string($_POST['nombre'])) {
+						$nombre = $_POST['nombre'];
+						if (isset($_POST['clave']) && !empty($_POST['clave'])&&is_string($_POST['clave'])) {
+							$clave = $_POST['clave'];
+							$modelo -> altaCarrera($nombre, $clave);
+						} else {
+							ManejadorErrores::manejarError();
+						}
+					} else {
+						ManejadorErrores::manejarError();
+					}
+				}
+				break;
+
+			case 'departamento' :
+				break;
+
+			case 'academia' :
+				break;
+
+			case 'materiaCarrera' :
+				if (empty($_POST)) {
+					require_once '../view/formularios/altaMateriaCarrera.html';
+				} else {
+					if (isset($_POST['codigoMateria']) && !empty($_POST['codigoMateria'])&&is_string($_POST['codigoMateria'])) {
+						$materia = $_POST['codigoMateria'];
+						if (isset($_POST['codigoCarrera']) && !empty($_POST['codigoCarrera'])&&is_string($_POST['codigoCarrera'])) {
+							$carrera = $_POST['codigoCarrera'];
+							$modelo -> altaMateriaCarrera($codigoCarrera, $codigoMateria);
+						} else {
+							ManejadorErrores::manejarError();
+						}
+					} else {
+						ManejadorErrores::manejarError();
+					}
+				}
+				break;
+
+			case 'materia' :
+				if (empty($_POST)) {
+					require_once '../view/formularios/altaMateria.html';
+				} else {
+					if (isset($_POST['nombre']) && !empty($_POST['nombre'])&&is_string($_POST['nombre'])) {
+						$nombre = $_POST['nombre'];
+						if (isset($_POST['clave']) && !empty($_POST['clave'])&&is_string($_POST['clave'])) {
+							$clave = $_POST['clave'];
+							$modelo -> altaMateria($nombre, $clave);
+						} else {
+							ManejadorErrores::manejarError();
+						}
+					} else {
+						ManejadorErrores::manejarError();
+					}
+				}
+				break;
 		}
-	}else{
-		ManejadorErrores::manejarError();
 	}
-}
+
+	private function bajas($objeto) {
+		switch($objeto) {
+			case 'carrera' :
+				break;
+
+			case 'departamento' :
+				break;
+
+			case 'academia' :
+				break;
+
+			case 'materia' :
+				break;
+		}
+	}
+
+	private function consultas($objeto) {
+		switch($objeto) {
+			case 'carrera' :
+				break;
+
+			case 'departamento' :
+				break;
+
+			case 'academia' :
+				break;
+
+			case 'materia' :
+				break;
+		}
+	}
+
+	private function modificaciones($objeto) {
+		switch($objeto) {
+			case 'carrera' :
+				break;
+
+			case 'departamento' :
+				break;
+
+			case 'academia' :
+				break;
+
+			case 'materia' :
+				break;
+		}
+	}
+
+	private function checarAltaCarrera() {
+
+	}
 
 }
 ?>
