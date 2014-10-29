@@ -35,7 +35,8 @@ if (isset($_POST['enviar'])) {
 						$_SESSION['roles'] = -1;
 					}
 					
-					var_dump($_SESSION);
+					$navegador=obtenerNavegadorWeb();
+					$_SESSION['navegador']=$navegador;
 					$cnx -> close();
 					header("Location:index.php");
 				} else {
@@ -53,5 +54,65 @@ if (isset($_POST['enviar'])) {
 	} else {
 		//no se encontro la variable codigo
 	}
+}
+
+function obtenerNavegadorWeb()
+{
+$agente = $_SERVER['HTTP_USER_AGENT'];
+$navegador = 'Unknown';
+$platforma = 'Unknown';
+$version= "";
+
+//Obtenemos la Plataforma
+if (preg_match('/linux/i', $agente)) {
+$platforma = 'linux';
+}
+elseif (preg_match('/macintosh|mac os x/i', $agente)) {
+$platforma = 'mac';
+}
+elseif (preg_match('/windows|win32/i', $agente)) {
+$platforma = 'windows';
+}
+
+//Obtener el UserAgente
+if(preg_match('/MSIE/i',$agente) && !preg_match('/Opera/i',$agente))
+{
+$navegador = 'Internet Explorer';
+$navegador_corto = "MSIE";
+}
+elseif(preg_match('/Firefox/i',$agente))
+{
+$navegador = 'Mozilla Firefox';
+$navegador_corto = "Firefox";
+}
+elseif(preg_match('/Chrome/i',$agente))
+{
+$navegador = 'Google Chrome';
+$navegador_corto = "Chrome";
+}
+elseif(preg_match('/Safari/i',$agente))
+{
+$navegador = 'Apple Safari';
+$navegador_corto = "Safari";
+}
+elseif(preg_match('/Opera/i',$agente))
+{
+$navegador = 'Opera';
+$navegador_corto = "Opera";
+}
+elseif(preg_match('/Netscape/i',$agente))
+{
+$navegador = 'Netscape';
+$navegador_corto = "Netscape";
+}
+
+$res= array(
+'agente' => $agente,
+'nombre'      => $navegador,
+'platforma'  => $platforma
+);
+
+return $res;
+
 }
 ?>
