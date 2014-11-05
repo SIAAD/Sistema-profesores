@@ -23,17 +23,19 @@ if(!isset($_SESSION['controlador'])){
 
 
 
-if (!isset($_POST['controlador'])) {
+if (!isset($_GET['controlador'])) {
 	header("Location: view/paginaInicio.php");
 } else {
-	if (isset($_POST['ctrl']) && preg_match("/[A-Za-z]+/")) {
-		$controlador = $_GET['ctrl'] . 'Ctrl';
-		if (file_exists("ctrl/{$controlador}.php")) {
-			require_once ("ctrl/{$controlador}.php");
+	if (isset($_GET['controlador']) && preg_match("/[A-Za-z]+/",$_GET['controlador'])) {
+		$controlador = $_GET['controlador'] . 'Ctrl';
+		
+		if (file_exists("ctrl/$controlador.php")) {
+			require_once("ctrl/$controlador.php");
 			$ctrl = new $controlador();
 			$ctrl -> ejecutar();
 		} else {
-			$error = "{$_GET['ctrl']} no es un controlador valido";
+			
+			$error = "$controlador no es un controlador valido";
 			require_once ('VISTAS/ERRORES/opcionInvalida.html');
 		}
 	} else {

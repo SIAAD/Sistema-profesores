@@ -10,9 +10,11 @@
 	
 	echo "<h1>BIENVENIDO $codigo</h1><a href='../logout.php'>Cerrar Sesion</a>";
 	echo "<h2>Cargando pagina de inicio personalizada</h2>";
-	var_dump($_SESSION);
-	var_dump($_SERVER);
-
+	//var_dump($_SESSION);
+	//var_dump($_SERVER);
+	echo "<a href=''></a>"
 	//$menuPrincipal=
 
 ?>
+
+	<a href="../ctrl/AdminCtrl.php?accion='alta'">Vinculo para admin con accion alta</a>

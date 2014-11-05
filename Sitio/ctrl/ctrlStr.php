@@ -5,15 +5,17 @@
 		require_once('../Objetos/Verificador.php');
 	}
 	
-    interface CtrlStr{
-    	protected $modelo;
-		protected $verificador;
+    class ctrlStr{
+    	//protected $modelo; // las interfases no tienen atributos
+		//protected $verificador;
 		
-		public function __construct(){
+		/*public function __construct(){
 			$verificador= new Verificador();
-		}
-		
+		}*/
+		//las funciones de las interfases no tienen body
 		public function checarAcciones(){
+			
+		}/*{
 			if(isset($_POST['accion'])&&!empty($_POST['accion'])){
 				if(isset($_POST['objeto'])&&!empty($_POST['objeto'])){
 					return TRUE;
@@ -23,12 +25,22 @@
 			}else{
 				return FALSE;
 			}
-		}
+		}*/
 		
-		protected function ejecutar();
-		protected function altas();
-		protected function bajas();
-		protected function consultas();
-		protected function modificaciones();		
+		public function ejecutar(){
+			
+		} //les quite el tipo protected, no funciona para interfaces
+		public function altas(){
+			
+		}
+		public function bajas(){
+			
+		}
+		public function consultas(){
+			
+		}
+		public function modificaciones(){
+			
+		}		
     }
 ?>

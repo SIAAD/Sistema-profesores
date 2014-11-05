@@ -5,27 +5,31 @@
 	else {
 		require_once('ctrlStr.php');
 	}
+	session_start();
 	
-    class AdminCtrl implements ctrlStr{
+	
+    class AdminCtrl extends ctrlStr{
 	 	public $modelo;
-	 	
+	 	public $verificador;
 		function __construct(){
 			//Cuando se construye se desea crear el modelo
-			require ('model/adminMdl.php');
-			$this->modelo=new adminMdl();
+			require_once('../model/AdminMdl.php');
+			$this->modelo=new AdminMdl();
+			
 		}
 		
 		public function ejecutar(){
+			echo "asd";
 			if(checarAcciones()){
-				$accion = $_SESSION['accion'];
+				$accion = $_REQUEST['accion'];
 				//$objeto = $_SESSION['objeto'];
 				switch ($accion) {
 					case 'alta':
-						if(empty($_POST)){
-								require_once("view/AltaUsuario.html");
-							}
-							else
-								$this->alta();
+								
+								include("view/AltaUsuario.html");
+							
+								$this->altas($objeto);
+							
 						break;
 					case 'baja':
 						
@@ -46,8 +50,8 @@
 			}
 		}
 		
-		public function alta(){
-			if($this->isLogged()){
+		public function altas(){
+			if(isset($_SESSION[''])){
 				if(isset($_POST['nombre']))
 					$nombre = $verificador->validaNombreCurso($_POST['nombre']);
 				else
@@ -68,11 +72,31 @@
 					$status = $this->model->insertaUsuario($datosAdmin);
 				
 				}
-			
-				
 			}
-			
+		}
+		
+		public function bajas(){
 			
 		}
+		
+		public function consultas(){
+			
+		}
+		
+		public function modificaciones(){
+			
+		}
+		
+		public function checarAcciones(){
+			return true;
+		}
 	}
+	
+	$controlador = new AdminCtrl();
+	echo "jasdlkjasdk";
+	$controlador->ejecutar();
+	
+
+
+
 ?>

@@ -6,7 +6,7 @@
 		require_once('../Objetos/Conexion.php');
 	}
 
-    interface ModeloStr{
+    class ModeloStr{
         protected $conexion;
 		
 		function __construct(){

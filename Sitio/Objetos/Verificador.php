@@ -27,7 +27,7 @@ class Verificador {
 			return FALSE;
 	}
 
-	function validaCodigo($codigo) {//Function to validate the code with a lenght of 9 numbers
+	/*function validaCodigo($codigo) {//Function to validate the code with a lenght of 9 numbers
 		$codigo = ltrim($codigo);
 		$codigo = rtrim($codigo);
 		//We clean the code first
@@ -35,7 +35,7 @@ class Verificador {
 			return TRUE;
 		else
 			return FALSE;
-	}
+	}*/
 
 	function validaCadena($cadena) {//Function to validate the syntax of name
 
@@ -86,6 +86,7 @@ class Verificador {
 
 		return $variables;
 	}
+	
 	public function validaCodigo($codigo){
 		if(preg_match("/^[0-9]{7}/",$codigo)){
 			return true;
