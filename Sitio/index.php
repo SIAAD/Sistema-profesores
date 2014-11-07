@@ -13,25 +13,17 @@ if (!isset($_SESSION['codigo'])) {
 	exit();
 }
 
-
-if(!isset($_SESSION['controlador'])){
-	//echo '<h1>BIENVENIDO</h1><a href="logout.php">Cerrar Sesion</a>';
-	//header("Location: view/paginaInicio.php");
-	//var_dump($_SESSION);
-	
-}
-
-
-
-if (!isset($_GET['controlador'])) {
+if (!isset($_GET['controlador'])&& empty($_POST['controlador'])) {	
 	header("Location: view/paginaInicio.php");
 } else {
-	if (isset($_GET['controlador']) && preg_match("/[A-Za-z]+/",$_GET['controlador'])) {
-		$controlador = $_GET['controlador'] . 'Ctrl';
+	$controlador = $_GET['controlador'] . 'Ctrl';
+	if (preg_match("/[A-Za-z]+/",$_GET['controlador'])) {
 		
 		if (file_exists("ctrl/$controlador.php")) {
+			echo "ctrl/$controlador.php";
 			require_once("ctrl/$controlador.php");
 			$ctrl = new $controlador();
+			var_dump($ctrl);
 			$ctrl -> ejecutar();
 		} else {
 			

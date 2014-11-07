@@ -1,21 +1,23 @@
 <?php
+	echo "<br>Entrando a CTRLSTR";
 	if(!file_exists('../Objetos/Verificador.php')){
+		echo "<br>Archivo verificador no existe";	
 		exit();
 	}else{
+		echo "<br>Archivo verificador incluido";
 		require_once('../Objetos/Verificador.php');
 	}
 	
-    class ctrlStr{
-    	//protected $modelo; // las interfases no tienen atributos
-		//protected $verificador;
+    class CtrlStr{
+    	protected $modelo;
+		protected $verificador;
 		
-		/*public function __construct(){
+		public function __construct(){
+			echo "<br>Funcion contructor control";
 			$verificador= new Verificador();
-		}*/
-		//las funciones de las interfases no tienen body
-		public function checarAcciones(){
-			
-		}/*{
+		}
+		
+		protected function checarAcciones(){
 			if(isset($_POST['accion'])&&!empty($_POST['accion'])){
 				if(isset($_POST['objeto'])&&!empty($_POST['objeto'])){
 					return TRUE;
@@ -25,21 +27,21 @@
 			}else{
 				return FALSE;
 			}
-		}*/
+		}
 		
 		public function ejecutar(){
 			
-		} //les quite el tipo protected, no funciona para interfaces
-		public function altas(){
+		}
+		protected function altas(){
 			
 		}
-		public function bajas(){
+		protected function bajas(){
 			
 		}
-		public function consultas(){
+		protected function consultas(){
 			
 		}
-		public function modificaciones(){
+		protected function modificaciones(){
 			
 		}		
     }
