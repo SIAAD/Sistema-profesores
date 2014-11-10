@@ -1,8 +1,11 @@
 <?php
-if (!file_exists("CtrlStr")) {
+echo "<br>Entrando a estructura control";
+if (!file_exists("ctrlStr.php")) {
+	echo "<br>No se encontro CtrlStr";
 	exit();
 } else {
-	require_once ("CtrlStr");
+	require_once ("ctrlStr.php");
+	echo "<br>Incluyendo CtrlStr";
 }
 
 class EstructuraCtrl implements CtrlStr {
@@ -25,25 +28,25 @@ class EstructuraCtrl implements CtrlStr {
 
 	function ejecutar() {
 		session_start();
-		if (isset($_SESSION)) {
+		if (isset($_GET)) {
 			if (checarAcciones()) {
-				$accion = $_POST['accion'];
-				$objeto = $_POST['objeto'];
+				$accion = $_GET['accion'];
+				$objeto = $_GET['objeto'];
 				switch ($accion) {
 					case 'alta' :
 						altas($objeto);
 						break;
 
 					case 'baja' :
-						bajas();
+						bajas($objeto);
 						break;
 
 					case 'consulta' :
-						consultas();
+						consultas($objeto);
 						break;
 
 					case 'modificacion' :
-						modificaciones();
+						modificaciones($objeto);
 						break;
 
 					default :
@@ -63,20 +66,16 @@ class EstructuraCtrl implements CtrlStr {
 	private function altas($objeto) {
 		switch($objeto) {
 			case 'carrera' :
-				if (empty($_POST)) {
-					require_once '../view/formularios/altaCarrera.html';
-				} else {
-					if (isset($_POST['nombre']) && !empty($_POST['nombre'])&&is_string($_POST['nombre'])) {
-						$nombre = $_POST['nombre'];
-						if (isset($_POST['clave']) && !empty($_POST['clave'])&&is_string($_POST['clave'])) {
-							$clave = $_POST['clave'];
-							$modelo -> altaCarrera($nombre, $clave);
-						} else {
-							ManejadorErrores::manejarError();
-						}
+				if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
+					$nombre = $_POST['nombre'];
+					if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
+						$clave = $_POST['clave'];
+						$modelo -> altaCarrera($nombre, $clave);
 					} else {
-						ManejadorErrores::manejarError();
+						require_once '../view/formularios/altaCarrera.html';
 					}
+				} else {
+					require_once '../view/formularios/altaCarrera.html';
 				}
 				break;
 
@@ -90,9 +89,9 @@ class EstructuraCtrl implements CtrlStr {
 				if (empty($_POST)) {
 					require_once '../view/formularios/altaMateriaCarrera.html';
 				} else {
-					if (isset($_POST['codigoMateria']) && !empty($_POST['codigoMateria'])&&is_string($_POST['codigoMateria'])) {
+					if (isset($_POST['codigoMateria']) && !empty($_POST['codigoMateria']) && is_string($_POST['codigoMateria'])) {
 						$materia = $_POST['codigoMateria'];
-						if (isset($_POST['codigoCarrera']) && !empty($_POST['codigoCarrera'])&&is_string($_POST['codigoCarrera'])) {
+						if (isset($_POST['codigoCarrera']) && !empty($_POST['codigoCarrera']) && is_string($_POST['codigoCarrera'])) {
 							$carrera = $_POST['codigoCarrera'];
 							$modelo -> altaMateriaCarrera($codigoCarrera, $codigoMateria);
 						} else {
@@ -108,9 +107,9 @@ class EstructuraCtrl implements CtrlStr {
 				if (empty($_POST)) {
 					require_once '../view/formularios/altaMateria.html';
 				} else {
-					if (isset($_POST['nombre']) && !empty($_POST['nombre'])&&is_string($_POST['nombre'])) {
+					if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
 						$nombre = $_POST['nombre'];
-						if (isset($_POST['clave']) && !empty($_POST['clave'])&&is_string($_POST['clave'])) {
+						if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
 							$clave = $_POST['clave'];
 							$modelo -> altaMateria($nombre, $clave);
 						} else {

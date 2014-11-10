@@ -12,9 +12,9 @@
 	echo "<h2>Cargando pagina de inicio personalizada</h2>";
 	//var_dump($_SESSION);
 	//var_dump($_SERVER);
-	echo "<a href=''></a>"
 	//$menuPrincipal=
 
 ?>
-
+	<a href="../index.php?controlador=Estructura&accion=alta">Vinculo alta carrera</a>
+	<br/>
 	<a href="../ctrl/AdminCtrl.php?accion='alta'">Vinculo para admin con accion alta</a>
