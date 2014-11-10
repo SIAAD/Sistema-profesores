@@ -4,31 +4,30 @@
 	}
 	else {
 		require_once('ctrlStr.php');
+		require_once('../model/PruebaMdl.php');
 	}
 	session_start();
 	
 	
     class AdminCtrl extends ctrlStr{
-	 	public $modelo;
-	 	public $verificador;
+	 	//public $modelo;
+	 	//public $verificador;
 		function __construct(){
 			//Cuando se construye se desea crear el modelo
-			require_once('../model/AdminMdl.php');
-			$this->modelo=new AdminMdl();
-			
+			parent::__construct();
+			$this->modelo=new PruebaMdl();
 		}
 		
 		public function ejecutar(){
-			echo "asd";
-			if(checarAcciones()){
+			if($this->checarAcciones()){
 				$accion = $_REQUEST['accion'];
-				//$objeto = $_SESSION['objeto'];
+				//$objeto = $_REQUEST['objeto'];
+				var_dump($accion);
 				switch ($accion) {
 					case 'alta':
-								
-								include("view/AltaUsuario.html");
-							
-								$this->altas($objeto);
+						
+						include("../view/AltaUsuario.html");
+						$this->altas($objeto);
 							
 						break;
 					case 'baja':
@@ -93,8 +92,10 @@
 	}
 	
 	$controlador = new AdminCtrl();
-	echo "jasdlkjasdk";
-	$controlador->ejecutar();
+	$controlador -> ejecutar();
+	var_dump($controlador);
+	
+	//$controlador->ejecutar();
 	
 
 

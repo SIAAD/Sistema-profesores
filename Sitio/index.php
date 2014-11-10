@@ -30,8 +30,12 @@ if (!isset($_GET['controlador'])) {
 		$controlador = $_GET['controlador'] . 'Ctrl';
 		
 		if (file_exists("ctrl/$controlador.php")) {
+			echo "si existe";
+			var_dump($controlador);
 			require_once("ctrl/$controlador.php");
+			
 			$ctrl = new $controlador();
+			echo "si se hiso el objeto";
 			$ctrl -> ejecutar();
 		} else {
 			

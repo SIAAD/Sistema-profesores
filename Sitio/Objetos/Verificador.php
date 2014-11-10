@@ -4,7 +4,8 @@
  * @version 1.0
  */
 class Verificador {
-
+	
+	
 	public function validaNombreCurso($nombrecurso) {//here we validate the syntaxis of the name of the course
 
 		if (preg_match("/^[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü]+/", $nombrecurso))

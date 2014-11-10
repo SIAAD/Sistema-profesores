@@ -8,7 +8,7 @@ class Conexion {
 	private $_connection;
 	private static $_instance;
 
-	/*
+	 /*
 	 Get an instance of the Database
 	 @return Instance
 	 */
@@ -21,8 +21,8 @@ class Conexion {
 
 	// Constructor
 	private function __construct() {
-		 if(file_exists('Objetos/dbConfig.inc')){
- 			require_once('Objetos/dbConfig.inc');
+		 if(!file_exists('dbConfig.inc')){
+ 			require_once('dbConfig.inc');
  		}else{
  			echo "No se pudo cargar archivo de configuracion DB";
  		}

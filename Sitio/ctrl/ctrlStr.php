@@ -5,13 +5,19 @@
 		require_once('../Objetos/Verificador.php');
 	}
 	
+	
     class ctrlStr{
-    	//protected $modelo; // las interfases no tienen atributos
-		//protected $verificador;
+    	protected $modelo; // las interfases no tienen atributos
+		protected $verificador;
 		
-		/*public function __construct(){
-			$verificador= new Verificador();
-		}*/
+		public function getVerificador(){
+			return  $this->verificador;
+		}
+		
+		
+		public function __construct(){
+			$this->verificador= new Verificador();
+		}
 		//las funciones de las interfases no tienen body
 		public function checarAcciones(){
 			

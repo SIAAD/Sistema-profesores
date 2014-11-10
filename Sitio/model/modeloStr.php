@@ -6,11 +6,12 @@
 		require_once('../Objetos/Conexion.php');
 	}
 
-    class ModeloStr{
+    class ModeloStr {
         protected $conexion;
+		protected $varprueba;
 		
 		function __construct(){
-			$conexion= Conexion::getInstance();
+			$this->conexion = Conexion::getInstance();
 		}
 		
 		

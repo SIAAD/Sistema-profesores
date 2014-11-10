@@ -12,7 +12,7 @@
 		
 		function __construct(){
 			//Crea la conexion a la base de datos
-			$conexion = Conexion::getInstance();
+			//$conexion = Conexion::getInstance();
 		}
 		
 		function altaAdmin($datosAdmin){
