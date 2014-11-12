@@ -1,69 +1,63 @@
 <?php
-echo "<br>Entrando a estructura control";
-if (!file_exists("ctrlStr.php")) {
-	echo "<br>No se encontro CtrlStr";
+
+if (!file_exists("ctrl/ctrlStr.php")) {
 	exit();
 } else {
 	require_once ("ctrlStr.php");
-	echo "<br>Incluyendo CtrlStr";
 }
 
-class EstructuraCtrl implements CtrlStr {
+class EstructuraCtrl extends CtrlStr {
 
-	function __construct() {
-		if (!file_exists('../model/EstructuraMdl')) {
+	public function __construct() {
+		parent::__construct();
+		if (!file_exists('Model/EstructuraMdl.php')) {
 			exit();
 		} else {
-			require_once ('../model/EstructuraMdl');
-			$modelo = new EstructuraMdl();
-			if (!file_exists('../Objetos/Verificador')) {
-				exit();
-			} else {
-				require_once ('../Objetos/Verificador');
-				$verificador = new Verificador();
-			}
+			require_once 'Model/EstructuraMdl.php';
+			$this->modelo = new EstructuraMdl();
 		}
 
 	}
 
-	function ejecutar() {
-		session_start();
+	public function ejecutar() {
+		//session_start();
 		if (isset($_GET)) {
-			if (checarAcciones()) {
+			if (parent::checarAcciones()) {
 				$accion = $_GET['accion'];
 				$objeto = $_GET['objeto'];
 				switch ($accion) {
 					case 'alta' :
-						altas($objeto);
+						$this->altas($objeto);
 						break;
 
 					case 'baja' :
-						bajas($objeto);
+						$this->bajas($objeto);
 						break;
 
 					case 'consulta' :
-						consultas($objeto);
+						$this->consultas($objeto);
 						break;
 
 					case 'modificacion' :
-						modificaciones($objeto);
+						$this->modificaciones($objeto);
 						break;
 
 					default :
 						break;
 				}
 			} else {
-				echo "Error no se especificaron acciones ni objetos";
-				ManejadorErrores::manejarError();
+				header("Location: view/paginaInicio.php");
+				//ManejadorErrores::manejarError();
 			}
 		} else {
+			header("Location: view/paginaInicio.php");
 			//error sesion terminada por inactividad
-			ManejadorErrores::manejarError();
+			//ManejadorErrores::manejarError();
 		}
 
 	}
 
-	private function altas($objeto) {
+	protected final function altas($objeto) {
 		switch($objeto) {
 			case 'carrera' :
 				if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
@@ -123,7 +117,7 @@ class EstructuraCtrl implements CtrlStr {
 		}
 	}
 
-	private function bajas($objeto) {
+	protected final function bajas($objeto) {
 		switch($objeto) {
 			case 'carrera' :
 				break;
@@ -139,7 +133,7 @@ class EstructuraCtrl implements CtrlStr {
 		}
 	}
 
-	private function consultas($objeto) {
+	protected final function consultas($objeto) {
 		switch($objeto) {
 			case 'carrera' :
 				break;
@@ -155,7 +149,7 @@ class EstructuraCtrl implements CtrlStr {
 		}
 	}
 
-	private function modificaciones($objeto) {
+	protected final function modificaciones($objeto) {
 		switch($objeto) {
 			case 'carrera' :
 				break;
@@ -171,7 +165,7 @@ class EstructuraCtrl implements CtrlStr {
 		}
 	}
 
-	private function checarAltaCarrera() {
+	protected final function checarAltaCarrera() {
 
 	}
 

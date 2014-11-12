@@ -13,17 +13,16 @@ if (!isset($_SESSION['codigo'])) {
 	exit();
 }
 
-if (!isset($_GET['controlador'])&& empty($_POST['controlador'])) {	
+if (!isset($_GET['controlador'])&& empty($_GET['controlador'])) {	
 	header("Location: view/paginaInicio.php");
 } else {
 	$controlador = $_GET['controlador'] . 'Ctrl';
 	if (preg_match("/[A-Za-z]+/",$_GET['controlador'])) {
 		
-		if (file_exists("ctrl/$controlador.php")) {
-			echo "ctrl/$controlador.php";
-			require_once("ctrl/$controlador.php");
+		if (file_exists("Ctrl/$controlador.php")) {
+			require_once("Ctrl/$controlador.php");
 			$ctrl = new $controlador();
-			var_dump($ctrl);
+			//var_dump($ctrl);
 			$ctrl -> ejecutar();
 		} else {
 			
@@ -38,6 +37,3 @@ if (!isset($_GET['controlador'])&& empty($_POST['controlador'])) {
 }
 
 ?>
-
-
-

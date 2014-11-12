@@ -1,9 +1,14 @@
 <?php
+if(file_exists('Model/modeloStr.php')){
+	require_once 'Model/modeloStr.php';
+}else{
+	exit();
+}
 
-	class EstructuraMdl implements ModeloStr {
+	class EstructuraMdl extends ModeloStr {
 		
 		function __construct() {
-			
+			parent::__construct();
 		}
 		
 		function altaMateriaCarrera($materia,$carrera){
