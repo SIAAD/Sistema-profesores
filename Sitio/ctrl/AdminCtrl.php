@@ -1,21 +1,33 @@
 <?php
-	if(!file_exists('ctrlStr.php')){
-		exit();
+	if(!file_exists('ctrl/CtrlStr.php')){
+		//exit();
+		require_once('CtrlStr.php');
+		//require_once('model/PruebaMdl.php');
 	}
 	else {
-		require_once('ctrlStr.php');
-		require_once('../model/PruebaMdl.php');
+		require_once('CtrlStr.php');
+		//require_once('model/PruebaMdl.php');
 	}
-	session_start();
+	//session_start();
 	
 	
-    class AdminCtrl extends ctrlStr{
+    class AdminCtrl extends CtrlStr{
 	 	//public $modelo;
 	 	//public $verificador;
 		function __construct(){
-			//Cuando se construye se desea crear el modelo
-			parent::__construct();
-			$this->modelo=new PruebaMdl();
+			//Cuando se construye se desea crear el modelo	
+			if (!file_exists('../model/EstructuraMdl.php')) {
+				exit();
+			} else {
+				require_once ('../model/EstructuraMdl.php');
+				$modelo = new EstructuraMdl();
+			if (!file_exists('../Objetos/Verificador.php')) {
+				exit();
+			} else {
+				require_once ('../Objetos/Verificador.php');
+				$verificador = new Verificador();
+				}
+			}
 		}
 		
 		public function ejecutar(){
@@ -40,7 +52,7 @@
 						
 						break;
 					default:
-						
+						echo "no se encontro accion valida";
 						break;
 				}
 			}
@@ -49,7 +61,7 @@
 			}
 		}
 		
-		public function altas(){
+		protected function altas(){
 			if(isset($_SESSION[''])){
 				if(isset($_POST['nombre']))
 					$nombre = $verificador->validaNombreCurso($_POST['nombre']);
@@ -91,10 +103,10 @@
 		}
 	}
 	
-	$controlador = new AdminCtrl();
+	/*$controlador = new AdminCtrl();
 	$controlador -> ejecutar();
 	var_dump($controlador);
-	
+	*/
 	//$controlador->ejecutar();
 	
 

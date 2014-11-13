@@ -13,7 +13,7 @@ if (!isset($_SESSION['codigo'])) {
 	exit();
 }
 
-if (!isset($_GET['controlador'])&& empty($_POST['controlador'])) {	
+if (!isset($_GET['controlador'])&& empty($_GET['controlador'])) {	
 	header("Location: view/paginaInicio.php");
 } else {
 	$controlador = $_GET['controlador'] . 'Ctrl';

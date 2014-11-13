@@ -1,11 +1,12 @@
 <?php
-	echo "<br>Entrando a CTRLSTR";
-	if(!file_exists('../Objetos/Verificador.php')){
+	
+	if(!file_exists('Objetos/Verificador.php')){
 		echo "<br>Archivo verificador no existe";	
-		exit();
+		//exit();
+		require_once('Objetos/Verificador.php');
 	}else{
-		echo "<br>Archivo verificador incluido";
-		require_once('../Objetos/Verificador.php');
+		
+		require_once('Objetos/Verificador.php');
 	}
 
     class CtrlStr{
@@ -13,8 +14,9 @@
 		protected $verificador;
 		
 		public function __construct(){
-			echo "<br>Funcion contructor control";
-			$verificador= new Verificador();
+			echo "<br>objeto verificador";
+			$this->verificador= new Verificador();
+			
 		}
 		
 		protected function checarAcciones(){
