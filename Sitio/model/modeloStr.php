@@ -1,21 +1,18 @@
 <?php
-
-	if(!file_exists('../Objetos/Conexion.php')){
+	if(!file_exists('Objetos/conexion.php')){
 		exit();
 	}else{
-		require_once('../Objetos/Conexion.php');
+		require_once 'Objetos/conexion.php';
 	}
 
     class ModeloStr {
         protected $conexion;
-		protected $varprueba;
-		
-		function __construct(){
-			$this->conexion = Conexion::getInstance();
-		}
 		
 		
-		
+		public function __construct(){
+			$this->conexion= Conexion::getInstance();
+		}	
+
     }
 
 ?>

@@ -21,12 +21,13 @@ class Conexion {
 
 	// Constructor
 	private function __construct() {
-		 if(!file_exists('dbConfig.inc')){
- 			require_once('dbConfig.inc');
+		 if(file_exists('Objetos/dbConfig.inc')){
+ 			require_once('Objetos/dbConfig.inc');
+			$this -> _connection = new mysqli($host,$usr,$pass,$db);
  		}else{
  			echo "No se pudo cargar archivo de configuracion DB";
  		}
-		$this -> _connection = new mysqli($host,$usr,$pass,$db);
+		
 		//$this -> _connection = new mysqli($host, $usr, $pass, $db);
 		// Error handling
 		

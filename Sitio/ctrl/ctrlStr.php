@@ -1,12 +1,9 @@
 <?php
-	
-	if(!file_exists('Objetos/Verificador.php')){
-		echo "<br>Archivo verificador no existe";	
-		//exit();
-		require_once('Objetos/Verificador.php');
+
+	if(!file_exists('../Sitio/Objetos/Verificador.php')){
+		exit();
 	}else{
-		
-		require_once('Objetos/Verificador.php');
+		require_once('../Sitio/Objetos/Verificador.php');
 	}
 
     class CtrlStr{
@@ -14,19 +11,19 @@
 		protected $verificador;
 		
 		public function __construct(){
-			echo "<br>objeto verificador";
 			$this->verificador= new Verificador();
-			
 		}
 		
 		protected function checarAcciones(){
-			if(isset($_POST['accion'])&&!empty($_POST['accion'])){
-				if(isset($_POST['objeto'])&&!empty($_POST['objeto'])){
+			if(isset($_GET['accion'])&&!empty($_GET['accion'])){
+				if(isset($_GET['objeto'])&&!empty($_GET['objeto'])){
 					return TRUE;
 				}else{
+					exit();
 					return FALSE;
 				}
 			}else{
+				exit();
 				return FALSE;
 			}
 		}
@@ -34,16 +31,16 @@
 		public function ejecutar(){
 			
 		}
-		protected function altas(){
+		protected function altas($objeto){
 			
 		}
-		protected function bajas(){
+		protected function bajas($objeto){
 			
 		}
-		protected function consultas(){
+		protected function consultas($objeto){
 			
 		}
-		protected function modificaciones(){
+		protected function modificaciones($objeto){
 			
 		}		
     }

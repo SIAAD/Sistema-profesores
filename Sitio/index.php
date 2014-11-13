@@ -18,18 +18,12 @@ if (!isset($_GET['controlador'])&& empty($_GET['controlador'])) {
 } else {
 	$controlador = $_GET['controlador'] . 'Ctrl';
 	if (preg_match("/[A-Za-z]+/",$_GET['controlador'])) {
-		
-		if (file_exists("ctrl/$controlador.php")) {
-			echo "si existe";
-			var_dump($controlador);
-			echo "ctrl/$controlador.php";
-			require_once("ctrl/$controlador.php");
+		if (file_exists("Ctrl/$controlador.php")) {
+			require_once("Ctrl/$controlador.php");
 			$ctrl = new $controlador();
-			echo "si se hiso el objeto";
-			var_dump($ctrl);
+			//var_dump($ctrl);
 			$ctrl -> ejecutar();
 		} else {
-			
 			$error = "$controlador no es un controlador valido";
 			require_once ('VISTAS/ERRORES/opcionInvalida.html');
 		}
@@ -41,6 +35,3 @@ if (!isset($_GET['controlador'])&& empty($_GET['controlador'])) {
 }
 
 ?>
-
-
-
