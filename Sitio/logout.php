@@ -10,5 +10,5 @@ $_SESSION = array();
 //Destruir Sesión
 session_destroy();
 //Redireccionar a login.php
-header("location: view/login.html");
+header("location: view/formularios/login.html");
 ?>

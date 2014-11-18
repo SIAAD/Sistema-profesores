@@ -1,17 +1,9 @@
 <?php
-
-/*
- * Mysql database class - only one connection alowed
- */ 
  
 class Conexion {
 	private $_connection;
 	private static $_instance;
 
-	 /*
-	 Get an instance of the Database
-	 @return Instance
-	 */
 	public static function getInstance() {
 		if (!self::$_instance) {// If no instance then make one
 			self::$_instance = new self();
@@ -27,9 +19,6 @@ class Conexion {
  		}else{
  			echo "No se pudo cargar archivo de configuracion DB";
  		}
-		
-		//$this -> _connection = new mysqli($host, $usr, $pass, $db);
-		// Error handling
 		
 	}
 

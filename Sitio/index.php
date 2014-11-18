@@ -9,7 +9,7 @@ session_start();
 //validamos si se ha hecho o no el inicio de sesion correctamente
 //si no se ha hecho la sesion nos regresará a login.php
 if (!isset($_SESSION['codigo'])) {
-	header('Location: view/login.html');
+	header('Location: view/formularios/login.html');
 	exit();
 }
 
@@ -21,7 +21,6 @@ if (!isset($_GET['controlador'])&& empty($_GET['controlador'])) {
 		if (file_exists("Ctrl/$controlador.php")) {
 			require_once("Ctrl/$controlador.php");
 			$ctrl = new $controlador();
-			//var_dump($ctrl);
 			$ctrl -> ejecutar();
 		} else {
 			$error = "$controlador no es un controlador valido";

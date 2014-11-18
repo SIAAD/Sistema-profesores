@@ -16,5 +16,6 @@
 	<br/>
 
 	<a href="../index.php?controlador=Admin&accion=alta&objeto=usuario">Vinculo para admin con accion alta</a>
+	<br />
+	<a href="../Objetos/conexion.php">Vinculo conexion</a>
 
-	
