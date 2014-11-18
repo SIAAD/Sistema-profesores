@@ -15,3 +15,5 @@
 	<a href="../index.php?controlador=Estructura&accion=alta&objeto=carrera">Vinculo alta carrera</a>
 	<br/>
 	<a href="../index.php?controlador=Admin">Vinculo para admin con accion alta</a>
+	<br />
+	<a href="../Objetos/conexion.php">Vinculo conexion</a>

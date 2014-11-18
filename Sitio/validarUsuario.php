@@ -23,8 +23,6 @@ if (isset($_POST['enviar'])) {
 					
 					$sql="SELECT * FROM privilegiosUsuarios WHERE nombre='$usuario'";
 					$res = $cnx -> query($sql);
-					print"resultado de querry roles";
-					var_dump($res);
 					$roles=array();
 					if(mysqli_num_rows($res)>0){
 						while ($row = $res->fetch_row()) {
@@ -41,9 +39,8 @@ if (isset($_POST['enviar'])) {
 					header("Location:index.php");
 				} else {
 					$cnx -> close();
-					 header("Location:view/login.html");
+					header("Location:view/login.html");
 				}
-				$cnx -> close();
 			} else {
 				echo "No se pudo incluir el archivo de configuracion de la base de datos";
 			}

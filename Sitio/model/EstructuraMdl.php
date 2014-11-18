@@ -27,8 +27,19 @@ if(file_exists('Model/modeloStr.php')){
 			
 		}
 		
-		function altaCarrera($nombre,$clave){
-			
+		function altaCarrera($nombre,$clave){		
+			$cnx=$this->conexion->getConexion();
+			$sql = "SELECT * FROM carreras WHERE nombre LIKE '$nombre' OR clave LIKE '$clave';";
+			if($res=$cnx->query($sql)){
+				if($res->num_rows>0){
+					return FALSE;
+				}else{
+					$sql="INSERT INTO `carreras` (`nombre`, `clave`) VALUES ('$nombre','$clave');";
+					return $res = $cnx -> query($sql);
+				}
+			}else{
+				return FALSE;
+			}			
 		}	
 		
 		function bajaCarrera(){
