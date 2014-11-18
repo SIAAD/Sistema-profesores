@@ -19,11 +19,11 @@
 				if(isset($_GET['objeto'])&&!empty($_GET['objeto'])){
 					return TRUE;
 				}else{
-					exit();
+					
 					return FALSE;
 				}
 			}else{
-				exit();
+				
 				return FALSE;
 			}
 		}

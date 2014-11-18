@@ -16,24 +16,19 @@
 	 	//public $verificador;
 		function __construct(){
 			//Cuando se construye se desea crear el modelo	
-			if (!file_exists('../model/EstructuraMdl.php')) {
+			parent::__construct();
+			if (!file_exists('Model/AdminMdl.php')) {
 				exit();
 			} else {
-				require_once ('../model/EstructuraMdl.php');
-				$modelo = new EstructuraMdl();
-			if (!file_exists('../Objetos/Verificador.php')) {
-				exit();
-			} else {
-				require_once ('../Objetos/Verificador.php');
-				$verificador = new Verificador();
-				}
+				require_once 'Model/AdminMdl.php';
+				$this->modelo = new AdminMdl();
 			}
 		}
 		
 		public function ejecutar(){
 			if($this->checarAcciones()){
 				$accion = $_REQUEST['accion'];
-				//$objeto = $_REQUEST['objeto'];
+				$objeto = $_REQUEST['objeto'];
 				var_dump($accion);
 				switch ($accion) {
 					case 'alta':
@@ -61,7 +56,7 @@
 			}
 		}
 		
-		protected function altas(){
+		protected function altas($objeto){
 			if(isset($_SESSION[''])){
 				if(isset($_POST['nombre']))
 					$nombre = $verificador->validaNombreCurso($_POST['nombre']);
@@ -86,21 +81,18 @@
 			}
 		}
 		
-		public function bajas(){
+		public function bajas($objeto){
 			
 		}
 		
-		public function consultas(){
+		public function consultas($objetos){
 			
 		}
 		
-		public function modificaciones(){
+		public function modificaciones($objetos){
 			
 		}
 		
-		public function checarAcciones(){
-			return true;
-		}
 	}
 	
 	/*$controlador = new AdminCtrl();

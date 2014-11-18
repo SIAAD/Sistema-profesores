@@ -9,12 +9,10 @@
 	
 
  	 class AdminMdl extends  ModeloStr{
-	 	public $conexion;
 		
 		function __construct(){
 			//Crea la conexion a la base de datos
 			parent::__construct();
-			echo "<br>Se hiso conexion a la bd";
 		}
 		
 		function altaAdmin($datosAdmin){
