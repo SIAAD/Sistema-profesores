@@ -1,7 +1,7 @@
 <?php /**
- * @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza
- * @since: 09/Oct/2014
- * @version ALFA
+ * @author:Jorge Eduardo Garza
+ * @since: 02/Dic/2014
+ * @version BETA SOPORTE DE COOKIES
  */
 
 //creamos la sesion
@@ -9,8 +9,12 @@ session_start();
 //validamos si se ha hecho o no el inicio de sesion correctamente
 //si no se ha hecho la sesion nos regresará a login.php
 if (!isset($_SESSION['codigo'])) {
+	
+	//checar si existe cokie
+		//si existe cargar sesion con la informacion de la cookie
+		
+		//si no dirigerse a login
 	header('Location: view/formularios/login.html');
-	exit();
 }
 
 if (!isset($_GET['controlador'])&& empty($_GET['controlador'])) {	

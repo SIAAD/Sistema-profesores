@@ -12,15 +12,20 @@
 			<form class="span8" name="form01" method="post" action="../../validarUsuario.php">
 				<fieldset>
 					<legend>Inicio de Sesion</legend>
+					
 					<label for="codigo">Codigo</label>
 					<input type="text" name="codigo" id="codigo" placeholder="Codigo" maxlength="7" onkeypress="return validar(event);" required="required"/>
+					
 					<label for="pass">Password</label>
 					<input type="password" name="pass" id="pass" placeholder="Password" required="required"/>
+					
+					<label  for="sesion">Mantener Sesion Abierta</label>
+					<input type="checkbox" name="sesion" id=="sesion" value="mantener"/>
+					
 					<input type="submit" name="enviar" id="enviar" value="Iniciar Sesion"/>
 				</fieldset>
 			</form>
-		</div>
-			
+		</div>			
 		
 	</body>
 		

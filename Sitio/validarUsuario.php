@@ -1,8 +1,15 @@
 <?php
-/** @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza Martinez
- * @since: 20/Oct/2014
- * @version 1.0
+/** @author:Jorge Eduardo Garza Martinez
+ * @since: 2/Dic/2014
+ * @version 1.5 INCLUSION DE COOKIES
  */
+ 
+if(file_exists('Objetos/cookies.php')){
+	require_once('Objetos/cookies.php');
+}else{
+	echo "No se pudo incluir cookies.php";
+	exit();
+}
  
 if (isset($_POST['enviar'])) {
 	if (isset($_POST['codigo'])&&!empty($_POST['codigo'])) {
@@ -36,10 +43,22 @@ if (isset($_POST['enviar'])) {
 					$navegador=obtenerNavegadorWeb();
 					$_SESSION['navegador']=$navegador;
 					$cnx -> close();
+					//checar si desea mantener la sesion abierta
+					
+					if(isset($_POST['sesion'])&&!empty($_POST['sesion'])&&$_POST['sesion']=='mantener'){
+						//crear cokie
+						$cookies = new Cookies();
+						
+						$value='';
+						foreach ($roles as $rol) {
+							$value=$value.$rol.'|';
+						}
+						$cookies->set($usuario, $value);
+					}
 					header("Location:index.php");
 				} else {
 					$cnx -> close();
-					header("Location:view/login.html");
+					header("Location:view/formularios/login.html");
 				}
 			} else {
 				echo "No se pudo incluir el archivo de configuracion de la base de datos";
