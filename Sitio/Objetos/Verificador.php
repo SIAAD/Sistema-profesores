@@ -1,16 +1,21 @@
 <?php
-/** @author:Jesus Alberto Ley Ayón & Jorge Eduardo Garza Martinez
+/** @author:Jorge Eduardo Garza Martinez
  * @since: 20/Oct/2014
  * @version 1.0
  */
 class Verificador {
 
 	public function validaNombreCurso($nombrecurso) {//here we validate the syntaxis of the name of the course
-
-		if (preg_match("/^[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü]+/", $nombrecurso))
+		//return preg_match("[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü]{1,90}", $nombrecurso);
+	}
+	
+	public function validaNombreCarrera($nombre) {
+		/*if( preg_match('/^[a-zA-Z]{10,70}$/iX', $nombre)){
 			return TRUE;
-		else
+		}else{
 			return FALSE;
+		}*/
+		return preg_match('/^[a-zA-Z]{10,70}$/iX', $nombre);
 	}
 
 	public function validaSeccion($seccion) {//function to validate the name of the section
@@ -28,14 +33,14 @@ class Verificador {
 	}
 
 	/*function validaCodigo($codigo) {//Function to validate the code with a lenght of 9 numbers
-		$codigo = ltrim($codigo);
-		$codigo = rtrim($codigo);
-		//We clean the code first
-		if (preg_match("/^[0-9]{7}/", $codigo))
-			return TRUE;
-		else
-			return FALSE;
-	}*/
+	 $codigo = ltrim($codigo);
+	 $codigo = rtrim($codigo);
+	 //We clean the code first
+	 if (preg_match("/^[0-9]{7}/", $codigo))
+	 return TRUE;
+	 else
+	 return FALSE;
+	 }*/
 
 	function validaCadena($cadena) {//Function to validate the syntax of name
 
@@ -86,24 +91,32 @@ class Verificador {
 
 		return $variables;
 	}
-	
-	public function validaCodigo($codigo){
-		if(preg_match("/^[0-9]{7}/",$codigo)){
+
+	public function validaCodigo($codigo) {
+		if (preg_match("/^[0-9]{7}/", $codigo)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
-	public function validaRol($rol){
+
+	public function validaRol($rol) {
 		foreach ($rol as $key => $value) {
-			if(preg_match("/^[1-5]{1}/", $value))
+			if (preg_match("/^[1-5]{1}/", $value))
 				return true;
 			else
 				return false;
 		}
-		
+
 	}
+
 }
+
+/*$ver = new Verificador();
+var_dump($ver -> validaNombreCarrera('Licenciatura en Ingenieria en Comunicaciones y Electronica'));
+var_dump($ver -> validaNombreCarrera('aaaaaaaaaa'));
+var_dump($ver -> validaNombreCarrera('Lice'));
+var_dump($ver -> validaNombreCarrera('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'));
+var_dump($ver -> validaCodigo('2093663'));
+*/
 ?>

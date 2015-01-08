@@ -39,6 +39,11 @@
 		}
 		protected function modificaciones($objeto){
 			
-		}		
+		}
+		
+		protected function verificar($variable){
+			if(isset($variable) && !empty($variable) && is_string($variable)) return TRUE;
+			else return FALSE;
+		}	
     }
 ?>

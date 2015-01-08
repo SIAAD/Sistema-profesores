@@ -14,7 +14,7 @@ class EstructuraCtrl extends CtrlStr {
 			exit();
 		} else {
 			require_once 'Model/EstructuraMdl.php';
-			$this->modelo = new EstructuraMdl();
+			$this -> modelo = new EstructuraMdl();
 		}
 
 	}
@@ -26,19 +26,19 @@ class EstructuraCtrl extends CtrlStr {
 				$objeto = $_GET['objeto'];
 				switch ($accion) {
 					case 'alta' :
-						$this->altas($objeto);
+						$this -> altas($objeto);
 						break;
 
 					case 'baja' :
-						$this->bajas($objeto);
+						$this -> bajas($objeto);
 						break;
 
 					case 'consulta' :
-						$this->consultas($objeto);
+						$this -> consultas($objeto);
 						break;
 
 					case 'modificacion' :
-						$this->modificaciones($objeto);
+						$this -> modificaciones($objeto);
 						break;
 
 					default :
@@ -59,28 +59,34 @@ class EstructuraCtrl extends CtrlStr {
 	protected final function altas($objeto) {
 		switch($objeto) {
 			case 'carrera' :
-				if (isset($_POST['enviar'])) {
-					if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
-						$nombre = $_POST['nombre'];
-						//$this->verificador->
-						$this->verificador->validaNombreCurso($_POST['nombre']);
-						if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
-							$clave = $_POST['clave'];
-							$res=$this->modelo -> altaCarrera($nombre, $clave);
-							if($res){
-								//header("Location: view/paginaInicio.php");
-								header('Location: View/formularios/altaCarrera.html');
-							}else{
-								echo "Error no se pudo dar de alta";
+				if (in_array('0', $_SESSION['roles']) || in_array('2', $_SESSION['roles']) || in_array('4', $_SESSION['roles'])) {
+					if (isset($_POST['enviar'])) {
+						if(parent::verificar($_POST['nombre'])){
+						//if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
+							$nombre = $_POST['nombre'];
+							//$this->verificador->
+							//$this->verificador->validaNombreCurso($_POST['nombre']);
+							if(parent::verificar($_POST['clave'])){
+							//if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
+								$clave = $_POST['clave'];
+								$res = $this -> modelo -> altaCarrera($nombre, $clave);
+								if ($res) {
+									//require_once 'View/formularios/altaCarrera.html';
+									require_once 'View/paginaInicio.php';
+								} else {
+									echo "Error no se pudo dar de alta";
+								}
+							} else {
+								require_once 'View/formularios/altaCarrera.html';
 							}
 						} else {
 							require_once 'View/formularios/altaCarrera.html';
 						}
 					} else {
 						require_once 'View/formularios/altaCarrera.html';
-					}	
-				}else{
-					require_once 'View/formularios/altaCarrera.html';
+					}
+				} else {
+					echo "Permiso denegado";
 				}
 				break;
 
