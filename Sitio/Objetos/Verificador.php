@@ -106,5 +106,21 @@ class Verificador {
 		}
 		
 	}
+	
+	public function validaAbreviacion($abreviacion){
+		if (preg_match("^[A-ZÑ]*/", $nrc))
+			return TRUE;
+		else
+			return FALSE;
+	}
+	
+	public function validaNum($numero){
+		if(preg_match("/^[1-9]{1}/",$numero))
+			return TRUE;
+		else 
+			return FALSE;
+		
+	}
+	
 }
 ?>
