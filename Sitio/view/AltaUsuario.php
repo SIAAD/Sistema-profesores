@@ -8,26 +8,22 @@
 	</head>
 
 	<body>
-		<div class="span2 offset2">
-			<form class="span8" name="form01" method="post" action="../validarUsuario.php">
+		<div>
+			<form class="span8" name="form01" method="post" action="../index.php?controlador=Admin&accion=alta&objeto=usuario">
 				<fieldset>
-					<legend>Inicio de Sesion</legend>
-					<label for="codigo">Codigo</label>
-					<input type="text" name="codigo" id="codigo" placeholder="Codigo" maxlength="7" onkeypress="return validar(event);" required="required"/>
+					<legend>Alta Usuario</legend>
+					<label for="nombre">Codigo</label>
+					<input type="text" name="nombre" id="nombre" placeholder="Codigo" maxlength="7" onkeypress="return validar(event);" required="required"/>
 					<label for="pass">Password</label>
-					<input type="password" name="pass" id="pass" placeholder="Password" required="required"/>
+					<input type="text" name="pass" id="pass" placeholder="Password" required="required"/>
 					<input type="submit" name="enviar" id="enviar" value="Iniciar Sesion"/>
 				</fieldset>
 			</form>
 		</div>
-			
-		
 	</body>
-		
 	
 	<script>
-	
-	function validar(evento) {
+		function validar(evento) {
 			//propiedad which regresa cual tecla o boton de raton fue presionada
 			evento = (evento) ? evento : window.event;
 		    var charCode = (evento.which) ? evento.which : evt.keyCode;
@@ -37,5 +33,4 @@
 		    return true;
 		}
 	</script>
-	
 </html>

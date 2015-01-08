@@ -1,102 +1,232 @@
 <?php
-	if(!file_exists('ctrlStr.php')){
-		exit();
-	}
-	else {
-		require_once('ctrlStr.php');
-	}
-	session_start();
-	
-	
-    class AdminCtrl extends ctrlStr{
-	 	public $modelo;
-	 	public $verificador;
-		function __construct(){
-			//Cuando se construye se desea crear el modelo
-			require_once('../model/AdminMdl.php');
-			$this->modelo=new AdminMdl();
-			
+if (!file_exists('ctrl/CtrlStr.php')) {
+	//exit();
+	require_once ('CtrlStr.php');
+	//require_once('model/PruebaMdl.php');
+} else {
+	require_once ('CtrlStr.php');
+	//require_once('model/PruebaMdl.php');
+}
+//session_start();
+
+class AdminCtrl extends CtrlStr {
+	//public $modelo;
+	//public $verificador;
+	function __construct() {
+		//Cuando se construye se desea crear el modelo
+		parent::__construct();
+		if (!file_exists('Model/AdminMdl.php')) {
+			exit();
+		} else {
+			require_once 'Model/AdminMdl.php';
+			$this -> modelo = new AdminMdl();
 		}
-		
-		public function ejecutar(){
-			echo "asd";
-			if(checarAcciones()){
+	}
+
+	public function ejecutar() {
+		if (isset($_GET)) {
+			if (parent::checarAcciones()) {
 				$accion = $_REQUEST['accion'];
-				//$objeto = $_SESSION['objeto'];
+				$objeto = $_REQUEST['objeto'];
+				var_dump($accion);
 				switch ($accion) {
-					case 'alta':
-								
-								include("view/AltaUsuario.html");
-							
-								$this->altas($objeto);
-							
+					case 'alta' :
+						$this -> altas($objeto);
+
 						break;
-					case 'baja':
-						
+					case 'baja' :
+						$this -> bajas($objeto);
 						break;
-					case 'consulta':
-						
+					case 'consulta' :
+						$this -> consultas($objeto);
 						break;
-					case 'modificacion':
-						
+					case 'modificacion' :
+						$this -> modificaciones($objeto);
 						break;
-					default:
-						
+					default :
+						echo "no se encontro accion valida";
 						break;
 				}
+			} else {
+				header("Location: view/paginaInicio.php");
+				//ManejadorErrores::manejarError();
 			}
-			else {
-				echo "Error no se especificaron acciones u objetos";
-			}
+		} else {
+			header("Location: view/paginaInicio.php");
+			//error sesion terminada por inactividad
+			//ManejadorErrores::manejarError();
 		}
-		
-		public function altas(){
-			if(isset($_SESSION[''])){
-				if(isset($_POST['nombre']))
-					$nombre = $verificador->validaNombreCurso($_POST['nombre']);
-				else
-					$nombre = false;
-				if(isset($_POST['contrasena']))
-					$contrasena = $verificador->validaCodigo($_POST['contrasena']);
-				else
-					$contrasena = false;
-				if(isset($_POST['roles']))
-					$rol = $verificador->validaRol($_POST['rol']);
-				else 
-					$rol = false;
-				
-				
-				
-				if ($nombre && $contrasena && $rol) {
-					$datosAdmin = array('nombre' => $_POST['nombre'],'contrasena' => $_POST['contrasena'],'roles' => $_POST['roles']['tipos']);
-					$status = $this->model->insertaUsuario($datosAdmin);
-				
+
+	}
+
+	protected function altas($objeto) {
+
+		switch($objeto) {
+			//////USUARIO
+			case 'usuario' :
+				if (isset($_POST['enviar'])) {
+					if($this->verificar($_POST['nombre'])) {
+						$nombre = $_POST['nombre'];
+						$this -> verificador -> validaCodigo($_POST['nombre']);
+						if ($this->verificar($_POST['pass'])) {
+							$pass = $_POST['pass'];
+							$res = $this -> modelo -> altaUsuario($nombre, $pass);
+							if ($res) {
+								//header("Location: view/paginaInicio.php");
+								require_once('View/formularios/AltaUsuario.php');
+							} else {
+								echo "Error no se pudo dar de alta";
+							}
+						} else {
+							require_once 'View/formularios/AltaUsuario.php';
+						}
+					} else {
+						require_once 'View/formularios/AltaUsuario.php';
+					}
+				}else {
+					require_once 'View/formularios/AltaUsuario.php';
 				}
-			}
+				break;
+				////////DEPARTAMENTO
+			case 'departamento' :
+					if (isset($_POST['enviar'])) {
+					if ($this->verificar($_POST['nombre'])) {
+						$nombre = $_POST['nombre'];
+						$this -> verificador -> validaCadena($_POST['nombre']);
+						if ($this->verificar($_POST['clave'])) {
+							$clave = $_POST['clave'];
+							$this -> verificador -> validaCodigo($_POST['clave']);
+							if($this->verificar($_POST['abreviacion'])){
+								$abreviacion = $_POST['abreviacion'];
+								$this -> verificador -> validaAbreviacion($_POST['abreviacion']);
+								$res = $this -> modelo -> altaDepartamento($nombre, $clave,$abreviacion);
+								if ($res) {
+									//header("Location: view/paginaInicio.php");
+									require_once('View/formularios/AltaUsuario.php');
+								} else {
+									echo "Error no se pudo dar de alta";
+								}	
+							}else {
+							require_once 'View/formularios/altaDepartamento.php';
+						}
+						} else {
+							require_once 'View/formularios/altaDepartamento.php';
+						}
+					} else {
+						require_once 'View/formularios/altaDepartamento.php';
+					}
+				}else {
+					require_once 'View/formularios/altaDepartamento.php';
+				}
+				break;
+				////////////ACADEMIA
+			case 'academia' :
+					if (isset($_POST['enviar'])) {
+					if ($this -> verificar($_POST['nombre'])) {
+						$nombre = $_POST['nombre'];
+						$this -> verificador -> validaNombreCurso($_POST['nombre']);
+						if ($this -> verificar($_POST['clave'])) {
+							$clave = $_POST['clave'];
+							$this -> verificador -> validaAbreviacion($clave);
+							if($this -> verificar($_POST['departamento'])){
+								$departamento = $_POST['departamento'];
+								$this -> verificador -> validaNum($departamento);
+								if($this -> verificar($_POST['maestro'])){
+									$maestro = $_POST['maestro'];
+									$this -> verificador -> validaNum($_POST['maestro']);
+									$res = $this -> modelo -> altaAcademia($nombre,$clave,$departamento,$maestro);
+									if ($res) {
+										//header("Location: view/paginaInicio.php");
+										require_once('View/formularios/altaAcademia.php');
+									} else {
+										echo "Error no se pudo dar de alta";
+									}
+								}else{
+									require_once 'View/formularios/altaAcademia.php';
+								}
+							}else{
+									require_once 'View/formularios/altaAcademia.php';
+							}	
+						} else {
+							require_once 'View/formularios/altaAcademia.php';
+						}
+					} else {
+						require_once 'View/formularios/altaAcademia.php';
+					}
+				}else {
+					require_once 'View/formularios/altaAcademia.php';
+				}
+				break;
+			//////////MATERIA CARRERA
+			case 'materiaCarrera' :
+				if (isset($_POST['enviar'])) {
+					//require_once '../view/formularios/altaMateriaCarrera.html';
+					if ($this->verificar($_POST['codigoMateria'])) {
+						$materia = $_POST['codigoMateria'];
+						//$this -> verificador -> 
+						if ($this->verificar($_POST['codigoCarrera'])) {
+							$carrera = $_POST['codigoCarrera'];
+							if($this->verificar($_POST['academia'])){
+								$academia = $_POST['academia'];
+								$res = $this -> $modelo -> altaMateriaCarrera($codigoCarrera,$codigoMateria,$academia);
+							}	
+						} else {
+							return 1;
+						}
+					} else {
+						ManejadorErrores::manejarError(1236);
+					}
+				} else {
+					
+				}
+				break;
+			///////////MATERIA
+			case 'materia' :
+				if (empty($_POST)) {
+					require_once '../view/formularios/altaMateria.html';
+				} else {
+					if ($this -> verificar($_POST['nombre'])) {
+						$nombre = $_POST['nombre'];
+						if ($this-> verificar($_POST['clave'])) {
+							$clave = $_POST['clave'];
+							$modelo -> altaMateria($nombre, $clave);
+						} else {
+							ManejadorErrores::manejarError();
+						}
+					} else {
+						ManejadorErrores::manejarError();
+					}
+				}
+				break;
 		}
+
+	}
+
+	public function bajas($objeto) {
 		
-		public function bajas(){
-			
-		}
-		
-		public function consultas(){
-			
-		}
-		
-		public function modificaciones(){
-			
-		}
-		
-		public function checarAcciones(){
+	}
+
+	public function consultas($objetos) {
+
+	}
+
+	public function modificaciones($objetos) {
+
+	}
+	
+	function verificar($var){
+		if (isset($var) && !empty($var) && is_string($var)){
 			return true;
+		}else{
+			return false;
 		}
 	}
 	
-	$controlador = new AdminCtrl();
-	echo "jasdlkjasdk";
-	$controlador->ejecutar();
-	
+}
 
-
-
+/*$controlador = new AdminCtrl();
+ $controlador -> ejecutar();
+ var_dump($controlador);
+ */
+//$controlador->ejecutar();
 ?>

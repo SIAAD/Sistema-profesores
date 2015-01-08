@@ -4,7 +4,8 @@
  * @version 1.0
  */
 class Verificador {
-
+	
+	
 	public function validaNombreCurso($nombrecurso) {//here we validate the syntaxis of the name of the course
 		//return preg_match("[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü]{1,90}", $nombrecurso);
 	}
@@ -109,7 +110,26 @@ class Verificador {
 		}
 
 	}
+<<<<<<< HEAD
+	
+	public function validaAbreviacion($abreviacion){
+		if (preg_match("^[A-ZÑ]*/", $nrc))
+			return TRUE;
+		else
+			return FALSE;
+	}
+	
+	public function validaNum($numero){
+		if(preg_match("/^[1-9]{1}/",$numero))
+			return TRUE;
+		else 
+			return FALSE;
+		
+	}
+	
+=======
 
+>>>>>>> 62a3ca46d335e34cf759735517e2925480e1007a
 }
 
 /*$ver = new Verificador();

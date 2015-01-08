@@ -1,10 +1,11 @@
 <?php
+
 	if(!file_exists('../Sitio/Objetos/Verificador.php')){
 		exit();
 	}else{
 		require_once('../Sitio/Objetos/Verificador.php');
 	}
-	
+
     class CtrlStr{
     	protected $modelo;
 		protected $verificador;
@@ -18,10 +19,8 @@
 				if(isset($_GET['objeto'])&&!empty($_GET['objeto'])){
 					return TRUE;
 				}else{
-					return FALSE;
-				}
-			}else{
 				return FALSE;
+				}
 			}
 		}
 		
