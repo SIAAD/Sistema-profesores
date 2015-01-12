@@ -67,16 +67,23 @@ class AdminCtrl extends CtrlStr {
 				if (isset($_POST['enviar'])) {
 					if($this->verificar($_POST['nombre'])) {
 						$nombre = $_POST['nombre'];
-						$this -> verificador -> validaCodigo($_POST['nombre']);
+						$this -> verificador -> validaCodigo($nombre);
 						if ($this->verificar($_POST['pass'])) {
 							$pass = $_POST['pass'];
-							$res = $this -> modelo -> altaUsuario($nombre, $pass);
-							if ($res) {
-								//header("Location: view/paginaInicio.php");
-								require_once('View/formularios/AltaUsuario.php');
-							} else {
-								echo "Error no se pudo dar de alta";
-							}
+							$this -> verificador -> validaPass($pass);
+							if($this -> verificar($_POST['correo'])){
+								$correo = $_POST['correo'];
+								$this -> verificador -> validaCorreo($correo);
+								$res = $this -> modelo -> altaUsuario($nombre, $pass);
+								if ($res) {
+									//header("Location: view/paginaInicio.php");
+									require_once('View/formularios/AltaUsuario.php');
+								} else {
+									echo "Error no se pudo dar de alta";
+								}
+							}else{
+								require_once 'View/formularios/AltaUsuario.php';
+							}				
 						} else {
 							require_once 'View/formularios/AltaUsuario.php';
 						}
@@ -88,6 +95,7 @@ class AdminCtrl extends CtrlStr {
 				}
 				break;
 				////////DEPARTAMENTO
+				/*
 			case 'departamento' :
 					if (isset($_POST['enviar'])) {
 					if ($this->verificar($_POST['nombre'])) {
@@ -197,17 +205,48 @@ class AdminCtrl extends CtrlStr {
 						ManejadorErrores::manejarError();
 					}
 				}
-				break;
+				break;*/
 		}
 
 	}
 
 	public function bajas($objeto) {
-		
+		switch($objeto){
+			case 'usuario':
+				if (isset($_POST['enviar'])) {
+					if($this->verificar($_POST['id'])) {
+						$id = $_POST['id'];
+						$this -> verificador -> validaNumero($_POST['id']);
+						$res = $this -> modelo -> bajaUsuario($id);
+						if ($res) {
+							//header("Location: view/paginaInicio.php");
+							require_once('view/formularios/bajaUsuario.php');
+						} else {
+							echo "Error no se pudo dar de baja";
+						}	
+					} else {
+						require_once ('view/formularios/bajaUsuario.php');
+					}
+				}else {
+					require_once ('view/formularios/bajaUsuario.php');
+				}
+				break; 
+		}
 	}
 
 	public function consultas($objetos) {
-
+		$res;
+		switch($objeto){
+			case 'Usuarios':
+				$res = $this -> modelo -> consultaUsuarios();
+				if($res){
+					require_once('view/plantillas/consultaUsuarios.php');
+				}
+				else{
+					echo"No se pudo realizar la consulta"
+				}
+			break;
+		}
 	}
 
 	public function modificaciones($objetos) {
