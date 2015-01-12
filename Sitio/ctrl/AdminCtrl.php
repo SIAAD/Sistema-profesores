@@ -243,7 +243,7 @@ class AdminCtrl extends CtrlStr {
 					require_once('view/plantillas/consultaUsuarios.php');
 				}
 				else{
-					echo"No se pudo realizar la consulta"
+					echo"No se pudo realizar la consulta";
 				}
 			break;
 		}

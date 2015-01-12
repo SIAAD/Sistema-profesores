@@ -62,12 +62,10 @@ class EstructuraCtrl extends CtrlStr {
 				if (in_array('0', $_SESSION['roles']) || in_array('2', $_SESSION['roles']) || in_array('4', $_SESSION['roles'])) {
 					if (isset($_POST['enviar'])) {
 						if(parent::verificar($_POST['nombre'])){
-						//if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
 							$nombre = $_POST['nombre'];
 							//$this->verificador->
 							//$this->verificador->validaNombreCurso($_POST['nombre']);
 							if(parent::verificar($_POST['clave'])){
-							//if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
 								$clave = $_POST['clave'];
 								$res = $this -> modelo -> altaCarrera($nombre, $clave);
 								if ($res) {
@@ -100,9 +98,11 @@ class EstructuraCtrl extends CtrlStr {
 				if (empty($_POST)) {
 					require_once '../view/formularios/altaMateriaCarrera.html';
 				} else {
-					if (isset($_POST['codigoMateria']) && !empty($_POST['codigoMateria']) && is_string($_POST['codigoMateria'])) {
+					if(parent::verificar($_POST['codigoMateria'])){
+					//if (isset($_POST['codigoMateria']) && !empty($_POST['codigoMateria']) && is_string($_POST['codigoMateria'])) {
 						$materia = $_POST['codigoMateria'];
-						if (isset($_POST['codigoCarrera']) && !empty($_POST['codigoCarrera']) && is_string($_POST['codigoCarrera'])) {
+						if(parent::verificar($_POST['codigoCarrera'])){
+						//if (isset($_POST['codigoCarrera']) && !empty($_POST['codigoCarrera']) && is_string($_POST['codigoCarrera'])) {
 							$carrera = $_POST['codigoCarrera'];
 							$modelo -> altaMateriaCarrera($codigoCarrera, $codigoMateria);
 						} else {
@@ -118,9 +118,11 @@ class EstructuraCtrl extends CtrlStr {
 				if (empty($_POST)) {
 					require_once '../view/formularios/altaMateria.html';
 				} else {
-					if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
+					if(parent::verificar($_POST['nombre'])){
+					//if (isset($_POST['nombre']) && !empty($_POST['nombre']) && is_string($_POST['nombre'])) {
 						$nombre = $_POST['nombre'];
-						if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
+						if(parent::verificar($_POST['clave'])){
+						//if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
 							$clave = $_POST['clave'];
 							$modelo -> altaMateria($nombre, $clave);
 						} else {
