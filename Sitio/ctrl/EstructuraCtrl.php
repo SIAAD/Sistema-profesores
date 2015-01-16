@@ -159,13 +159,13 @@ class EstructuraCtrl extends CtrlStr {
 					$res= $this->modelo->consultaCarreras();					
 					if ($res!=FALSE) {
 						if($res!=null){
-							if(file_exists('../View/plantillas/consultaCarreras.php')){
-								require_once '../View/plantillas/consultaCarreras.php';
-								$plantilla = new PlantillaConsultaCarreras();
+							if(file_exists('View/plantillas/consultaCarreras.php')){
+								require_once 'View/plantillas/consultaCarreras.php';
+								$plantilla = new ConsultaCarreras();
 								$pagina=$plantilla->generaPagina($res);	
 								echo $pagina;
 							}else{
-								echo "Error no se pudo inccluir la plantilla consultaCarreras";
+								echo "Error no se pudo incluir la plantilla consultaCarreras";
 							}												
 						}else{
 							echo "NO HAY NADA EN LA TABLA";

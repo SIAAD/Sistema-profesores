@@ -1,5 +1,5 @@
 <?php
-    class PlantillaStr{
-    	public abstract function generarPagina($datos);
-    }
+abstract class PlantillaStr {
+	public abstract function generaPagina($datos);
+}
 ?>
