@@ -50,10 +50,24 @@ if(file_exists('Model/modeloStr.php')){
 			
 		}
 		
+		function consultaCarreras(){
+			$cnx=$this->conexion->getConexion();
+			$sql = "SELECT * FROM carreras";
+			if($res=$cnx->query($sql)){
+				if($res->num_rows>0){
+					return $res;
+				}else{
+					return null;
+				}
+			}else{
+				return FALSE;
+			}
+		}
+		
 		function modificacionCarrera(){
 			
 		}
-		
+
 		function altaMateria(){
 			
 		}

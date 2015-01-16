@@ -59,7 +59,8 @@ class EstructuraCtrl extends CtrlStr {
 	protected final function altas($objeto) {
 		switch($objeto) {
 			case 'carrera' :
-				if (in_array('0', $_SESSION['roles']) || in_array('2', $_SESSION['roles']) || in_array('4', $_SESSION['roles'])) {
+				if(parent::esAdmin($_SESSION['roles'])||parent::esAsis($_SESSION['roles'])||parent::esJefDep($_SESSION['roles'])){
+				//if (in_array('0', $_SESSION['roles']) || in_array('2', $_SESSION['roles']) || in_array('4', $_SESSION['roles'])) {
 					if (isset($_POST['enviar'])) {
 						if(parent::verificar($_POST['nombre'])){
 							$nombre = $_POST['nombre'];
@@ -70,7 +71,7 @@ class EstructuraCtrl extends CtrlStr {
 								$res = $this -> modelo -> altaCarrera($nombre, $clave);
 								if ($res) {
 									//require_once 'View/formularios/altaCarrera.html';
-									require_once 'View/paginaInicio.php';
+									require_once 'view/plantillas/paginaInicio.php';
 								} else {
 									echo "Error no se pudo dar de alta";
 								}
@@ -154,6 +155,24 @@ class EstructuraCtrl extends CtrlStr {
 
 	protected final function consultas($objeto) {
 		switch($objeto) {
+			case 'carreras':
+					$res= $this->modelo->consultaCarreras();
+					//$fila=$res->fetch_array(MYSQLI_ASSOC);
+					
+					if ($res!=FALSE) {
+						if($res!=null){
+							while ($fila = $res->fetch_assoc()) {
+								var_dump($fila);
+        						echo "///".$fila['nombre']."->".$fila['clave'];
+    						}
+							$res->free();							
+						}else{
+							echo "NO HAY NADA EN LA TABLA";
+						}
+					}else{
+						echo "ERROR NO SE REALIZO LA CONSULTA";
+					}
+				break;
 			case 'carrera' :
 				break;
 
@@ -182,10 +201,6 @@ class EstructuraCtrl extends CtrlStr {
 			case 'materia' :
 				break;
 		}
-	}
-
-	protected final function checarAltaCarrera() {
-
 	}
 
 }

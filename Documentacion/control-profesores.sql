@@ -1,721 +1,671 @@
--- phpMyAdmin SQL Dump
--- version 4.0.4
--- http://www.phpmyadmin.net
---
--- Servidor: localhost
--- Tiempo de generación: 08-01-2015 a las 17:35:53
--- Versión del servidor: 5.6.12-log
--- Versión de PHP: 5.4.12
+﻿SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+CREATE SCHEMA IF NOT EXISTS `control-profesores` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `control-profesores` ;
+
+-- -----------------------------------------------------
+-- Table `control-profesores`.`ciclo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`ciclo` (
+  `idCiclo` INT NOT NULL AUTO_INCREMENT,
+  `ciclo` VARCHAR(6) NULL,
+  `inicio` DATE NULL,
+  `fin` DATE NULL,
+  PRIMARY KEY (`idCiclo`))
+ENGINE = InnoDB;
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`estatus`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`estatus` (
+  `idestatus` INT NOT NULL AUTO_INCREMENT,
+  `estatus` VARCHAR(1) NOT NULL,
+  `descripcion` VARCHAR(45) NULL,
+  PRIMARY KEY (`idestatus`))
+ENGINE = InnoDB;
 
---
--- Base de datos: `control-profesores`
---
-CREATE DATABASE IF NOT EXISTS `control-profesores` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `control-profesores`;
 
--- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `control-profesores`.`maestros`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`maestros` (
+  `idMaestros` INT NOT NULL AUTO_INCREMENT,
+  `codigo` VARCHAR(7) NOT NULL,
+  `nombres` VARCHAR(45) NOT NULL,
+  `apellidos` VARCHAR(45) NOT NULL,
+  `idestatus` INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`idMaestros`),
+  INDEX `fk_maestros_estatus1_idx` (`idestatus` ASC),
+  CONSTRAINT `fk_maestros_estatus1`
+    FOREIGN KEY (`idestatus`)
+    REFERENCES `control-profesores`.`estatus` (`idestatus`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Estructura de tabla para la tabla `academia`
---
 
-CREATE TABLE IF NOT EXISTS `academia` (
-  `idAcademia` int(11) NOT NULL AUTO_INCREMENT,
-  `abreviacion` varchar(45) DEFAULT NULL,
-  `nombre` varchar(45) DEFAULT NULL,
-  `clave` varchar(45) DEFAULT NULL,
-  `idMaestros` int(11) NOT NULL,
-  `idDepartamento` int(11) NOT NULL,
-  PRIMARY KEY (`idAcademia`),
-  KEY `fk_academia_maestros1_idx` (`idMaestros`),
-  KEY `fk_academia_departamento1_idx` (`idDepartamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `asistencia`
---
-
-CREATE TABLE IF NOT EXISTS `asistencia` (
-  `idAsistencia` int(11) NOT NULL AUTO_INCREMENT,
-  `fecha` date DEFAULT NULL,
-  `dia` varchar(45) DEFAULT NULL,
-  `asistencia` smallint(6) DEFAULT NULL,
-  `idCurso` int(11) NOT NULL,
-  PRIMARY KEY (`idAsistencia`),
-  KEY `fk_asistencia_curso1_idx` (`idCurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `aulas`
---
-
-CREATE TABLE IF NOT EXISTS `aulas` (
-  `idAulas` int(11) NOT NULL AUTO_INCREMENT,
-  `aula` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idAulas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `carreras`
---
-
-CREATE TABLE IF NOT EXISTS `carreras` (
-  `idCarreras` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  `clave` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idCarreras`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
-
---
--- Volcado de datos para la tabla `carreras`
---
-
-INSERT INTO `carreras` (`idCarreras`, `nombre`, `clave`) VALUES
-(15, 'Ingenieria en Informatica', 'INFO'),
-(17, 'Ingenieria Biomedica', 'BIM'),
-(18, 'Ingenieria en Comunicaciones y Electronica', 'CEL'),
-(19, 'Ingenieria en Computacion', 'COM'),
-(20, 'Ingenieria en Alimentos', 'ALI'),
-(21, 'Licenciatura en Matematicas', 'MAT'),
-(22, 'Ingenieria en Robotioca', 'INRI'),
-(23, 'Ingenieria en Control', 'INCR'),
-(24, 'Licenciatura en Ingenieria en Computacion ', 'INCE');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `carrerasdepartamento`
---
-
-CREATE TABLE IF NOT EXISTS `carrerasdepartamento` (
-  `nombre` int(11) DEFAULT NULL,
-  `clave` int(11) DEFAULT NULL,
-  `nomDep` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `ciclo`
---
-
-CREATE TABLE IF NOT EXISTS `ciclo` (
-  `idCiclo` int(11) NOT NULL AUTO_INCREMENT,
-  `ciclo` varchar(6) DEFAULT NULL,
-  `inicio` date DEFAULT NULL,
-  `fin` date DEFAULT NULL,
-  PRIMARY KEY (`idCiclo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `curso`
---
-
-CREATE TABLE IF NOT EXISTS `curso` (
-  `idCurso` int(11) NOT NULL AUTO_INCREMENT,
-  `idCiclo` int(11) NOT NULL,
-  `idMateria` int(11) NOT NULL,
-  `nrc` varchar(10) DEFAULT NULL,
-  `seccion` varchar(3) DEFAULT NULL,
-  PRIMARY KEY (`idCurso`),
-  KEY `fk_Curso_Ciclo1_idx` (`idCiclo`),
-  KEY `fk_Curso_Materia1_idx` (`idMateria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `cursopermiso`
---
-
-CREATE TABLE IF NOT EXISTS `cursopermiso` (
-  `idCursoPermiso` int(11) NOT NULL,
-  `idPermisos` int(11) NOT NULL,
-  `idCurso` int(11) NOT NULL,
-  PRIMARY KEY (`idCursoPermiso`),
-  KEY `fk_cursoPermiso_permisos1_idx` (`idPermisos`),
-  KEY `fk_cursoPermiso_curso1_idx` (`idCurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `definitivo`
---
-
-CREATE TABLE IF NOT EXISTS `definitivo` (
-  `idDefinitivo` int(11) NOT NULL AUTO_INCREMENT,
-  `idNombramiento` int(11) NOT NULL,
-  `idMaestros` int(11) NOT NULL,
-  PRIMARY KEY (`idDefinitivo`),
-  KEY `fk_nombramiento_homologacion1_idx` (`idNombramiento`),
-  KEY `fk_nombramiento_maestros1_idx` (`idMaestros`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `departamento`
---
-
-CREATE TABLE IF NOT EXISTS `departamento` (
-  `idDepartamento` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  `clave` varchar(45) DEFAULT NULL,
-  `abreviacion` varchar(45) DEFAULT NULL,
-  `idMaestros` int(11) NOT NULL,
+-- -----------------------------------------------------
+-- Table `control-profesores`.`departamento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`departamento` (
+  `idDepartamento` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  `clave` VARCHAR(45) NULL,
+  `abreviacion` VARCHAR(45) NULL,
+  `idMaestros` INT NOT NULL,
   PRIMARY KEY (`idDepartamento`),
-  KEY `fk_departamento_maestros1_idx` (`idMaestros`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  INDEX `fk_departamento_maestros1_idx` (`idMaestros` ASC),
+  CONSTRAINT `fk_departamento_maestros1`
+    FOREIGN KEY (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `edificioaulas`
---
+-- -----------------------------------------------------
+-- Table `control-profesores`.`academia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`academia` (
+  `idAcademia` INT NOT NULL AUTO_INCREMENT,
+  `abreviacion` VARCHAR(45) NULL,
+  `nombre` VARCHAR(45) NULL,
+  `clave` VARCHAR(45) NULL,
+  `idMaestros` INT NOT NULL,
+  `idDepartamento` INT NOT NULL,
+  PRIMARY KEY (`idAcademia`),
+  INDEX `fk_academia_maestros1_idx` (`idMaestros` ASC),
+  INDEX `fk_academia_departamento1_idx` (`idDepartamento` ASC),
+  CONSTRAINT `fk_academia_maestros1`
+    FOREIGN KEY (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_academia_departamento1`
+    FOREIGN KEY (`idDepartamento`)
+    REFERENCES `control-profesores`.`departamento` (`idDepartamento`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `edificioaulas` (
-  `idedificioAulas` int(11) NOT NULL AUTO_INCREMENT,
-  `idEdificios` int(11) NOT NULL,
-  `idAulas` int(11) NOT NULL,
-  PRIMARY KEY (`idedificioAulas`),
-  KEY `fk_edificioAulas_edificios1_idx` (`idEdificios`),
-  KEY `fk_edificioAulas_aulas1_idx` (`idAulas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `control-profesores`.`materia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`materia` (
+  `idMateria` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  `clave` VARCHAR(5) NULL,
+  `idAcademia` INT NOT NULL,
+  PRIMARY KEY (`idMateria`),
+  INDEX `fk_materia_academia1_idx` (`idAcademia` ASC),
+  CONSTRAINT `fk_materia_academia1`
+    FOREIGN KEY (`idAcademia`)
+    REFERENCES `control-profesores`.`academia` (`idAcademia`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Estructura de tabla para la tabla `edificios`
---
 
-CREATE TABLE IF NOT EXISTS `edificios` (
-  `idEdificios` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idEdificios`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`curso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`curso` (
+  `idCurso` INT NOT NULL AUTO_INCREMENT,
+  `idCiclo` INT NOT NULL,
+  `idMateria` INT NOT NULL,
+  `nrc` VARCHAR(10) NULL,
+  `seccion` VARCHAR(3) NULL,
+  PRIMARY KEY (`idCurso`),
+  INDEX `fk_Curso_Ciclo1_idx` (`idCiclo` ASC),
+  INDEX `fk_Curso_Materia1_idx` (`idMateria` ASC),
+  CONSTRAINT `fk_Curso_Ciclo1`
+    FOREIGN KEY (`idCiclo`)
+    REFERENCES `control-profesores`.`ciclo` (`idCiclo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Curso_Materia1`
+    FOREIGN KEY (`idMateria`)
+    REFERENCES `control-profesores`.`materia` (`idMateria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `evidencias`
---
+-- -----------------------------------------------------
+-- Table `control-profesores`.`edificios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`edificios` (
+  `idEdificios` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL,
+  PRIMARY KEY (`idEdificios`))
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `evidencias` (
-  `idEvidencias` int(11) NOT NULL AUTO_INCREMENT,
-  `ruta` varchar(150) DEFAULT NULL,
-  `status` smallint(6) DEFAULT NULL,
-  `valor` smallint(6) DEFAULT NULL,
-  `indicereprobacion` int(11) DEFAULT NULL,
-  `idCurso` int(11) NOT NULL,
-  PRIMARY KEY (`idEvidencias`),
-  KEY `fk_evidencias_curso1_idx` (`idCurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `control-profesores`.`aulas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`aulas` (
+  `idAulas` INT NOT NULL AUTO_INCREMENT,
+  `aula` VARCHAR(45) NULL,
+  PRIMARY KEY (`idAulas`))
+ENGINE = InnoDB;
 
---
--- Estructura de tabla para la tabla `horario`
---
 
-CREATE TABLE IF NOT EXISTS `horario` (
-  `idHorario` int(11) NOT NULL AUTO_INCREMENT,
-  `idCurso` int(11) NOT NULL,
-  `dia` varchar(1) DEFAULT NULL,
-  `inicio` varchar(4) DEFAULT NULL,
-  `fin` varchar(4) DEFAULT NULL,
-  `horas` int(11) DEFAULT NULL,
-  `teoria_practica` int(11) DEFAULT NULL,
-  `idEdificios` int(11) NOT NULL,
-  `idAulas` int(11) NOT NULL,
+-- -----------------------------------------------------
+-- Table `control-profesores`.`horario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`horario` (
+  `idHorario` INT NOT NULL AUTO_INCREMENT,
+  `idCurso` INT NOT NULL,
+  `dia` VARCHAR(1) NULL,
+  `inicio` VARCHAR(4) NULL,
+  `fin` VARCHAR(4) NULL,
+  `horas` INT NULL,
+  `teoria_practica` INT NULL,
+  `idEdificios` INT NOT NULL,
+  `idAulas` INT NOT NULL,
   PRIMARY KEY (`idHorario`),
-  KEY `fk_horario_Curso1_idx` (`idCurso`),
-  KEY `fk_horario_Edificios1_idx` (`idEdificios`),
-  KEY `fk_horario_Aulas1_idx` (`idAulas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  INDEX `fk_horario_Curso1_idx` (`idCurso` ASC),
+  INDEX `fk_horario_Edificios1_idx` (`idEdificios` ASC),
+  INDEX `fk_horario_Aulas1_idx` (`idAulas` ASC),
+  CONSTRAINT `fk_horario_Curso1`
+    FOREIGN KEY (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_horario_Edificios1`
+    FOREIGN KEY (`idEdificios`)
+    REFERENCES `control-profesores`.`edificios` (`idEdificios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_horario_Aulas1`
+    FOREIGN KEY (`idAulas`)
+    REFERENCES `control-profesores`.`aulas` (`idAulas`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `horariosimparte`
---
+-- -----------------------------------------------------
+-- Table `control-profesores`.`nombramiento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`nombramiento` (
+  `idNombramiento` INT NOT NULL AUTO_INCREMENT,
+  `codigo` VARCHAR(5) NULL,
+  `nombre` VARCHAR(45) NULL,
+  `horas` INT NULL,
+  PRIMARY KEY (`idNombramiento`))
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `horariosimparte` (
-  `codigo` int(11) DEFAULT NULL,
-  `nombres` int(11) DEFAULT NULL,
-  `apellidos` int(11) DEFAULT NULL,
-  `nombre` int(11) DEFAULT NULL,
-  `nrc` int(11) DEFAULT NULL,
-  `seccion` int(11) DEFAULT NULL,
-  `dia` int(11) DEFAULT NULL,
-  `inicio` int(11) DEFAULT NULL,
-  `fin` int(11) DEFAULT NULL,
-  `nomedificio` int(11) DEFAULT NULL,
-  `aula` int(11) DEFAULT NULL,
-  `inicioimparte` int(11) DEFAULT NULL,
-  `finimparte` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `horariossuplencia`
---
-
-CREATE TABLE IF NOT EXISTS `horariossuplencia` (
-  `codigo` int(11) DEFAULT NULL,
-  `nombres` int(11) DEFAULT NULL,
-  `apellidos` int(11) DEFAULT NULL,
-  `nombre` int(11) DEFAULT NULL,
-  `nrc` int(11) DEFAULT NULL,
-  `seccion` int(11) DEFAULT NULL,
-  `dia` int(11) DEFAULT NULL,
-  `inicio` int(11) DEFAULT NULL,
-  `fin` int(11) DEFAULT NULL,
-  `nomedificio` int(11) DEFAULT NULL,
-  `aula` int(11) DEFAULT NULL,
-  `iniciosuplencia` int(11) DEFAULT NULL,
-  `finsuplencia` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `impartes`
---
-
-CREATE TABLE IF NOT EXISTS `impartes` (
-  `idImpartes` int(11) NOT NULL AUTO_INCREMENT,
-  `inicio` date DEFAULT NULL,
-  `fin` date DEFAULT NULL,
-  `idMaestros` int(11) NOT NULL,
-  `idCurso` int(11) NOT NULL,
-  PRIMARY KEY (`idImpartes`),
-  KEY `fk_impartes_maestros1_idx` (`idMaestros`),
-  KEY `fk_impartes_curso1_idx` (`idCurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `integrantesacademia`
---
-
-CREATE TABLE IF NOT EXISTS `integrantesacademia` (
-  `codigo` int(11) DEFAULT NULL,
-  `nombres` int(11) DEFAULT NULL,
-  `apellidos` int(11) DEFAULT NULL,
-  `nommat` int(11) DEFAULT NULL,
-  `nrc` int(11) DEFAULT NULL,
-  `seccion` int(11) DEFAULT NULL,
-  `nomaca` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `jefesacademia`
---
-
-CREATE TABLE IF NOT EXISTS `jefesacademia` (
-  `codigo` int(11) DEFAULT NULL,
-  `nombres` int(11) DEFAULT NULL,
-  `apellidos` int(11) DEFAULT NULL,
-  `nombre` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `jefesdpto`
---
-
-CREATE TABLE IF NOT EXISTS `jefesdpto` (
-  `codigo` int(11) DEFAULT NULL,
-  `nombres` int(11) DEFAULT NULL,
-  `apellidos` int(11) DEFAULT NULL,
-  `nombre` int(11) DEFAULT NULL,
-  `abreviacion` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `maestros`
---
-
-CREATE TABLE IF NOT EXISTS `maestros` (
-  `idMaestros` int(11) NOT NULL AUTO_INCREMENT,
-  `codigo` varchar(45) DEFAULT NULL,
-  `nombres` varchar(45) DEFAULT NULL,
-  `apellidos` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idMaestros`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `mateirasacademia`
---
-
-CREATE TABLE IF NOT EXISTS `mateirasacademia` (
-  `idMateirasAcademis` int(11) NOT NULL AUTO_INCREMENT,
-  `idMateria` int(11) NOT NULL,
-  `idAcademia` int(11) NOT NULL,
-  PRIMARY KEY (`idMateirasAcademis`),
-  KEY `fk_MateirasAcademis_materia1_idx` (`idMateria`),
-  KEY `fk_MateirasAcademis_academia1_idx` (`idAcademia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `materia`
---
-
-CREATE TABLE IF NOT EXISTS `materia` (
-  `idMateria` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  `clave` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`idMateria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `materiascarrera`
---
-
-CREATE TABLE IF NOT EXISTS `materiascarrera` (
-  `idMateriasCarrera` int(11) NOT NULL AUTO_INCREMENT,
-  `idCarreras` int(11) NOT NULL,
-  `idMateria` int(11) NOT NULL,
-  `idAcademia` int(11) NOT NULL,
-  PRIMARY KEY (`idMateriasCarrera`),
-  KEY `fk_MateriasCarrera_carreras1_idx` (`idCarreras`),
-  KEY `fk_MateriasCarrera_materia1_idx` (`idMateria`,`idAcademia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `nombramiento`
---
-
-CREATE TABLE IF NOT EXISTS `nombramiento` (
-  `idNombramiento` int(11) NOT NULL AUTO_INCREMENT,
-  `codigo` varchar(5) DEFAULT NULL,
-  `nombre` varchar(45) DEFAULT NULL,
-  `horas` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idNombramiento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `observaciones`
---
-
-CREATE TABLE IF NOT EXISTS `observaciones` (
-  `idObservaciones` int(11) NOT NULL AUTO_INCREMENT,
-  `observacion` varchar(150) DEFAULT NULL,
-  `fechaRealizada` date DEFAULT NULL,
-  `fechaSolucionada` date DEFAULT NULL,
-  `idEvidencias` int(11) NOT NULL,
-  `status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idObservaciones`),
-  KEY `fk_observaciones_evidencias1_idx` (`idEvidencias`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `permisos`
---
-
-CREATE TABLE IF NOT EXISTS `permisos` (
-  `idPermisos` int(11) NOT NULL AUTO_INCREMENT,
-  `fechaInicio` date DEFAULT NULL,
-  `fechaFin` date DEFAULT NULL,
-  `fechaRecepcion` date DEFAULT NULL,
-  `causa` varchar(200) DEFAULT NULL,
-  `idTipoPermiso` int(11) NOT NULL,
-  PRIMARY KEY (`idPermisos`),
-  KEY `fk_permisos_tipoPermiso1_idx` (`idTipoPermiso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `privilegios`
---
-
-CREATE TABLE IF NOT EXISTS `privilegios` (
-  `idPrivilegios` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo` int(11) DEFAULT NULL,
-  `descripcion` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idPrivilegios`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- Volcado de datos para la tabla `privilegios`
---
-
-INSERT INTO `privilegios` (`idPrivilegios`, `tipo`, `descripcion`) VALUES
-(1, 0, 'Administrador'),
-(2, 1, 'Maestro'),
-(3, 2, 'Asistente'),
-(4, 3, 'Revisor'),
-(5, 4, 'Jefe Departamento');
-
--- --------------------------------------------------------
-
---
--- Estructura Stand-in para la vista `privilegiosusuarios`
---
-CREATE TABLE IF NOT EXISTS `privilegiosusuarios` (
-`nombre` varchar(7)
-,`tipo` int(11)
-,`descripcion` varchar(45)
-);
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `roles`
---
-
-CREATE TABLE IF NOT EXISTS `roles` (
-  `idRoles` int(11) NOT NULL AUTO_INCREMENT,
-  `idUsuarios` int(11) NOT NULL,
-  `idPrivilegios` int(11) NOT NULL,
-  PRIMARY KEY (`idRoles`),
-  KEY `fk_roles_usuarios1_idx` (`idUsuarios`),
-  KEY `fk_roles_privilegios1_idx` (`idPrivilegios`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Volcado de datos para la tabla `roles`
---
-
-INSERT INTO `roles` (`idRoles`, `idUsuarios`, `idPrivilegios`) VALUES
-(1, 1, 1),
-(2, 1, 3),
-(3, 2, 2),
-(4, 2, 4);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `suplencia`
---
-
-CREATE TABLE IF NOT EXISTS `suplencia` (
-  `idSuplencia` int(11) NOT NULL AUTO_INCREMENT,
-  `inicio` date DEFAULT NULL,
-  `fin` date DEFAULT NULL,
-  `idMaestros` int(11) NOT NULL,
-  `idCurso` int(11) NOT NULL,
+-- -----------------------------------------------------
+-- Table `control-profesores`.`suplencia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`suplencia` (
+  `idSuplencia` INT NOT NULL AUTO_INCREMENT,
+  `inicio` DATE NULL,
+  `fin` DATE NULL,
+  `idMaestros` INT NOT NULL,
+  `idCurso` INT NOT NULL,
   PRIMARY KEY (`idSuplencia`),
-  KEY `fk_suplencia_maestros1_idx` (`idMaestros`),
-  KEY `fk_suplencia_curso1_idx` (`idCurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  INDEX `fk_suplencia_maestros1_idx` (`idMaestros` ASC),
+  INDEX `fk_suplencia_curso1_idx` (`idCurso` ASC),
+  CONSTRAINT `fk_suplencia_maestros1`
+    FOREIGN KEY (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_suplencia_curso1`
+    FOREIGN KEY (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `temporal`
---
+-- -----------------------------------------------------
+-- Table `control-profesores`.`asistencia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`asistencia` (
+  `idAsistencia` INT NOT NULL AUTO_INCREMENT,
+  `fecha` DATE NULL,
+  `dia` VARCHAR(45) NULL,
+  `asistencia` SMALLINT NULL,
+  `idCurso` INT NOT NULL,
+  PRIMARY KEY (`idAsistencia`),
+  INDEX `fk_asistencia_curso1_idx` (`idCurso` ASC),
+  CONSTRAINT `fk_asistencia_curso1`
+    FOREIGN KEY (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `temporal` (
-  `idTemporal` int(11) NOT NULL AUTO_INCREMENT,
-  `idNombramiento` int(11) NOT NULL,
-  `idMaestros` int(11) NOT NULL,
+
+-- -----------------------------------------------------
+-- Table `control-profesores`.`evidencias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`evidencias` (
+  `idEvidencias` INT NOT NULL AUTO_INCREMENT,
+  `ruta` VARCHAR(150) NULL,
+  `status` SMALLINT NULL,
+  `valor` SMALLINT NULL,
+  `indicereprobacion` INT NULL,
+  `idCurso` INT NOT NULL,
+  PRIMARY KEY (`idEvidencias`),
+  INDEX `fk_evidencias_curso1_idx` (`idCurso` ASC),
+  CONSTRAINT `fk_evidencias_curso1`
+    FOREIGN KEY (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `control-profesores`.`observaciones`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`observaciones` (
+  `idObservaciones` INT NOT NULL AUTO_INCREMENT,
+  `observacion` VARCHAR(150) NULL,
+  `fechaRealizada` DATE NULL,
+  `fechaSolucionada` DATE NULL,
+  `idEvidencias` INT NOT NULL,
+  `status` INT NULL,
+  PRIMARY KEY (`idObservaciones`),
+  INDEX `fk_observaciones_evidencias1_idx` (`idEvidencias` ASC),
+  CONSTRAINT `fk_observaciones_evidencias1`
+    FOREIGN KEY (`idEvidencias`)
+    REFERENCES `control-profesores`.`evidencias` (`idEvidencias`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `control-profesores`.`temporal`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`temporal` (
+  `idTemporal` INT NOT NULL AUTO_INCREMENT,
+  `idNombramiento` INT NOT NULL,
+  `idMaestros` INT NOT NULL,
   PRIMARY KEY (`idTemporal`),
-  KEY `fk_asignatura_homologacion1_idx` (`idNombramiento`),
-  KEY `fk_asignatura_maestros1_idx` (`idMaestros`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  INDEX `fk_asignatura_homologacion1_idx` (`idNombramiento` ASC),
+  INDEX `fk_asignatura_maestros1_idx` (`idMaestros` ASC),
+  CONSTRAINT `fk_asignatura_homologacion1`
+    FOREIGN KEY (`idNombramiento`)
+    REFERENCES `control-profesores`.`nombramiento` (`idNombramiento`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_asignatura_maestros1`
+    FOREIGN KEY (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `tipopermiso`
---
+-- -----------------------------------------------------
+-- Table `control-profesores`.`definitivo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`definitivo` (
+  `idDefinitivo` INT NOT NULL AUTO_INCREMENT,
+  `idNombramiento` INT NOT NULL,
+  `idMaestros` INT NOT NULL,
+  PRIMARY KEY (`idDefinitivo`),
+  INDEX `fk_nombramiento_homologacion1_idx` (`idNombramiento` ASC),
+  INDEX `fk_nombramiento_maestros1_idx` (`idMaestros` ASC),
+  CONSTRAINT `fk_nombramiento_homologacion1`
+    FOREIGN KEY (`idNombramiento`)
+    REFERENCES `control-profesores`.`nombramiento` (`idNombramiento`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_nombramiento_maestros1`
+    FOREIGN KEY (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `tipopermiso` (
-  `idTipoPermiso` int(11) NOT NULL AUTO_INCREMENT,
-  `tipoPermiso` varchar(45) DEFAULT NULL,
-  `cantidadMax` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idTipoPermiso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
+-- -----------------------------------------------------
+-- Table `control-profesores`.`impartes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`impartes` (
+  `idImpartes` INT NOT NULL AUTO_INCREMENT,
+  `inicio` DATE NULL,
+  `fin` DATE NULL,
+  `idMaestros` INT NOT NULL,
+  `idCurso` INT NOT NULL,
+  PRIMARY KEY (`idImpartes`),
+  INDEX `fk_impartes_maestros1_idx` (`idMaestros` ASC),
+  INDEX `fk_impartes_curso1_idx` (`idCurso` ASC),
+  CONSTRAINT `fk_impartes_maestros1`
+    FOREIGN KEY (`idMaestros`)
+    REFERENCES `control-profesores`.`maestros` (`idMaestros`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_impartes_curso1`
+    FOREIGN KEY (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Estructura de tabla para la tabla `usuarios`
---
 
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `idUsuarios` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(7) NOT NULL,
-  `contrasena` varchar(32) NOT NULL,
-  `correo` varchar(45) NOT NULL,
-  `estatus` int(11) NOT NULL,
-  PRIMARY KEY (`idUsuarios`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`usuarios` (
+  `idUsuarios` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(7) NOT NULL,
+  `contraseña` VARCHAR(32) NOT NULL,
+  `correo` VARCHAR(45) NOT NULL,
+  `idestatus` INT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`idUsuarios`),
+  INDEX `fk_usuarios_estatus1_idx` (`idestatus` ASC),
+  CONSTRAINT `fk_usuarios_estatus1`
+    FOREIGN KEY (`idestatus`)
+    REFERENCES `control-profesores`.`estatus` (`idestatus`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Volcado de datos para la tabla `usuarios`
---
 
-INSERT INTO `usuarios` (`idUsuarios`, `nombre`, `contrasena`, `correo`, `estatus`) VALUES
-(1, '2093663', '1234567', '', 1),
-(2, '1234567', '1234567', '', 1);
+-- -----------------------------------------------------
+-- Table `control-profesores`.`privilegios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`privilegios` (
+  `idPrivilegios` INT NOT NULL AUTO_INCREMENT,
+  `tipo` INT NULL,
+  `descripcion` VARCHAR(45) NULL,
+  PRIMARY KEY (`idPrivilegios`))
+ENGINE = InnoDB;
 
--- --------------------------------------------------------
 
---
--- Estructura para la vista `privilegiosusuarios`
---
-DROP TABLE IF EXISTS `privilegiosusuarios`;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`roles` (
+  `idRoles` INT NOT NULL AUTO_INCREMENT,
+  `idUsuarios` INT NOT NULL,
+  `idPrivilegios` INT NOT NULL,
+  PRIMARY KEY (`idRoles`),
+  INDEX `fk_roles_usuarios1_idx` (`idUsuarios` ASC),
+  INDEX `fk_roles_privilegios1_idx` (`idPrivilegios` ASC),
+  CONSTRAINT `fk_roles_usuarios1`
+    FOREIGN KEY (`idUsuarios`)
+    REFERENCES `control-profesores`.`usuarios` (`idUsuarios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_roles_privilegios1`
+    FOREIGN KEY (`idPrivilegios`)
+    REFERENCES `control-profesores`.`privilegios` (`idPrivilegios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `privilegiosusuarios` AS select `us`.`nombre` AS `nombre`,`pr`.`tipo` AS `tipo`,`pr`.`descripcion` AS `descripcion` from ((`usuarios` `us` join `roles` `ro` on((`ro`.`idUsuarios` = `us`.`idUsuarios`))) join `privilegios` `pr` on((`ro`.`idPrivilegios` = `pr`.`idPrivilegios`)));
 
---
--- Restricciones para tablas volcadas
---
+-- -----------------------------------------------------
+-- Table `control-profesores`.`tipoPermiso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`tipoPermiso` (
+  `idTipoPermiso` INT NOT NULL AUTO_INCREMENT,
+  `tipoPermiso` VARCHAR(45) NULL,
+  `cantidadMax` INT NULL,
+  PRIMARY KEY (`idTipoPermiso`))
+ENGINE = InnoDB;
 
---
--- Filtros para la tabla `academia`
---
-ALTER TABLE `academia`
-  ADD CONSTRAINT `fk_academia_departamento1` FOREIGN KEY (`idDepartamento`) REFERENCES `departamento` (`idDepartamento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_academia_maestros1` FOREIGN KEY (`idMaestros`) REFERENCES `maestros` (`idMaestros`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- Filtros para la tabla `asistencia`
---
-ALTER TABLE `asistencia`
-  ADD CONSTRAINT `fk_asistencia_curso1` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`permisos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`permisos` (
+  `idPermisos` INT NOT NULL AUTO_INCREMENT,
+  `fechaInicio` DATE NULL,
+  `fechaFin` DATE NULL,
+  `fechaRecepcion` DATE NULL,
+  `causa` VARCHAR(200) NULL,
+  `idTipoPermiso` INT NOT NULL,
+  PRIMARY KEY (`idPermisos`),
+  INDEX `fk_permisos_tipoPermiso1_idx` (`idTipoPermiso` ASC),
+  CONSTRAINT `fk_permisos_tipoPermiso1`
+    FOREIGN KEY (`idTipoPermiso`)
+    REFERENCES `control-profesores`.`tipoPermiso` (`idTipoPermiso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Filtros para la tabla `curso`
---
-ALTER TABLE `curso`
-  ADD CONSTRAINT `fk_Curso_Ciclo1` FOREIGN KEY (`idCiclo`) REFERENCES `ciclo` (`idCiclo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Curso_Materia1` FOREIGN KEY (`idMateria`) REFERENCES `materia` (`idMateria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- Filtros para la tabla `cursopermiso`
---
-ALTER TABLE `cursopermiso`
-  ADD CONSTRAINT `fk_cursoPermiso_curso1` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_cursoPermiso_permisos1` FOREIGN KEY (`idPermisos`) REFERENCES `permisos` (`idPermisos`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`cursoPermiso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`cursoPermiso` (
+  `idCursoPermiso` INT NOT NULL,
+  `idPermisos` INT NOT NULL,
+  `idCurso` INT NOT NULL,
+  PRIMARY KEY (`idCursoPermiso`),
+  INDEX `fk_cursoPermiso_permisos1_idx` (`idPermisos` ASC),
+  INDEX `fk_cursoPermiso_curso1_idx` (`idCurso` ASC),
+  CONSTRAINT `fk_cursoPermiso_permisos1`
+    FOREIGN KEY (`idPermisos`)
+    REFERENCES `control-profesores`.`permisos` (`idPermisos`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cursoPermiso_curso1`
+    FOREIGN KEY (`idCurso`)
+    REFERENCES `control-profesores`.`curso` (`idCurso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Filtros para la tabla `definitivo`
---
-ALTER TABLE `definitivo`
-  ADD CONSTRAINT `fk_nombramiento_homologacion1` FOREIGN KEY (`idNombramiento`) REFERENCES `nombramiento` (`idNombramiento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_nombramiento_maestros1` FOREIGN KEY (`idMaestros`) REFERENCES `maestros` (`idMaestros`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- Filtros para la tabla `departamento`
---
-ALTER TABLE `departamento`
-  ADD CONSTRAINT `fk_departamento_maestros1` FOREIGN KEY (`idMaestros`) REFERENCES `maestros` (`idMaestros`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`carreras`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`carreras` (
+  `idCarreras` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(70) NOT NULL,
+  `clave` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`idCarreras`))
+ENGINE = InnoDB;
 
---
--- Filtros para la tabla `edificioaulas`
---
-ALTER TABLE `edificioaulas`
-  ADD CONSTRAINT `fk_edificioAulas_aulas1` FOREIGN KEY (`idAulas`) REFERENCES `aulas` (`idAulas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_edificioAulas_edificios1` FOREIGN KEY (`idEdificios`) REFERENCES `edificios` (`idEdificios`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- Filtros para la tabla `evidencias`
---
-ALTER TABLE `evidencias`
-  ADD CONSTRAINT `fk_evidencias_curso1` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`materiasCarrera`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`materiasCarrera` (
+  `idMateriasCarrera` INT NOT NULL AUTO_INCREMENT,
+  `idCarreras` INT NOT NULL,
+  `idMateria` INT NOT NULL,
+  PRIMARY KEY (`idMateriasCarrera`),
+  INDEX `fk_MateriasCarrera_carreras1_idx` (`idCarreras` ASC),
+  INDEX `fk_MateriasCarrera_materia1_idx` (`idMateria` ASC),
+  CONSTRAINT `fk_MateriasCarrera_carreras1`
+    FOREIGN KEY (`idCarreras`)
+    REFERENCES `control-profesores`.`carreras` (`idCarreras`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_MateriasCarrera_materia1`
+    FOREIGN KEY (`idMateria`)
+    REFERENCES `control-profesores`.`materia` (`idMateria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Filtros para la tabla `horario`
---
-ALTER TABLE `horario`
-  ADD CONSTRAINT `fk_horario_Aulas1` FOREIGN KEY (`idAulas`) REFERENCES `aulas` (`idAulas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_horario_Curso1` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_horario_Edificios1` FOREIGN KEY (`idEdificios`) REFERENCES `edificios` (`idEdificios`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- Filtros para la tabla `impartes`
---
-ALTER TABLE `impartes`
-  ADD CONSTRAINT `fk_impartes_curso1` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_impartes_maestros1` FOREIGN KEY (`idMaestros`) REFERENCES `maestros` (`idMaestros`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Table `control-profesores`.`edificioAulas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`edificioAulas` (
+  `idedificioAulas` INT NOT NULL AUTO_INCREMENT,
+  `idEdificios` INT NOT NULL,
+  `idAulas` INT NOT NULL,
+  PRIMARY KEY (`idedificioAulas`),
+  INDEX `fk_edificioAulas_edificios1_idx` (`idEdificios` ASC),
+  INDEX `fk_edificioAulas_aulas1_idx` (`idAulas` ASC),
+  CONSTRAINT `fk_edificioAulas_edificios1`
+    FOREIGN KEY (`idEdificios`)
+    REFERENCES `control-profesores`.`edificios` (`idEdificios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_edificioAulas_aulas1`
+    FOREIGN KEY (`idAulas`)
+    REFERENCES `control-profesores`.`aulas` (`idAulas`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
---
--- Filtros para la tabla `mateirasacademia`
---
-ALTER TABLE `mateirasacademia`
-  ADD CONSTRAINT `fk_MateirasAcademis_academia1` FOREIGN KEY (`idAcademia`) REFERENCES `academia` (`idAcademia`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_MateirasAcademis_materia1` FOREIGN KEY (`idMateria`) REFERENCES `materia` (`idMateria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+USE `control-profesores` ;
 
---
--- Filtros para la tabla `materiascarrera`
---
-ALTER TABLE `materiascarrera`
-  ADD CONSTRAINT `fk_MateriasCarrera_carreras1` FOREIGN KEY (`idCarreras`) REFERENCES `carreras` (`idCarreras`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_MateriasCarrera_materia1` FOREIGN KEY (`idMateria`) REFERENCES `materia` (`idMateria`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`incidencia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`incidencia` (`fecha` INT, `abreviacion` INT, `nombre` INT, `seccion` INT);
 
---
--- Filtros para la tabla `observaciones`
---
-ALTER TABLE `observaciones`
-  ADD CONSTRAINT `fk_observaciones_evidencias1` FOREIGN KEY (`idEvidencias`) REFERENCES `evidencias` (`idEvidencias`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`horariosImparte`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`horariosImparte` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `nrc` INT, `seccion` INT, `dia` INT, `inicio` INT, `fin` INT, `nomedificio` INT, `aula` INT, `inicioimparte` INT, `finimparte` INT);
 
---
--- Filtros para la tabla `permisos`
---
-ALTER TABLE `permisos`
-  ADD CONSTRAINT `fk_permisos_tipoPermiso1` FOREIGN KEY (`idTipoPermiso`) REFERENCES `tipopermiso` (`idTipoPermiso`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`jefesDpto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`jefesDpto` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `abreviacion` INT);
 
---
--- Filtros para la tabla `roles`
---
-ALTER TABLE `roles`
-  ADD CONSTRAINT `fk_roles_privilegios1` FOREIGN KEY (`idPrivilegios`) REFERENCES `privilegios` (`idPrivilegios`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_roles_usuarios1` FOREIGN KEY (`idUsuarios`) REFERENCES `usuarios` (`idUsuarios`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`jefesAcademia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`jefesAcademia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT);
 
---
--- Filtros para la tabla `suplencia`
---
-ALTER TABLE `suplencia`
-  ADD CONSTRAINT `fk_suplencia_curso1` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_suplencia_maestros1` FOREIGN KEY (`idMaestros`) REFERENCES `maestros` (`idMaestros`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`horariosSuplencia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`horariosSuplencia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nombre` INT, `nrc` INT, `seccion` INT, `dia` INT, `inicio` INT, `fin` INT, `nomedificio` INT, `aula` INT, `iniciosuplencia` INT, `finsuplencia` INT);
 
---
--- Filtros para la tabla `temporal`
---
-ALTER TABLE `temporal`
-  ADD CONSTRAINT `fk_asignatura_homologacion1` FOREIGN KEY (`idNombramiento`) REFERENCES `nombramiento` (`idNombramiento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_asignatura_maestros1` FOREIGN KEY (`idMaestros`) REFERENCES `maestros` (`idMaestros`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`integrantesAcademia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`integrantesAcademia` (`codigo` INT, `nombres` INT, `apellidos` INT, `nommat` INT, `nrc` INT, `seccion` INT, `nomaca` INT);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`carrerasDepartamento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`carrerasDepartamento` (`nombre` INT, `clave` INT, `nomDep` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`privilegiosUsuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`privilegiosUsuarios` (`nombre` INT, `tipo` INT, `descripcion` INT);
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`incidencia`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`incidencia`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `incidencia` AS SELECt asis.fecha, dep.abreviacion,mat.nombre,cur.seccion
+FROM asistencia asis 
+JOIN curso cur ON asis.idCurso=cur.idCurso AND asis.asistencia = 0
+JOIN materia mat ON mat.idMateria=cur.idMateria
+JOIN academia aca ON aca.idAcademia=mat.idAcademia
+JOIN departamento dep ON dep.idDepartamento=aca.idDepartamento;
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`horariosImparte`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`horariosImparte`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `horariosImparte` AS 
+SELECT ma.codigo,ma.nombres,ma.apellidos,mat.nombre,cu.nrc,cu.seccion,h.dia,h.inicio,h.fin,e.nombre as nomedificio,a.aula,im.inicio as inicioimparte,im.fin as finimparte
+FROM curso cu 
+JOIN horario h ON cu.idCurso=h.idCurso
+JOIN edificios e ON e.idEdificios = h.idEdificios
+JOIN aulas a ON a.idAulas = h.idAulas
+JOIN materia mat ON mat.idMateria=cu.idMateria
+JOIN impartes im ON cu.idCurso = im.idCurso
+JOIN maestros ma ON ma.idMaestros = im.idMaestros;
+
+
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`jefesDpto`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`jefesDpto`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `jefesDpto` AS
+SELECT ma.codigo,ma.nombres,ma.apellidos,d.nombre,d.abreviacion
+FROM maestros ma 
+JOIN departamento d ON ma.idMaestros =  d.idMaestros
+;
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`jefesAcademia`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`jefesAcademia`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `jefesAcademia` AS
+SELECT ma.codigo,ma.nombres,ma.apellidos,aca.nombre
+FROM maestros ma 
+JOIN academia aca ON ma.idMaestros =  aca.idMaestros;
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`horariosSuplencia`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`horariosSuplencia`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `horariosSuplencia` AS 
+SELECT ma.codigo,ma.nombres,ma.apellidos,mat.nombre,cu.nrc,cu.seccion,h.dia,h.inicio,h.fin,e.nombre as nomedificio,a.aula,su.inicio as iniciosuplencia,su.fin as finsuplencia
+FROM curso cu 
+JOIN horario h ON cu.idCurso=h.idCurso
+JOIN edificios e ON e.idEdificios = h.idEdificios
+JOIN aulas a ON a.idAulas = h.idAulas
+JOIN  materia mat ON mat.idMateria=cu.idMateria
+JOIN suplencia su ON su.idCurso = cu.idCurso
+JOIN maestros ma ON ma.idMaestros = su.idMaestros;
+
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`integrantesAcademia`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`integrantesAcademia`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `integrantesAcademia` AS
+SELECT ma.codigo,ma.nombres,ma.apellidos,m.nombre as nommat,cu.nrc,cu.seccion,a.nombre as nomaca 
+FROM maestros ma
+JOIN impartes im ON ma.idMaestros = im.idMaestros
+JOIN curso cu ON im.idCurso = cu.idCurso
+JOIN materia m ON m.idMateria = cu.idMateria
+JOIN academia a ON a.idAcademia = m.idAcademia;
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`carrerasDepartamento`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`carrerasDepartamento`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `carrerasDepartamento` AS
+SELECT ca.nombre,ca.clave,d.nombre as nomDep
+FROM carreras ca
+JOIN materiasCarrera mc ON ca.idCarreras=mc.idCarreras
+JOIN materia ma ON ma.idMateria=mc.idMateria
+JOIN academia a on a.idAcademia=ma.idAcademia
+JOIN departamento d on d.idDepartamento=a.idDepartamento
+GROUP BY d.idDepartamento
+;
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`privilegiosUsuarios`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`privilegiosUsuarios`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `privilegiosUsuarios` AS
+SELECT us.nombre,pr.tipo,pr.descripcion FROM usuarios us 
+JOIN  roles ro ON ro.idUsuarios=us.idUsuarios
+JOIN privilegios pr ON ro.idPrivilegios=pr.idPrivilegios;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

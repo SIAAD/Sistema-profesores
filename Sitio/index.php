@@ -17,7 +17,7 @@ if (!isset($_SESSION['codigo'])) {
 	header('Location: view/formularios/login.html');
 } else {
 	if (!isset($_GET['controlador']) && empty($_GET['controlador'])) {
-		header("Location: view/paginaInicio.php");
+		header("Location: view/plantillas/paginaInicio.php");
 	} else {
 		$controlador = $_GET['controlador'] . 'Ctrl';
 		if (preg_match("/[A-Za-z]+/", $_GET['controlador'])) {
@@ -30,7 +30,7 @@ if (!isset($_SESSION['codigo'])) {
 				require_once ('VISTAS/ERRORES/opcionInvalida.html');
 			}
 		} else {
-			header("Location: view/paginaInicio.php");
+			header("Location: view/plantillas/paginaInicio.php");
 			//ctrl default
 			//require_once ('ctrl/alumnosCtrl.php');
 			//$ctrl = new alumnosCtrl();
