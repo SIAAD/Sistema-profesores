@@ -110,6 +110,7 @@ class Verificador {
 		}
 
 	}
+
 	public function validaAbreviacion($abreviacion){
 		if (preg_match("^[A-ZÑ]*/", $nrc))
 			return TRUE;
@@ -124,6 +125,7 @@ class Verificador {
 			return FALSE;
 		
 	}
+
 }
 
 /*$ver = new Verificador();

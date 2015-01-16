@@ -246,6 +246,13 @@ class AdminCtrl extends CtrlStr {
 					echo"No se pudo realizar la consulta";
 				}
 			break;
+			case 'Usuario':
+				$res = $this -> modelo -> consultaUsuario();
+				if($res){
+					require_once('view/plantillas/consultaUsuario.php');
+				}else{
+					echo "No se puede realizar la consulta";
+				}
 		}
 	}
 
