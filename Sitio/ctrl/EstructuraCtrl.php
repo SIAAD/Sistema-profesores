@@ -156,16 +156,17 @@ class EstructuraCtrl extends CtrlStr {
 	protected final function consultas($objeto) {
 		switch($objeto) {
 			case 'carreras':
-					$res= $this->modelo->consultaCarreras();
-					//$fila=$res->fetch_array(MYSQLI_ASSOC);
-					
+					$res= $this->modelo->consultaCarreras();					
 					if ($res!=FALSE) {
 						if($res!=null){
-							while ($fila = $res->fetch_assoc()) {
-								var_dump($fila);
-        						echo "///".$fila['nombre']."->".$fila['clave'];
-    						}
-							$res->free();							
+							if(file_exists('../View/plantillas/consultaCarreras.php')){
+								require_once '../View/plantillas/consultaCarreras.php';
+								$plantilla = new PlantillaConsultaCarreras();
+								$pagina=$plantilla->generaPagina($res);	
+								echo $pagina;
+							}else{
+								echo "Error no se pudo inccluir la plantilla consultaCarreras";
+							}												
 						}else{
 							echo "NO HAY NADA EN LA TABLA";
 						}
