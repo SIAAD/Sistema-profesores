@@ -7,7 +7,9 @@ if (!file_exists("ctrl/ctrlStr.php")) {
 }
 
 class EstructuraCtrl extends CtrlStr {
-
+	
+	
+	
 	public function __construct() {
 		parent::__construct();
 		if (!file_exists('Model/EstructuraMdl.php')) {

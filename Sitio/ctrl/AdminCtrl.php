@@ -64,14 +64,15 @@ class AdminCtrl extends CtrlStr {
 		switch($objeto) {
 			//////USUARIO
 			case 'usuario' :
+			if(parent::esAdmin($_SESSION['roles'])){
 				if (isset($_POST['enviar'])) {
-					if($this->verificar($_POST['nombre'])) {
+					if(parent::verificar($_POST['nombre'])) {
 						$nombre = $_POST['nombre'];
 						$this -> verificador -> validaCodigo($nombre);
-						if ($this->verificar($_POST['pass'])) {
+						if (parent::verificar($_POST['pass'])) {
 							$pass = $_POST['pass'];
 							$this -> verificador -> validaPass($pass);
-							if($this -> verificar($_POST['correo'])){
+							if(parent::verificar($_POST['correo'])){
 								$correo = $_POST['correo'];
 								$this -> verificador -> validaCorreo($correo);
 								$res = $this -> modelo -> altaUsuario($nombre, $pass);
@@ -93,6 +94,8 @@ class AdminCtrl extends CtrlStr {
 				}else {
 					require_once 'View/formularios/AltaUsuario.php';
 				}
+			}
+				
 				break;
 				////////DEPARTAMENTO
 				/*
@@ -213,51 +216,82 @@ class AdminCtrl extends CtrlStr {
 	public function bajas($objeto) {
 		switch($objeto){
 			case 'usuario':
-				if (isset($_POST['enviar'])) {
-					if($this->verificar($_POST['id'])) {
-						$id = $_POST['id'];
-						$this -> verificador -> validaNumero($_POST['id']);
-						$res = $this -> modelo -> bajaUsuario($id);
-						if ($res) {
-							//header("Location: view/paginaInicio.php");
-							require_once('view/formularios/bajaUsuario.php');
+				if(parent::esAdmin($_SESSION['roles'])){
+					if (isset($_POST['enviar'])) {
+						if(parent::verificar($_POST['id'])) {
+							$id = $_POST['id'];
+							$this -> verificador -> validaNumero($_POST['id']);
+							$res = $this -> modelo -> bajaUsuario($id);
+							if ($res) {
+								//header("Location: view/paginaInicio.php");
+								require_once('view/formularios/bajaUsuario.php');
+							} else {
+								echo "Error no se pudo dar de baja";
+							}	
 						} else {
-							echo "Error no se pudo dar de baja";
-						}	
-					} else {
+							require_once ('view/formularios/bajaUsuario.php');
+						}
+					}else {
 						require_once ('view/formularios/bajaUsuario.php');
 					}
-				}else {
-					require_once ('view/formularios/bajaUsuario.php');
 				}
-				break; 
+			break; 
 		}
 	}
 
 	public function consultas($objetos) {
 		$res;
 		switch($objeto){
-			case 'Usuarios':
-				$res = $this -> modelo -> consultaUsuarios();
-				if($res){
-					require_once('view/plantillas/consultaUsuarios.php');
-				}
-				else{
-					echo"No se pudo realizar la consulta";
-				}
+			case 'usuarios':
+				if(parent::esAdmin($_SESSION['roles'])){
+					$res = $this -> modelo -> consultaUsuarios();
+					if($res){
+						require_once('view/plantillas/consultaUsuarios.php');
+					}
+					else{
+						echo"No se pudo realizar la consulta";
+					}
+				}	
 			break;
-			case 'Usuario':
-				$res = $this -> modelo -> consultaUsuario();
-				if($res){
-					require_once('view/plantillas/consultaUsuario.php');
+			case 'usuario':
+				if(isset($_POST['enviar'])){
+					if(parent::verificar($_POST['id'])){
+						$id= $_POST['id'];
+						$this -> verificador -> validaNumero($id);
+						$res = $this -> modelo -> consultaUsuario($id);
+						if($res){
+							require_once('view/plantillas/consultaUsuario.php');
+						}else{
+							echo "No se puede realizar la consulta";
+						}
+					}else{
+						require_once ('view/formularios/modificarUsuario.php');
+					}
 				}else{
-					echo "No se puede realizar la consulta";
+					require_once ('view/formularios/modificarUsuario.php');
 				}
+				
 		}
 	}
 
 	public function modificaciones($objetos) {
-
+		switch ($objeto) {
+			case 'usuario':
+				if(isset($_POST['enviar'])){
+					if(isset($_POST['enviarmodificar'])){
+						if(parent::verificar($_POST['correo'])){
+							
+						}
+					}else{
+						if(parent::verificar($_POST['contrasena'])){
+							$contrasena = md5($_POST['contrasena']);
+						}
+					}
+					
+				}
+				break;		
+		}
+		
 	}
 	
 	function verificar($var){
