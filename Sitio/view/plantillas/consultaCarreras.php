@@ -6,11 +6,12 @@ if (file_exists('View/plantillas/PlantillaStr.php')) {
 }
 class ConsultaCarreras extends PlantillaStr {
 	public function generaPagina($res) {
+		$contenido='';
 		while ($fila = $res -> fetch_assoc()) {
-			var_dump($fila);
-			echo "///" . $fila['nombre'] . "->" . $fila['clave'];
+			$contenido=$contenido."<br>"."///" . $fila['nombre'] . "->" . $fila['clave'];
 		}
 		$res -> free();
+		return $contenido;
 	}
 
 }
