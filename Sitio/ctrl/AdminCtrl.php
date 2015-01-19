@@ -97,118 +97,7 @@ class AdminCtrl extends CtrlStr {
 			}
 				
 				break;
-				////////DEPARTAMENTO
-				/*
-			case 'departamento' :
-					if (isset($_POST['enviar'])) {
-					if ($this->verificar($_POST['nombre'])) {
-						$nombre = $_POST['nombre'];
-						$this -> verificador -> validaCadena($_POST['nombre']);
-						if ($this->verificar($_POST['clave'])) {
-							$clave = $_POST['clave'];
-							$this -> verificador -> validaCodigo($_POST['clave']);
-							if($this->verificar($_POST['abreviacion'])){
-								$abreviacion = $_POST['abreviacion'];
-								$this -> verificador -> validaAbreviacion($_POST['abreviacion']);
-								$res = $this -> modelo -> altaDepartamento($nombre, $clave,$abreviacion);
-								if ($res) {
-									//header("Location: view/paginaInicio.php");
-									require_once('View/formularios/AltaUsuario.php');
-								} else {
-									echo "Error no se pudo dar de alta";
-								}	
-							}else {
-							require_once 'View/formularios/altaDepartamento.php';
-						}
-						} else {
-							require_once 'View/formularios/altaDepartamento.php';
-						}
-					} else {
-						require_once 'View/formularios/altaDepartamento.php';
-					}
-				}else {
-					require_once 'View/formularios/altaDepartamento.php';
-				}
-				break;
-				////////////ACADEMIA
-			case 'academia' :
-					if (isset($_POST['enviar'])) {
-					if ($this -> verificar($_POST['nombre'])) {
-						$nombre = $_POST['nombre'];
-						$this -> verificador -> validaNombreCurso($_POST['nombre']);
-						if ($this -> verificar($_POST['clave'])) {
-							$clave = $_POST['clave'];
-							$this -> verificador -> validaAbreviacion($clave);
-							if($this -> verificar($_POST['departamento'])){
-								$departamento = $_POST['departamento'];
-								$this -> verificador -> validaNum($departamento);
-								if($this -> verificar($_POST['maestro'])){
-									$maestro = $_POST['maestro'];
-									$this -> verificador -> validaNum($_POST['maestro']);
-									$res = $this -> modelo -> altaAcademia($nombre,$clave,$departamento,$maestro);
-									if ($res) {
-										//header("Location: view/paginaInicio.php");
-										require_once('View/formularios/altaAcademia.php');
-									} else {
-										echo "Error no se pudo dar de alta";
-									}
-								}else{
-									require_once 'View/formularios/altaAcademia.php';
-								}
-							}else{
-									require_once 'View/formularios/altaAcademia.php';
-							}	
-						} else {
-							require_once 'View/formularios/altaAcademia.php';
-						}
-					} else {
-						require_once 'View/formularios/altaAcademia.php';
-					}
-				}else {
-					require_once 'View/formularios/altaAcademia.php';
-				}
-				break;
-			//////////MATERIA CARRERA
-			case 'materiaCarrera' :
-				if (isset($_POST['enviar'])) {
-					//require_once '../view/formularios/altaMateriaCarrera.html';
-					if ($this->verificar($_POST['codigoMateria'])) {
-						$materia = $_POST['codigoMateria'];
-						//$this -> verificador -> 
-						if ($this->verificar($_POST['codigoCarrera'])) {
-							$carrera = $_POST['codigoCarrera'];
-							if($this->verificar($_POST['academia'])){
-								$academia = $_POST['academia'];
-								$res = $this -> $modelo -> altaMateriaCarrera($codigoCarrera,$codigoMateria,$academia);
-							}	
-						} else {
-							return 1;
-						}
-					} else {
-						ManejadorErrores::manejarError(1236);
-					}
-				} else {
-					
-				}
-				break;
-			///////////MATERIA
-			case 'materia' :
-				if (empty($_POST)) {
-					require_once '../view/formularios/altaMateria.html';
-				} else {
-					if ($this -> verificar($_POST['nombre'])) {
-						$nombre = $_POST['nombre'];
-						if ($this-> verificar($_POST['clave'])) {
-							$clave = $_POST['clave'];
-							$modelo -> altaMateria($nombre, $clave);
-						} else {
-							ManejadorErrores::manejarError();
-						}
-					} else {
-						ManejadorErrores::manejarError();
-					}
-				}
-				break;*/
+				
 		}
 
 	}
@@ -244,14 +133,25 @@ class AdminCtrl extends CtrlStr {
 		switch($objeto){
 			case 'usuarios':
 				if(parent::esAdmin($_SESSION['roles'])){
-					$res = $this -> modelo -> consultaUsuarios();
-					if($res){
-						require_once('view/plantillas/consultaUsuarios.php');
+					$res= $this->modelo->consultaUsuarios();					
+					if ($res!=FALSE) {
+						if($res!=null){
+							if(file_exists('View/plantillas/consultaUsuarios.php')){
+								require_once 'View/plantillas/consultaUsuarios.php';
+								$plantilla = new ConsultaUsuarios();
+								$pagina=$plantilla->generaPagina($res);	
+								echo $pagina;
+							}else{
+								echo "Error no se pudo incluir la plantilla consultaUsuarios";
+							}												
+						}else{
+							echo "NO HAY NADA EN LA TABLA";
+						}
+					}else{
+						echo "ERROR NO SE REALIZO LA CONSULTA";
 					}
-					else{
-						echo"No se pudo realizar la consulta";
-					}
-				}	
+				}
+				
 			break;
 			case 'usuario':
 				if(isset($_POST['enviar'])){
@@ -271,16 +171,20 @@ class AdminCtrl extends CtrlStr {
 					require_once ('view/formularios/modificarUsuario.php');
 				}
 				
+			}
 		}
-	}
 
 	public function modificaciones($objetos) {
 		switch ($objeto) {
 			case 'usuario':
 				if(isset($_POST['enviar'])){
-					if(isset($_POST['enviarmodificar'])){
-						if(parent::verificar($_POST['correo'])){
-							
+					if(parent::esAdmin($_SESSION['roles'])){
+						if(parent::verificar($_POST['nombre'])){
+							$nombre = $_POST['nombre'];
+							$this -> verificador -> validaCodigo($nombre);
+							if(parent::verificar($_POST['contrasena'])){
+								
+							}
 						}
 					}else{
 						if(parent::verificar($_POST['contrasena'])){
