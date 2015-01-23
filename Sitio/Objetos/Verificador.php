@@ -30,6 +30,13 @@ class Verificador {
 		else return FALSE;
 	}
 
+	public function validaSeccion($seccion) {//function to validate the name of the section
+		if (preg_match("/^[A-Za-z]+[0-9]+\-D[0-9]+$/", $seccion))
+			return TRUE;
+		else
+			return FALSE;
+	}
+
 	/*function validaCodigo($codigo) {//Function to validate the code with a lenght of 9 numbers
 	 $codigo = ltrim($codigo);
 	 $codigo = rtrim($codigo);
@@ -77,7 +84,6 @@ class Verificador {
 				$variables[$llave] = $valor;
 			}
 		}//Look this wonderful code :D we are gonna to use to another controllers to clean the values.
-
 		return $variables;
 	}
 
@@ -91,7 +97,6 @@ class Verificador {
 			if (preg_match("/^[1-5]{1}$/", $value)) return true;
 			else return false;
 		}
-
 	}
 
 	public function validaAbreviacion($abreviacion){
@@ -102,7 +107,13 @@ class Verificador {
 	public function validaNum($numero){
 		if(preg_match("/^[1-9]{1}/",$numero))return TRUE;
 		else return FALSE;
-		
+	}
+	
+	public function validaEstatus($estatus){
+		if(preg_match("/^[1-3]{1}/",$estatus))
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 }
