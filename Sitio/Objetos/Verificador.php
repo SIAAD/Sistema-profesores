@@ -11,23 +11,18 @@ class Verificador {
 	}
 	
 	public function validaNombreCarrera($nombre) {
-		/*if( preg_match('/^[a-zA-Z]{10,70}$/iX', $nombre)){
-			return TRUE;
-		}else{
-			return FALSE;
-		}*/
-		return preg_match('/^[a-zA-Z]{10,70}$/iX', $nombre);
+		return preg_match('/^[a-zA-Z]{10,70}$/', $nombre);
 	}
 
 	public function validaSeccion($seccion) {//function to validate the name of the section
-		if (preg_match("/[A-Za-z]+[0-9]+\-D[0-9]+/", $seccion))
+		if (preg_match("/^[A-Za-z]+[0-9]+\-D[0-9]+$/", $seccion))
 			return TRUE;
 		else
 			return FALSE;
 	}
 
 	public function validaNrc($nrc) {//function to validate the nrc of the especific group
-		if (preg_match("/0[0-9]{4}/", $nrc))
+		if (preg_match("/^0[0-9]{4}$/", $nrc))
 			return TRUE;
 		else
 			return FALSE;
@@ -48,7 +43,7 @@ class Verificador {
 		$cadena = ltrim($cadena);
 		$cadena = rtrim($cadena);
 		//We clean the name first
-		if (preg_match("/^[A-Za-z\sñÑáéíóúâêîôûàèìòùäëïöü]+/", $cadena)) {
+		if (preg_match("/^[A-Za-z\sñÑáéíóúâêîôûàèìòùäëïöü]+$/", $cadena)) {
 			return TRUE;
 		} else
 			return FALSE;
@@ -74,8 +69,8 @@ class Verificador {
 		//CREAR FECHA DATE(FORMATO,RESULTADO DE FUNCION STRTOTIME)
 	}
 
-	public function validaPass($p) {//Function to validate the pass with a lenght of 6-20 characters
-		if (preg_match("/^[A-Za-z0-9_\-]{6,20}/", $p))
+	public function validaPass($pass) {//Function to validate the pass with a lenght of 6-20 characters
+		if (preg_match("/^[A-Za-z0-9_\-]{6,20}$/", $pass))
 			return true;
 		else
 			return -1;
@@ -94,7 +89,7 @@ class Verificador {
 	}
 
 	public function validaCodigo($codigo) {
-		if (preg_match("/^[0-9]{7}/", $codigo)) {
+		if (preg_match("/^[0-9]{7}$/", $codigo)) {
 			return true;
 		} else {
 			return false;
@@ -103,7 +98,7 @@ class Verificador {
 
 	public function validaRol($rol) {
 		foreach ($rol as $key => $value) {
-			if (preg_match("/^[1-5]{1}/", $value))
+			if (preg_match("/^[1-5]{1}$/", $value))
 				return true;
 			else
 				return false;
@@ -112,18 +107,25 @@ class Verificador {
 	}
 
 	public function validaAbreviacion($abreviacion){
-		if (preg_match("^[A-ZÑ]*/", $nrc))
+		if (preg_match("^[A-ZÑ]+$/", $nrc))
 			return TRUE;
 		else
 			return FALSE;
 	}
 	
 	public function validaNum($numero){
-		if(preg_match("/^[1-9]{1}/",$numero))
+		if(preg_match("/^[1-9]{1}$/",$numero))
 			return TRUE;
 		else 
 			return FALSE;
 		
+	}
+	
+	public function validaEstatus($estatus){
+		if(preg_match("/^[1-3]{1}/",$estatus))
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 }

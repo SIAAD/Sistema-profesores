@@ -179,19 +179,38 @@ class AdminCtrl extends CtrlStr {
 			case 'usuario':
 				if(isset($_POST['enviar'])){
 					if(parent::esAdmin($_SESSION['roles'])){
+						$longitud = 'kk';
+						
 						if(parent::verificar($_POST['nombre'])){
 							$nombre = $_POST['nombre'];
 							$this -> verificador -> validaCodigo($nombre);
-							if(parent::verificar($_POST['contrasena'])){
+							if(parent::verificar($_POST['pass'])){
+								$pass = $_POST['pass'];
+								$this-> verificador -> validaPass($pass);	
+								$pass = md5($_POST['pass']);
+								if(parent::verificar($_POST['correo'])){
+									$correo = $_POST['correo'];
+									$this ->verificador -> validaCorreo($correo);
+									if(parent::verificar($_POST['estatus'])){
+										$estatus = $POST['estatus'];
+										$this -> verificador -> validaEstatus($estatus);
+									}else{
+										
+									}
+								}else{
+									
+								}
+							}else{
 								
 							}
+						}else{
+							
 						}
 					}else{
-						if(parent::verificar($_POST['contrasena'])){
-							$contrasena = md5($_POST['contrasena']);
+						if(parent::verificar($_POST['pass'])){
+							$pass = md5($_POST['pass']);
 						}
 					}
-					
 				}
 				break;		
 		}
