@@ -1,36 +1,33 @@
 <?php
-/** @author:Jorge Eduardo Garza Martinez
- * @since: 20/Oct/2014
- * @version 1.0
+/** @author:Jorge Eduardo Garza Martinez, Jesus Alberto Ley Ayon
+ * @since: 21/Enero/2015
+ * @version 2.0
  */
 class Verificador {
 	
-	
-	public function validaNombreCurso($nombrecurso) {//here we validate the syntaxis of the name of the course
-		//return preg_match("[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü]{1,90}", $nombrecurso);
+	public function validaNombreMateria($nombrecurso) {//here we validate the syntaxis of the name of the course
+		if(preg_match("/[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü]{1,90}$/", $nombrecurso)) return TRUE;
+		else return FALSE;
 	}
 	
 	public function validaNombreCarrera($nombre) {
-		/*if( preg_match('/^[a-zA-Z]{10,70}$/iX', $nombre)){
-			return TRUE;
-		}else{
-			return FALSE;
-		}*/
-		return preg_match('/^[a-zA-Z]{10,70}$/iX', $nombre);
+		if(preg_match('/[a-zA-Z]{10,70}$/', $nombre)) return TRUE;
+ 		else return FALSE; 
+	}
+	
+	public function validaNombreDepartamento($nombre) {
+		if(preg_match('/[a-zA-Z]{10,45}$/', $nombre))return TRUE;
+		else return FALSE;
 	}
 
 	public function validaSeccion($seccion) {//function to validate the name of the section
-		if (preg_match("/[A-Za-z]+[0-9]+\-D[0-9]+/", $seccion))
-			return TRUE;
-		else
-			return FALSE;
+		if (preg_match("/[A-Za-z]+[0-9]+\-D[0-9]+/", $seccion))return TRUE;
+		else return FALSE;
 	}
 
 	public function validaNrc($nrc) {//function to validate the nrc of the especific group
-		if (preg_match("/0[0-9]{4}/", $nrc))
-			return TRUE;
-		else
-			return FALSE;
+		if (preg_match("/0[0-9]{4}/", $nrc))return TRUE;
+		else return FALSE;
 	}
 
 	/*function validaCodigo($codigo) {//Function to validate the code with a lenght of 9 numbers
@@ -48,37 +45,28 @@ class Verificador {
 		$cadena = ltrim($cadena);
 		$cadena = rtrim($cadena);
 		//We clean the name first
-		if (preg_match("/^[A-Za-z\sñÑáéíóúâêîôûàèìòùäëïöü]+/", $cadena)) {
-			return TRUE;
-		} else
-			return FALSE;
+		if (preg_match("/^[A-Za-z\sñÑáéíóúâêîôûàèìòùäëïöü]+/", $cadena)) return TRUE;
+		else return FALSE;
 	}
 
 	function validaCorreo($correo) {//Function to validate the syntax of email
 		$correo = ltrim($correo);
 		$correo = rtrim($correo);
 		//We clean the email first
-		if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", $correo))
-			return TRUE;
-		else
-			return FALSE;
+		if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", $correo))return TRUE;
+		else return FALSE;
 	}
 
 	public function validaFecha($fecha) {//Function to validate the date
-
-		if (strtotime($fecha) == 0)
-			return FALSE;
-		else
-			return TRUE;
+		if (strtotime($fecha) == 0)return FALSE;
+		else return TRUE;
 
 		//CREAR FECHA DATE(FORMATO,RESULTADO DE FUNCION STRTOTIME)
 	}
 
 	public function validaPass($p) {//Function to validate the pass with a lenght of 6-20 characters
-		if (preg_match("/^[A-Za-z0-9_\-]{6,20}/", $p))
-			return true;
-		else
-			return -1;
+		if (preg_match("/^[A-Za-z0-9_\-]{6,20}$/", $p))return true;
+		else return FALSE;
 	}
 
 	public function limpiaSQL($variables) {//Posibility to use with the other controllers because is more standard this function
@@ -94,35 +82,26 @@ class Verificador {
 	}
 
 	public function validaCodigo($codigo) {
-		if (preg_match("/^[0-9]{7}/", $codigo)) {
-			return true;
-		} else {
-			return false;
-		}
+		if (preg_match("/^[0-9]{7}$/", $codigo))return true;
+		else return false;
 	}
 
 	public function validaRol($rol) {
-		foreach ($rol as $key => $value) {
-			if (preg_match("/^[1-5]{1}/", $value))
-				return true;
-			else
-				return false;
+		foreach ($rol as  $value) {
+			if (preg_match("/^[1-5]{1}$/", $value)) return true;
+			else return false;
 		}
 
 	}
 
 	public function validaAbreviacion($abreviacion){
-		if (preg_match("^[A-ZÑ]*/", $nrc))
-			return TRUE;
-		else
-			return FALSE;
+		if (preg_match("^[A-ZÑ]*$/", $nrc)) return TRUE;
+		else return FALSE;
 	}
 	
 	public function validaNum($numero){
-		if(preg_match("/^[1-9]{1}/",$numero))
-			return TRUE;
-		else 
-			return FALSE;
+		if(preg_match("/^[1-9]{1}/",$numero))return TRUE;
+		else return FALSE;
 		
 	}
 

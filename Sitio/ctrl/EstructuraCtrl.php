@@ -127,7 +127,9 @@ class EstructuraCtrl extends CtrlStr {
 						if(parent::verificar($_POST['clave'])){
 						//if (isset($_POST['clave']) && !empty($_POST['clave']) && is_string($_POST['clave'])) {
 							$clave = $_POST['clave'];
-							$modelo -> altaMateria($nombre, $clave);
+							ver_dump($modelo -> altaMateria($nombre, $clave));
+								
+							
 						} else {
 							ManejadorErrores::manejarError();
 						}

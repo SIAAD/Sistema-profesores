@@ -74,5 +74,49 @@
 				}
 			}
 		}
+		
+		protected function verificarParametros($variables){
+			$bandera=FALSE;	
+			var_dump($variables);
+			if(is_array($variables)){
+				$keys=array_keys($variables);
+				foreach($keys as $key){
+					var_dump($key);
+					var_dump($variables[$key]);
+					
+					if(!verificar($variables[$key])){
+						return FALSE;
+					}else{
+						switch ($key) {
+							case 'enviar':
+								
+								break;
+								
+							case 'nombreUsuario':
+									if(!$this->verificador->validaCodigo($variables[$key])) return FALSE;
+								break;
+									
+							case 'nombreDepartamento':
+								if(!$this->verificador->validaNombreDepartamento($variables[$key])) return FALSE;
+								break;
+								
+							case 'nombreCarrera':
+								if(!$this->verificador->validaCarrera($variables[$key])) return FALSE;
+								break;
+								
+							case 'nombreMateria':
+								if(!$this->verificador->validaMateria($variables[$key])) return FALSE;
+								break;
+								
+							default:
+								
+								break;
+						}
+					}
+				}
+			}else{
+				return FALSE;
+			}
+		}
     }
 ?>
