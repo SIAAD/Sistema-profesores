@@ -179,7 +179,7 @@ class AdminCtrl extends CtrlStr {
 			case 'usuario':
 				if(isset($_POST['enviar'])){
 					if(parent::esAdmin($_SESSION['roles'])){
-						$longitud = 'kk';
+						$longitud = '';
 						
 						if(parent::verificar($_POST['nombre'])){
 							$nombre = $_POST['nombre'];

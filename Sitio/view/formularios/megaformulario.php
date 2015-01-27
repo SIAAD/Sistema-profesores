@@ -1,9 +1,9 @@
 
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>SIAAD</title>
-		<link href="bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 		<script src="jquery/jquery-1.8.3.min.js"></script>
 	</head>
@@ -22,7 +22,7 @@
 					<input type="text" name="pass" id="pass" placeholder="Password" />
 					<!--CONSULTAR SU ROL-->
 					<legend>PRIVILEGIOS</legend>
-					<label for="tipo">Tipo</label>
+					<label for="tipoPrivilegio">Tipo</label>
 					<input type="text" name="tipo" id="tipo" placeholder="Tipo" />
 					<label for="descripcionPrivilegio">Descripcion</label>
 					<input type="text" name="descripcionPrivilegio" id="descripcionPrivilegio" placeholder="Descripcion" />
