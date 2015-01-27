@@ -113,16 +113,4 @@
 			</form>
 		</div>
 	</body>
-	
-	<script>
-		function validar(evento) {
-			//propiedad which regresa cual tecla o boton de raton fue presionada
-			evento = (evento) ? evento : window.event;
-		    var charCode = (evento.which) ? evento.which : evt.keyCode;
-		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-		        return false;
-		    }
-		    return true;
-		}
-	</script>
 </html>
