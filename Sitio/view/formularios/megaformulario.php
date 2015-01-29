@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<title>SIAAD</title>
-		<link href="bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 		<script src="jquery/jquery-1.8.3.min.js"></script>
 	</head>
@@ -22,7 +22,7 @@
 					<input type="text" name="pass" id="pass" placeholder="Password" />
 					<!--CONSULTAR SU ROL-->
 					<legend>PRIVILEGIOS</legend>
-					<label for="tipo">Tipo</label>
+					<label for="tipoPrivilegio">Tipo</label>
 					<input type="text" name="tipo" id="tipo" placeholder="Tipo" />
 					<label for="descripcionPrivilegio">Descripcion</label>
 					<input type="text" name="descripcionPrivilegio" id="descripcionPrivilegio" placeholder="Descripcion" />
@@ -113,16 +113,4 @@
 			</form>
 		</div>
 	</body>
-	
-	<script>
-		function validar(evento) {
-			//propiedad which regresa cual tecla o boton de raton fue presionada
-			evento = (evento) ? evento : window.event;
-		    var charCode = (evento.which) ? evento.which : evt.keyCode;
-		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-		        return false;
-		    }
-		    return true;
-		}
-	</script>
 </html>
