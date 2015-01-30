@@ -12,11 +12,12 @@
 			<form class="span8" name="form01" method="post" action="index.php?controlador=Admin&accion=alta&objeto=usuario">
 				<fieldset>
 					<legend>Alta Usuario</legend>
-					<label for="nombre">Codigo</label>
-					<input type="text" name="nombre" id="nombre" placeholder="Codigo" maxlength="7" onkeypress="return validar(event);" required="required"/>
+					<label for="nombreUsuario">Codigo</label>
+					<input type="text" name="nombreUsuario" id="nombreUsuario" placeholder="Codigo" onkeypress="validar(event)"/>
+					<label for="correo">Correo</label>
+					<input type="email" name="correo" id="correo" placeholder="Correo" >
 					<label for="pass">Password</label>
-					<input type="text" name="pass" id="pass" placeholder="Password" required="required"/>
-					<input type="submit" name="enviar" id="enviar" value="Registrar"/>
+					<input type="password" name="pass" id="pass" placeholder="Password" />
 				</fieldset>
 			</form>
 		</div>
