@@ -1,17 +1,11 @@
 <?php
 if (!file_exists('ctrl/CtrlStr.php')) {
-	//exit();
 	require_once ('CtrlStr.php');
-	//require_once('model/PruebaMdl.php');
 } else {
 	require_once ('CtrlStr.php');
-	//require_once('model/PruebaMdl.php');
 }
-//session_start();
 
 class AdminCtrl extends CtrlStr {
-	//public $modelo;
-	//public $verificador;
 	function __construct() {
 		//Cuando se construye se desea crear el modelo
 		parent::__construct();

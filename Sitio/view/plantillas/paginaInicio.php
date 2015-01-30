@@ -4,9 +4,19 @@
  * @since: 20/Oct/2014
  * @version ALFA
  */
-if (session_id() == '') {
-	session_start();
+ 
+if (file_exists('View/plantillas/PlantillaStr.php')) {
+	require_once 'View/plantillas/PlantillaStr.php';
+} else {
+	exit();
 }
+class PaguinaPrincipal extends PlantillaStr {
+	public function generaPagina($res) {
+
+	}
+
+}
+if (session_id() == '')session_start();
 $codigo = $_SESSION['codigo'];
 $roles = $_SESSION['roles'];
 

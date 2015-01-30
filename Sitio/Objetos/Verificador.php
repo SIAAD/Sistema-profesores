@@ -6,19 +6,19 @@
 class Verificador {
 
 	public function validaNombreMateria($nombrecurso) {//here we validate the syntaxis of the name of the course
-		if (preg_match("/^[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü]{1,90}$/", $nombrecurso))return TRUE;
+		if (preg_match("/^[a-zA-Z ñÑáéíóúâêîôûàèìòùäëïöü\s]{1,90}$/", $nombrecurso))return TRUE;
 		else return FALSE;
 	}//BIEN
 	public function validaNombreCarrera($nombre) {
-		if (preg_match('/^[a-zA-Z]{10,70}$/', $nombre))return TRUE;
+		if (preg_match('/^[a-zA-Z\s]{10,70}$/', $nombre))return TRUE;
 		else return FALSE;
 	}//BIEN
 	public function validaNombreDepartamento($nombre) {
-		if (preg_match('/^[a-zA-Z]{10,45}$/', $nombre))return TRUE;
+		if (preg_match('/^[a-zA-Z\s]{10,45}$/', $nombre))return TRUE;
 		else return FALSE;
 	}//BIEN
 	public function validaNombreAcademia($nombre){
-		if (preg_match('/^[a-zA-Z]{10,70}$/', $nombre))return TRUE;
+		if (preg_match('/^[a-zA-Z\s]{10,70}$/', $nombre))return TRUE;
 		else return FALSE;
 	}
 	public function validaSeccion($seccion) {//function to validate the name of the section
@@ -38,7 +38,7 @@ class Verificador {
 		else return FALSE;
 	}//BIEN
 	public function validaClaveCarrera($clave){
-		if (preg_match("/^([A-Z]){4}$/", $clave))return TRUE;//et201
+		if (preg_match("/^([A-Z]){3,4}$/", $clave))return TRUE;//et201
 		else return FALSE;
 	}
 	public function validaHora($hora){
@@ -61,7 +61,7 @@ class Verificador {
 		else return FALSE;
 	}//BIEN	
 	public function validaAbreviacion($abreviacion) {
-		if (preg_match("/^[A-ZÑ]{3,10}$/", $abreviacion))return TRUE;
+		if (preg_match("/^[A-ZÑa-z]{3,10}$/", $abreviacion))return TRUE;
 		else return FALSE;
 	}//BIEN
 	public function validaCiclo($ciclo) {

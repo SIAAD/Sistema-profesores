@@ -19,11 +19,11 @@ class CtrlStr {
 		$this -> verificador = new Verificador();
 	}
 
-	public abstract function ejecutar();
-	protected abstract function altas($objeto);
-	protected abstract function bajas($objeto);
-	protected abstract function consultas($objeto);
-	protected abstract function modificaciones($objeto);
+	public function ejecutar(){}
+	protected function altas($objeto){}
+	protected function bajas($objeto){}
+	protected function consultas($objeto){}
+	protected function modificaciones($objeto){}
 
 	protected function verificar($variable) {
 		if (isset($variable) && !empty($variable) && is_string($variable))return TRUE;
@@ -80,10 +80,10 @@ class CtrlStr {
 	}
 
 	protected function verificarParametros($variables) {
-		if (is_array($variables)) {
+		if (is_array($variables)&&!empty($variables)) {
 			$keys = array_keys($variables);
 			foreach ($keys as $key) {
-				if (!verificar($variables[$key])) {
+				if (!$this->verificar($variables[$key])) {
 					return FALSE;
 				}else{
 					switch ($key) {
@@ -99,7 +99,7 @@ class CtrlStr {
 							if (!$this->verificador -> validaNombreDepartamento($variables[$key]))return FALSE;
 							break;
 
-						case 'nombreCarreras' :
+						case 'nombreCarrera' :
 							if (!$this->verificador -> validaNombreCarrera($variables[$key]))return FALSE;
 							break;
 
@@ -120,15 +120,16 @@ class CtrlStr {
 							break;
 
 						case 'tipoPrivilegio' :
+							if(!$this->verificarPrivilegios($variables[$key]))return FALSE;
 							break;
 
-						case 'descripcionPrivilegio' :
+						case 'descripcionPrivilegio':
 							break;
 
-						case 'codigoNombramiento' :
+						case 'codigoNombramiento':
 							break;
 
-						case 'nombreNombramiento' :
+						case 'nombreNombramiento':
 							break;
 
 						case 'horasNombramiento' :
@@ -180,7 +181,7 @@ class CtrlStr {
 							if (!$this->verificador -> validaClaveDepartamento($variables[$key]))return FALSE;
 							break;
 
-						case 'claveCarreras' :
+						case 'claveCarrera' :
 							if (!$this->verificador -> validaClaveCarrera($variables[$key]))return FALSE;
 							break;
 
