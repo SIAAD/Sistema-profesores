@@ -1,9 +1,6 @@
 <?php
-if (!file_exists('ctrl/CtrlStr.php')) {
-	require_once ('CtrlStr.php');
-} else {
-	require_once ('CtrlStr.php');
-}
+if (!file_exists('ctrl/CtrlStr.php'))exit();
+else require_once ('CtrlStr.php');
 
 class AdminCtrl extends CtrlStr {
 	function __construct() {

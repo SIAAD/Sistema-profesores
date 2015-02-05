@@ -66,11 +66,16 @@ abstract class CtrlStr {
 	protected abstract function modificaciones($objeto);
 	protected abstract function clonar($objeto);
 
+	/**
+	 * Function that verify if a variable exist, contain a value and is a string
+	 * @param the reference of a variable ($variable)
+	 * @return return TRUE if it is correct or FALSE 
+	 */
 	protected function verificar($variable) {
 		if (isset($variable) && !empty($variable) && is_string($variable))return TRUE;
 		else return FALSE;
 	}
-
+	
 	static function esAdmin($var) {
 		if (in_array(self::ADMIN, $var))return TRUE;
 		else return FALSE;
@@ -103,7 +108,7 @@ abstract class CtrlStr {
 		}
 	}
 
-	private function verificarPrivilegios($privilegios) {
+	protected function verificarPrivilegios($privilegios) {
 		if (is_array($privilegios)) {
 			$bandera = TRUE;
 			foreach ($privilegios as $privilegio) {
