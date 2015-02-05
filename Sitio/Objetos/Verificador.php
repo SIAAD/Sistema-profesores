@@ -1,5 +1,6 @@
 <?php
-/** @author:Jorge Eduardo Garza Martinez, Jesus Alberto Ley Ayon
+/** @author:Jorge Eduardo Garza Martinez
+ * @author:Jesus Alberto Ley Ayon
  * @since: 21/Enero/2015
  * @version 2.0
  */
@@ -78,11 +79,15 @@ class Verificador {
 
 		$cadena = ltrim($cadena);
 		$cadena = rtrim($cadena);
-		if (preg_match("/^[A-Za-z\sñÑáéíóúâêîôûàèìòùäëïöü]+/", $cadena))return TRUE;
+		if (preg_match("/^[A-Za-z\sñÑáéíóú]+$/", $cadena))return TRUE;
 		else return FALSE;
 	}
 	function validaNumero($numero){
 		if (preg_match("/^[-]?([0-9]+([.][0-9]+)?|[0][.][0-9]+)$/", $cadena))return TRUE;
+		else return FALSE;
+	}
+	function validaIds($id){
+		if (preg_match("/^([1-9][0-9]*|0)$/", $cadena))return TRUE;
 		else return FALSE;
 	}
 	
@@ -96,19 +101,6 @@ class Verificador {
 		}//Look this wonderful code :D we are gonna to use to another controllers to clean the values.
 		return $variables;
 	}
-
-	public function validaRol($rol) {
-		foreach ($rol as $value) {
-			if (preg_match("/^[1-5]{1}$/", $value))return true;
-			else return false;
-		}
-
-	}
-	public function validaNum($numero) {
-		if (preg_match("/^[1-9]{1}/", $numero))return TRUE;
-		else return FALSE;
-	}
-
 }
 
 /*$ver = new Verificador();

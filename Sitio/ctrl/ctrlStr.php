@@ -1,12 +1,13 @@
 <?php
+/** @author:Jorge Eduardo Garza Martinez
+ * @author:Jesus Alberto Ley Ayón
+ * @since: 04/Feb/2015
+ * @version 2.0
+ */ 
+if (!file_exists('../Sitio/Objetos/Verificador.php'))exit();
+else require_once ('../Sitio/Objetos/Verificador.php');
 
-if (!file_exists('../Sitio/Objetos/Verificador.php')) {
-	exit();
-} else {
-	require_once ('../Sitio/Objetos/Verificador.php');
-}
-
-class CtrlStr {
+abstract class CtrlStr {
 	protected $modelo;
 	protected $verificador;
 	const ADMIN = 0;
@@ -19,39 +20,79 @@ class CtrlStr {
 		$this -> verificador = new Verificador();
 	}
 
-	public function ejecutar(){}
-	protected function altas($objeto){}
-	protected function bajas($objeto){}
-	protected function consultas($objeto){}
-	protected function modificaciones($objeto){}
+	public function ejecutar() {
+		if (isset($_GET)) {
+			if ($this->checarAcciones()) {
+				$accion = $_GET['accion'];
+				$objeto = $_GET['objeto'];
+				switch ($accion) {
+					case 'alta' :
+						$this -> altas($objeto);
+						break;
+
+					case 'baja' :
+						$this -> bajas($objeto);
+						break;
+
+					case 'consulta' :
+						$this -> consultas($objeto);
+						break;
+
+					case 'modificacion' :
+						$this -> modificaciones($objeto);
+						break;
+						
+					case 'clonar':
+						$this->clonaciones($objeto);
+						break;
+
+					default :
+						break;
+				}
+			} else {
+				header("Location: view/paginaInicio.php");
+				//ManejadorErrores::manejarError();
+			}
+		} else {
+			header("Location: view/paginaInicio.php");
+			//error sesion terminada por inactividad
+			//ManejadorErrores::manejarError();
+		}
+
+	}
+	protected abstract function altas($objeto);
+	protected abstract function bajas($objeto);
+	protected abstract function consultas($objeto);
+	protected abstract function modificaciones($objeto);
+	protected abstract function clonar($objeto);
 
 	protected function verificar($variable) {
 		if (isset($variable) && !empty($variable) && is_string($variable))return TRUE;
 		else return FALSE;
 	}
 
-	protected function esAdmin($var) {
-		if (in_array(CtrlStr::ADMIN, $var))return TRUE;
+	static function esAdmin($var) {
+		if (in_array(self::ADMIN, $var))return TRUE;
 		else return FALSE;
 	}
 
-	protected function esMstr($var) {
-		if (in_array(CtrlStr::MSTR, $var))return TRUE;
+	static function esMstr($var) {
+		if (in_array(self::MSTR, $var))return TRUE;
 		else return FALSE;
 	}
 
-	protected function esAsis($var) {
-		if (in_array(CtrlStr::ASIS, $var))return TRUE;
+	static function esAsis($var) {
+		if (in_array(self::ASIS, $var))return TRUE;
 		else return FALSE;
 	}
 
-	protected function esRevis($var) {
-		if (in_array(CtrlStr::REVIS, $var))return TRUE;
+	static function esRevis($var) {
+		if (in_array(self::REVIS, $var))return TRUE;
 		else return FALSE;
 	}
 
-	protected function esJefDep($var) {
-		if (in_array(CtrlStr::JEFDEP, $var)) return TRUE;
+	static function esJefDep($var) {
+		if (in_array(self::JEFDEP, $var)) return TRUE;
 		else return FALSE;
 	}
 
@@ -89,6 +130,10 @@ class CtrlStr {
 					switch ($key) {
 						case 'enviar' :case 'modificar' :case 'valor1' :case 'valor2' :
 							//va ser para enteros utilizados para llaves secundarias
+							break;
+							
+						case 'idCarrera':case 'idDepartamento':case 'idMateria': case 'idMaestro': 
+							if (!$this->verificador -> validaIds($variables[$key]))return FALSE;
 							break;
 
 						case 'nombreUsuario' :

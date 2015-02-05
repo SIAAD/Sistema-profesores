@@ -1,9 +1,11 @@
 <?php
-if (file_exists('View/plantillas/PlantillaStr.php')) {
-	require_once 'View/plantillas/PlantillaStr.php';
-} else {
-	exit();
-}
+/** @author:Jorge Eduardo Garza Martinez
+ * @since: 26/Ene/2015
+ * @version BETA
+ */ 
+if(file_exists('View/plantillas/PlantillaStr.php'))require_once 'View/plantillas/PlantillaStr.php';
+else exit();
+
 class ConsultaCarreras extends PlantillaStr {
 	public function generaPagina($res) {
 
@@ -14,10 +16,11 @@ class ConsultaCarreras extends PlantillaStr {
 		}
 		$contenido=$contenido.'</table></br>';
 		$contenido=$contenido.'<a href="index.php">Vinculo pagina principal</a></br>';
-		$contenido=$contenido.'<a href="index.php?controlador=Estructura&accion=alta&objeto=carrera">Vinculo alta carrera</a>';
+		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
+			$contenido=$contenido.'<a href="index.php?controlador=Estructura&accion=alta&objeto=carrera">Vinculo alta carrera</a>';
+		}
 		$res -> free();
 		return $contenido;
 	}
-
 }
 ?>

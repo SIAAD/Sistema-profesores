@@ -1,16 +1,21 @@
 <?php
+/** @author:Jorge Eduardo Garza Martinez
+ * @since: 26/Ene/2015
+ * @version BETA
+ */ 
+ 
 abstract class PlantillaStr {
 	public abstract function generaPagina($datos);
 	
-	public function generaHeader(){
-		$roles=$_SESSION['roles'];
+	protected function generaHeader(){
+
 	}
 	
-	public function generaFooter(){
+	protected function generaFooter(){
 		
 	}
 	
-	public function generaSider(){
+	protected function generaSider(){
 		
 	}
 }

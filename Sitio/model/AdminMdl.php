@@ -1,12 +1,6 @@
 <?php
-	if(!file_exists('ModeloStr.php')){
-		//exit();
-		require_once('ModeloStr.php');
-	}
-	else {
-		require_once('ModeloStr.php');
-	}
-	
+	if(!file_exists('ModeloStr.php'))exit();
+	else require_once('ModeloStr.php');	
 
  	 class AdminMdl extends  ModeloStr{
 		
