@@ -174,7 +174,7 @@ class AdminCtrl extends CtrlStr {
 				if(isset($_POST['enviar'])){
 					if(parent::esAdmin($_SESSION['roles'])){
 						$longitud = '';
-						
+						// Cambiado por la funcion de verificar datos
 						if(parent::verificar($_POST['nombre'])){
 							$nombre = $_POST['nombre'];
 							$this -> verificador -> validaCodigo($nombre);

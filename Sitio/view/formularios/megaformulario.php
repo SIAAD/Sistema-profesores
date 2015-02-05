@@ -57,7 +57,7 @@
 					<label for="ciclo">Ciclo</label>
 					<input type="text" name="ciclo" id="ciclo" placeholder="ciclo" />
 					<label for="inicioCiclo">Inicio Ciclo</label>
-					<input type="text" name="inicioCiclo" id="inicioCiclo" placeholder="inicioCiclo" />
+					<input type="date" name="inicioCiclo" id="inicioCiclo" placeholder="inicioCiclo" />
 					<label for="finCiclo">Fin Ciclo</label>
 					<input type="text" name="finCiclo" id="finCiclo" placeholder="finCiclo" />
 					<legend>MATERIA</legend>
