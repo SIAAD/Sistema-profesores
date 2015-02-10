@@ -16,7 +16,6 @@ class EstructuraCtrl extends CtrlStr {
 			require_once 'Model/EstructuraMdl.php';
 			$this -> modelo = new EstructuraMdl();
 		}
-
 	}
 
 	protected final function altas($objeto) {

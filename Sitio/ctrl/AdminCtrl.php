@@ -14,43 +14,7 @@ class AdminCtrl extends CtrlStr {
 		}
 	}
 
-	public function ejecutar() {
-		if (isset($_GET)) {
-			if (parent::checarAcciones()) {
-				$accion = $_REQUEST['accion'];
-				$objeto = $_REQUEST['objeto'];
-				var_dump($accion);
-				switch ($accion) {
-					case 'alta' :
-						$this -> altas($objeto);
-
-						break;
-					case 'baja' :
-						$this -> bajas($objeto);
-						break;
-					case 'consulta' :
-						$this -> consultas($objeto);
-						break;
-					case 'modificacion' :
-						$this -> modificaciones($objeto);
-						break;
-					default :
-						echo "no se encontro accion valida";
-						break;
-				}
-			} else {
-				header("Location: view/paginaInicio.php");
-				//ManejadorErrores::manejarError();
-			}
-		} else {
-			header("Location: view/paginaInicio.php");
-			//error sesion terminada por inactividad
-			//ManejadorErrores::manejarError();
-		}
-
-	}
-
-	protected function altas($objeto) {
+	protected final function altas($objeto) {
 
 		switch($objeto) {
 			//////USUARIO
@@ -93,7 +57,7 @@ class AdminCtrl extends CtrlStr {
 
 	}
 
-	public function bajas($objeto) {
+	protected final function bajas($objeto) {
 		switch($objeto){
 			case 'usuario':
 				if(parent::esAdmin($_SESSION['roles'])){
@@ -119,7 +83,7 @@ class AdminCtrl extends CtrlStr {
 		}
 	}
 
-	public function consultas($objetos) {
+	protected final function consultas($objetos) {
 		$res;
 		switch($objeto){
 			case 'usuarios':
@@ -165,7 +129,7 @@ class AdminCtrl extends CtrlStr {
 			}
 		}
 
-	public function modificaciones($objetos) {
+	protected final function modificaciones($objetos) {
 		switch ($objeto) {
 			case 'usuario':
 				if(isset($_POST['enviar'])){
@@ -208,12 +172,8 @@ class AdminCtrl extends CtrlStr {
 		
 	}
 	
-	function verificar($var){
-		if (isset($var) && !empty($var) && is_string($var)){
-			return true;
-		}else{
-			return false;
-		}
+	protected final function clonar($objeto){
+		
 	}
 	
 }

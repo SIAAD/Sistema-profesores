@@ -4,8 +4,12 @@
  * @since: 04/Feb/2015
  * @version 2.0
  */ 
-if (!file_exists('../Sitio/Objetos/Verificador.php'))exit();
-else require_once ('../Sitio/Objetos/Verificador.php');
+//if (!file_exists('../Sitio/Objetos/Verificador.php'))exit();
+//else require_once '../Sitio/Objetos/Verificador.php';
+
+$path=dirname(dirname(__FILE__)).'\Objetos\Verificador.php';
+var_dump($path);
+require_once $path;
 
 abstract class CtrlStr {
 	protected $modelo;
@@ -19,7 +23,41 @@ abstract class CtrlStr {
 	public function __construct() {
 		$this -> verificador = new Verificador();
 	}
-
+	/**
+	 * 
+	 */
+	public static function esAdmin($var) {
+		if (in_array(self::ADMIN, $var))return TRUE;
+		else return FALSE;
+	}
+	/**
+	 * 
+	 */
+	static function esMstr($var) {
+		if (in_array(self::MTRS, $var))return TRUE;
+		else return FALSE;
+	}
+	/**
+	 * 
+	 */
+	static function esAsis($var) {
+		if (in_array(self::ASIS, $var))return TRUE;
+		else return FALSE;
+	}
+	/**
+	 * 
+	 */
+	static function esRevis($var) {
+		if (in_array(self::REVIS, $var))return TRUE;
+		else return FALSE;
+	}
+	/**
+	 * 
+	 */
+	static function esJefDep($var) {
+		if (in_array(self::JEFDEP, $var)) return TRUE;
+		else return FALSE;
+	}
 	public function ejecutar() {
 		if (isset($_GET)) {
 			if ($this->checarAcciones()) {
@@ -65,7 +103,6 @@ abstract class CtrlStr {
 	protected abstract function consultas($objeto);
 	protected abstract function modificaciones($objeto);
 	protected abstract function clonar($objeto);
-
 	/**
 	 * Function that verify if a variable exist, contain a value and is a string
 	 * @param the reference of a variable ($variable)
@@ -75,39 +112,18 @@ abstract class CtrlStr {
 		if (isset($variable) && !empty($variable) && is_string($variable))return TRUE;
 		else return FALSE;
 	}
-	
-	static function esAdmin($var) {
-		if (in_array(self::ADMIN, $var))return TRUE;
-		else return FALSE;
-	}
-
-	static function esMstr($var) {
-		if (in_array(self::MSTR, $var))return TRUE;
-		else return FALSE;
-	}
-
-	static function esAsis($var) {
-		if (in_array(self::ASIS, $var))return TRUE;
-		else return FALSE;
-	}
-
-	static function esRevis($var) {
-		if (in_array(self::REVIS, $var))return TRUE;
-		else return FALSE;
-	}
-
-	static function esJefDep($var) {
-		if (in_array(self::JEFDEP, $var)) return TRUE;
-		else return FALSE;
-	}
-
+	/**
+	 * 
+	 */
 	protected function checarAcciones() {
 		if (isset($_GET['accion']) && !empty($_GET['accion'])) {
 			if (isset($_GET['objeto']) && !empty($_GET['objeto']))return TRUE;
 			else return FALSE;
 		}
 	}
-
+	/**
+	 * 
+	 */
 	protected function verificarPrivilegios($privilegios) {
 		if (is_array($privilegios)) {
 			$bandera = TRUE;
@@ -119,12 +135,16 @@ abstract class CtrlStr {
 			return $this -> verificarPrivilegio($privilegios);
 		}
 	}
-
+	/**
+	 * 
+	 */
 	private function verificarPrivilegio($privilegio) {
 		if ($this -> esAdmin($privilegio) || $this -> esAMstr($privilegio) || $this -> esAsis($privilegio) || $this -> esRevis($privilegio) || $this -> esJefDep($privilegio))return TRUE;
 		else return FALSE;
 	}
-
+	/**
+	 * 
+	 */
 	protected function verificarParametros($variables) {
 		if (is_array($variables)&&!empty($variables)) {
 			$keys = array_keys($variables);
@@ -266,8 +286,6 @@ abstract class CtrlStr {
 			return FALSE;
 		}
 		return TRUE;
-
 	}
-
 }
 ?>
