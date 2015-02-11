@@ -4,15 +4,9 @@
  * @since: 26/Ene/2014
  * @version BETA
  */ 
-if (file_exists('PlantillaStr.php'))require_once 'PlantillaStr.php';
-else exit();
+ 
+require_once 'PlantillaStr.php';
 
-class PaguinaPrincipal extends PlantillaStr {
-	public function generaPagina($res) {
-
-	}
-
-}
 if (session_id() == '')session_start();
 $codigo = $_SESSION['codigo'];
 $roles = $_SESSION['roles'];
@@ -20,6 +14,7 @@ $roles = $_SESSION['roles'];
 echo "<h1>BIENVENIDO $codigo</h1><a href='../../logout.php'>Cerrar Sesion</a>";
 
 var_dump($_COOKIE);
+
 ?>
 <ul>
 	<li>
@@ -38,5 +33,5 @@ var_dump($_COOKIE);
 	</li>
 </ul>
 
-
-
+echo PlantillaStr::generarNav();
+?>
