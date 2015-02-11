@@ -32,7 +32,7 @@ var_dump($_COOKIE);
 	<li>
 		<h2>Usuarios</h2>
 		<ul>
-			<li>Alta Usuario</li>
+			<li><a href="../../index.php?controlador=Admin&accion=alta&objeto=usuario">Alta Usuario</a></li>
 			<li>Baja Usuario</li>
 		</ul>
 	</li>
