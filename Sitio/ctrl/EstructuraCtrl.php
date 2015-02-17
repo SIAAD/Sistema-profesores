@@ -6,9 +6,9 @@
 if(!file_exists("ctrl/CtrlStr.php"))exit();
 else require_once ("CtrlStr.php");
 
-class EstructuraCtrl extends CtrlStr {
+class EstructuraCtrl extends CtrlStr{
 
-	public function __construct() {
+	public function __construct(){
 		parent::__construct();
 		if(!file_exists('Model/EstructuraMdl.php')){
 			exit();
@@ -18,7 +18,7 @@ class EstructuraCtrl extends CtrlStr {
 		}
 	}
 
-	protected final function altas($objeto) {
+	protected final function altas($objeto){
 		switch($objeto) {
 			case 'carrera' :
 				//BIEN

@@ -7,7 +7,6 @@
 if(file_exists('Objetos/cookies.php')){
 	require_once('Objetos/cookies.php');
 }else{
-	echo "No se pudo incluir cookies.php";
 	exit();
 }
  
