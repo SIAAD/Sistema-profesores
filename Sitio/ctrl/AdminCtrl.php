@@ -88,7 +88,8 @@ class AdminCtrl extends CtrlStr {
 		switch($objeto){
 			case 'usuarios':
 				if(parent::esAdmin($_SESSION['roles'])){
-					$res= $this->modelo->consultaUsuarios();					
+					$res= $this->modelo->consultaUsuarios();
+					echo"entro a consultas";					
 					if ($res!=FALSE) {
 						if($res!=null){
 							if(file_exists('View/plantillas/consultaUsuarios.php')){

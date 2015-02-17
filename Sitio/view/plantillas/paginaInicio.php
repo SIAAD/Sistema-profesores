@@ -28,6 +28,7 @@ var_dump($_COOKIE);
 		<h2>Usuarios</h2>
 		<ul>
 			<li><a href="../../index.php?controlador=Admin&accion=alta&objeto=usuario">Alta Usuario</a></li>
+			<li><a href="../../index.php?controlador=Admin&accion=consulta&objeto=usuarios">Consulta Usuario</a></li>
 			<li>Baja Usuario</li>
 		</ul>
 	</li>

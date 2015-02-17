@@ -43,7 +43,7 @@
 		
 		function consultaUsuarios(){
 			$cnx=$this->conexion->getConexion();
-			$sql = "SELECT * FROM usuarios";
+			$sql = "SELECT * FROM usuarios us,roles rol, privilegios pri WHERE us.idusuarios = rol.idusuarios AND rol.idPrivilegios = pri.idPrivilegios";
 			if($res=$cnx->query($sql)){
 				if($res->num_rows>0){
 					return $res;
@@ -57,7 +57,7 @@
 		
 		function consultaUsuario($id){
 			$cnx=$this->conexion->getConexion();
-			$sql = "SELECT * FROM usuarios WHERE id = $id";
+			$sql = "SELECT * FROM usuarios us,roles rol, privilegios pri WHERE us.idusuarios = $id AND us.idusuarios = rol.idusuarios AND rol.idPrivilegios = pri.idPrivilegios";
 			if($res=$cnx->query($sql)){
 				if($res->num_rows>0){
 					return $res;
