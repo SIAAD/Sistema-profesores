@@ -171,7 +171,9 @@ abstract class CtrlStr {
 			$keys = array_keys($variables);
 			foreach ($keys as $key) {
 				if (!$this -> verificar($variables[$key])) {
-					return FALSE;
+					//return FALSE;
+					//que pasa con los parametros que son opcionales en los formularios
+					//SOLUCION INCLUIR UNA LISTA CON LOS PARAMETROS QUE PODRIAN SER CONSIDERADOS VACIOS
 				} else {
 					switch ($key) {
 						case 'enviar' :
@@ -246,8 +248,12 @@ abstract class CtrlStr {
 
 						case 'descripcionEstatus' :
 							break;
-
-						case 'nombresMaestros' :
+						case 'datosMaestro':
+							if(!$this->verificador->validaMaestro($variables[$key]))
+								return FALSE;
+							break;
+							
+						case 'nombreMaestro' :
 							break;
 
 						case 'codigoMaestros' :

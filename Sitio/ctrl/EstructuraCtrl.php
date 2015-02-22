@@ -47,15 +47,22 @@ class EstructuraCtrl extends CtrlStr{
 						$nombre = $_POST['nombreDepartamento'];
 						$clave = $_POST['claveDepartamento'];
 						$abreviacion = $_POST['abreviacionDepartamento'];
-						$idMaestro = $_POST['idMaestro'];
-						$res = $this -> modelo -> altaDepartamento($nombre, $clave, $abreviacion, $idMaestro);
-						if ($res) {
+						
+						//separar codigo y nombre
+						$datosMaestro=$_POST['datosMaestro'];
+						$corte = preg_split("/(([A-Za-z]+\s){2,}\s*)|((\([\s]*)|([\s]*\)))/",$datosMaestro,-1,PREG_SPLIT_NO_EMPTY);
+						$codigoMaestro=$corte[0];
+						
+						//exit();
+						if ($this -> modelo -> altaDepartamento($nombre, $clave, $abreviacion,$codigoMaestro)) {
 							header("refresh:2;index.php?controlador=Estructura&accion=consulta&objeto=departamento");
 						} else {
 							echo "Error no se pudo dar de alta";
 						}
 					} else {
-						require_once 'View/formularios/altaDepartamento.html';
+						//pedir listado de maestros para utilizar en alta departamento						
+						require_once 'View/formularios/AltaDepartamento.php';
+						//var_dump($_POST);
 					}
 				} else {
 					echo "Permiso denegado";
@@ -63,7 +70,6 @@ class EstructuraCtrl extends CtrlStr{
 				break;
 
 			case 'academia' :
-				//BIEN
 				if (parent::esAdmin($_SESSION['roles']) || parent::esAsis($_SESSION['roles']) || parent::esJefDep($_SESSION['roles'])) {
 					if (parent::verificarParametros($_POST)) {
 						$nombre = $_POST['nombreAcademia'];
@@ -103,7 +109,6 @@ class EstructuraCtrl extends CtrlStr{
 				break;
 
 			case 'materia' :
-				//BIEN
 				if (parent::esAdmin($_SESSION['roles']) || parent::esAsis($_SESSION['roles']) || parent::esJefDep($_SESSION['roles'])) {
 					if(parent::verificarParametros($_POST)) {
 						$nombre = $_POST['nombreMateria'];

@@ -75,6 +75,10 @@ class Verificador {
 		if (preg_match("/^[a-zA-Z]+[a-zA-Z0-9\._-]{2,}[a-zA-Z0-9]@[a-zA-Z0-9]+[.][a-zA-Z]+([.][a-zA-Z]+)*$/", $correo))return TRUE;
 		else return FALSE;
 	}//BIEN
+	function validaMaestro($cadena){
+		if (preg_match("/[A-Za-z\s]+[\s]\([\s][0-9]{7}[\s]\)/", $cadena))return TRUE;
+		else return FALSE;
+	}
 	function validaCadena($cadena) {//Function to validate the syntax of name
 
 		$cadena = ltrim($cadena);

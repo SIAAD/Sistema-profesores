@@ -39,7 +39,7 @@ abstract class PlantillaStr {
 		$nav.="<li><h3>Estructura</h3>";
 		$nav.="<ul><li><h4><a href='../../index.php?controlador=Estructura&accion=consulta&objeto=departamentos'>Departamentos</a></h4></li><ul>";
 		if(CtrlStr::esAdmin($_SESSION['roles'])){
-			$nav.="<li><a href='../../index.php?controlador=Estructura&accion=altas&objeto=departamento'>Altas</a></li>";
+			$nav.="<li><a href='../../index.php?controlador=Estructura&accion=alta&objeto=departamento'>Altas</a></li>";
 		}
 		if(CtrlStr::esJefDep($_SESSION['roles'])){
 			$nav.="<li><a href='../../index.php?controlador=Estructura&accion=modificaciones&objeto=departamento&idDepartamento=$idDepartamento'>Modificaciones</a></li>";			
@@ -49,7 +49,7 @@ abstract class PlantillaStr {
 		//academias
 		$nav.="<li><h4><a href='../../index.php?controlador=Estructura&accion=consulta&objeto=academias'>Academias</a></h4></li><ul>";
 		if(CtrlStr::esAdmin($_SESSION['roles'])||CtrlStr::esJefDep($_SESSION['roles'])||CtrlStr::esAsis($_SESSION['roles'])){
-			$nav.="<li><a href='../../index.php?controlador=Estructura&accion=altas&objeto=academia'>Altas</a></li>";
+			$nav.="<li><a href='../../index.php?controlador=Estructura&accion=alta&objeto=academia'>Altas</a></li>";
 		}
 		if(CtrlStr::esRevis($_SESSION['roles'])){
 			$idAcademia=$_SESSION['idAcademia'];

@@ -69,8 +69,21 @@ class EstructuraMdl extends ModeloStr {
 
 	}
 
-	function altaMateria() {
-
+	function altaMateria($nombre,$clave,$idAcademia=NULL) {
+		$cnx = $this -> conexion -> getConexion();
+		$sql = "SELECT * FROM materia WHERE nombre LIKE '$nombre' OR clave LIKE '$clave';";
+		if ($res = $cnx -> query($sql)) {
+			if ($res -> num_rows > 0) {
+				//ya existe una materia en la base de datos
+				return FALSE;
+			} else {
+				if($idAcademia==NULL)$sql = "INSERT INTO `materia` (`nombre`, `clave`) VALUES ('$nombre','$clave');";
+				else $sql = "INSERT INTO `materia` (`nombre`, `clave`,`idAcademia`) VALUES ('$nombre','$clave','$idAcademia');";
+				return $res = $cnx -> query($sql);
+			}
+		} else {//NO SE PUDO REALIZAR LA CONSULTA
+			return FALSE;
+		}
 	}
 
 	function bajaMateria() {
@@ -85,8 +98,36 @@ class EstructuraMdl extends ModeloStr {
 
 	}
 
-	function altaDepartamento() {
-
+	function altaDepartamento($nombre,$clave,$abreviacion,$codigoMaestro=NULL) {
+		$cnx = $this -> conexion -> getConexion();
+		
+		$sql="SELECt `nombre`, `clave` FROM departamento where nombre LIKE '$nombre' OR clave LIKE '$clave';";
+		if ($res = $cnx -> query($sql)) {
+			if ($res -> num_rows > 0) {
+				//ya existe una materia en la base de datos
+				return FALSE;
+			} else {
+				if($codigoMaestro==NULL){
+					echo "CodigoMaestro NULL";
+					var_dump($codigoMaestro);
+					$sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='1111111'));";
+				}else{
+					 $sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='$codigoMaestro'));";
+				}
+				if($res = $cnx -> query($sql)) return TRUE;
+				else{
+					if(mysqli_errno($cnx)=='1048'){
+						echo "Error corrupcion de datos detectada";
+						echo "Errormessage:". $cnx->error.'<br>'.mysqli_errno($cnx).'<br>'.$cnx->errno;
+						exit();
+					}else{
+						return FALSE;
+					}
+				} 
+			}
+		} else {//NO SE PUDO REALIZAR LA CONSULTA
+			return FALSE;
+		}
 	}
 
 	function bajaDepartamento() {
