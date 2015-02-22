@@ -55,7 +55,7 @@ class EstructuraCtrl extends CtrlStr{
 						
 						//exit();
 						if ($this -> modelo -> altaDepartamento($nombre, $clave, $abreviacion,$codigoMaestro)) {
-							header("refresh:2;index.php?controlador=Estructura&accion=consulta&objeto=departamento");
+							header("refresh:2;index.php?controlador=Estructura&accion=consulta&objeto=departamentos");
 						} else {
 							echo "Error no se pudo dar de alta";
 						}
@@ -174,10 +174,10 @@ class EstructuraCtrl extends CtrlStr{
 			case 'departamentos' :
 				$res = $this -> modelo -> consultaDepartamentos();
 				if ($res != FALSE) {
-					if ($res != null) {
+					if ($res != null) {				 
 						if (file_exists('View/plantillas/consultaDepartamentos.php')) {
 							require_once 'View/plantillas/consultaDepartamentos.php';
-							$plantilla = new ConsultaCarreras();
+							$plantilla = new ConsultaDepartamento();
 							$pagina = $plantilla -> generaPagina($res);
 							echo $pagina;
 						} else {

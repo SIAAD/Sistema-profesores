@@ -133,9 +133,21 @@ class EstructuraMdl extends ModeloStr {
 	function bajaDepartamento() {
 
 	}
-
+	function consultaDepartamento(){
+		
+	}
 	function consultaDepartamentos() {
-
+		$cnx = $this -> conexion -> getConexion();
+		$sql = "SELECT * FROM jefesdpto";
+		if ($res = $cnx -> query($sql)) {
+			if ($res -> num_rows > 0) {
+				return $res;
+			} else {
+				return null;
+			}
+		} else {
+			return FALSE;
+		}
 	}
 
 	function modificacionDepartamentos() {
