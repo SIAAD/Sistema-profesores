@@ -106,12 +106,4 @@ class Verificador {
 		return $variables;
 	}
 }
-
-/*$ver = new Verificador();
-var_dump($ver -> validaNombreCarrera('Licenciatura en Ingenieria en Comunicaciones y Electronica'));
-var_dump($ver -> validaNombreCarrera('aaaaaaaaaa'));
-var_dump($ver -> validaNombreCarrera('Lice'));
-var_dump($ver -> validaNombreCarrera('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'));
-var_dump($ver -> validaCodigo('2093663'));
-*/
 ?>

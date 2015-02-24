@@ -2,6 +2,7 @@
 /** @author:Jorge Eduardo Garza Martinez
  * @since: 04/Feb/2015
  * @version 1.5
+ * @see CtrlStr.php
  */ 
 if(!file_exists("ctrl/CtrlStr.php"))exit();
 else require_once ("CtrlStr.php");

@@ -2,6 +2,7 @@
 /** @author:Jorge Eduardo Garza Martinez
  * @since: 26/Ene/2015
  * @version 1.0
+ * @see  ModeloStr.php
  */ 
 if (file_exists('Model/ModeloStr.php'))require_once 'Model/ModeloStr.php';
 else exit();
@@ -147,7 +148,11 @@ class EstructuraMdl extends ModeloStr {
 				}else{
 					 $sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='$codigoMaestro'));";
 				}
-				if($res = $cnx -> query($sql)) return TRUE;
+				$sql.="INSERT INTO `academia`( `nombre`, `abreviacion`, `idMaestros`, `idDepartamento`) VALUES ('Sin Academia ".$nombre."','N/A ".$abreviacion."',(SELECT (IdMaestros)FROM maestros WHERE codigo='$codigoMaestro')";
+				$sql.=",(SELECT (IdDepartamento)FROM departamento WHERE nombre='$nombre' AND clave = '$clave'))";
+				
+				//if($res = $cnx -> query($sql)) return TRUE;
+				if($res=$cnx->multi_query($sql)) return TRUE;
 				else{
 					if(mysqli_errno($cnx)=='1048'){
 						echo "Error corrupcion de datos detectada";
