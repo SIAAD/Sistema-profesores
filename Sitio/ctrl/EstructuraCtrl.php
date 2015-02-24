@@ -175,6 +175,7 @@ class EstructuraCtrl extends CtrlStr{
 				$var['nombreCarrera']=$_GET['nombreCarrera'];
 				if(parent::verificarParametros($var)){
 					echo 'variables correctas iniciando consulta';
+					$res=$this->modelo->consultaCarrera($var['idCarrera'],$var['nombreCarrera']);
 				}else{
 					echo 'error en las variables necesarias para la consulta';
 				}

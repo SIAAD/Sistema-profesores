@@ -27,6 +27,8 @@ class ConsultaCarreras extends PlantillaStr {
 		}
 		$contenido.='</tbody></table></br>';
 		
+		$contenido.="Total de Carreras en el sistemas: ".$res->num_rows."<br>";
+		
 		$contenido.='<a href="index.php">Vinculo pagina principal</a></br>';
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 			$contenido.='<button type="eliminar">Eliminar Seleccionados</button><br>';	

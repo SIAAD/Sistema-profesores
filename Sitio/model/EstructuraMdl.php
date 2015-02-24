@@ -27,7 +27,12 @@ class EstructuraMdl extends ModeloStr {
 	function modificacionMateriaCarrera($materia, $carrera) {
 
 	}
-
+	/**
+	 * This function insert a new career in carreras table
+	 * @param nombre the name of the signature
+	 * @param clave numbre of signatura
+	 * @return FALSE if the name or code already exsist or couldn't realized the input, TRUE if the querry is done
+	 */
 	function altaCarrera($nombre, $clave) {
 		$cnx = $this -> conexion -> getConexion();
 		$sql = "SELECT * FROM carreras WHERE nombre LIKE '$nombre' OR clave LIKE '$clave';";
@@ -46,11 +51,24 @@ class EstructuraMdl extends ModeloStr {
 	function bajaCarrera() {
 
 	}
-
-	function consultaCarrera() {
-
+	/**
+	 * This function return the deteails of one career
+	 * @param idCarrera
+	 * @param nombreCarrera
+	 * @return return FALSE if the querry was not made, NULL if the querry return an empty result, a vector if the querry was succesfully done
+	 */
+	function consultaCarrera($idCarrera=NULL,$nombreCarrera=NULL) {
+		if($idCarrera==NULL || $nombreCarrera==NULL){
+			echo "error alguno de los parametros esta vacio";
+		}else{
+			echo "iniciando consulta";
+		}
 	}
-
+	/**
+	 * This function return all the Carreers in a list
+	 * @param None
+	 * @return return FALSE if the querry was not made, NULL if the querry return an empty result and a mysqi_result object if the querry was succesfully done
+	 */
 	function consultaCarreras() {
 		$cnx = $this -> conexion -> getConexion();
 		$sql = "SELECT * FROM carreras";
@@ -68,8 +86,15 @@ class EstructuraMdl extends ModeloStr {
 	function modificacionCarrera() {
 
 	}
-
-	function altaMateria($nombre,$clave,$idAcademia=NULL) {
+	/**
+	 * This function insert a new signature in materia table
+	 * @param nombre the name of the signature
+	 * @param clave numbre of signatura
+	 * @param nombreDepartamento name of the department it belongs to
+	 * @param nombreAcademia name of the academy it belong to
+	 * @return FALSE if the name or code already exsist or couldn't realized the input, TRUE if the querry is done
+	 */
+	function altaMateria($nombre,$clave,$nombreDepartamento=NULL,$nombreAcademia=NULL) {
 		$cnx = $this -> conexion -> getConexion();
 		$sql = "SELECT * FROM materia WHERE nombre LIKE '$nombre' OR clave LIKE '$clave';";
 		if ($res = $cnx -> query($sql)) {
@@ -97,7 +122,15 @@ class EstructuraMdl extends ModeloStr {
 	function modificacionMateria() {
 
 	}
-
+	/**
+	 * This function insert a new department in departamento table
+	 * @param nombre the name of the department
+	 * @param clave numbre of department
+	 * @param abreviacion a string of letter use as a shortname
+	 * @param codigoMaestro code of the ruler XD
+	 * @return FALSE if the name or code already exsist or couldn't realized the input, TRUE if the querry is done
+	 */
+	
 	function altaDepartamento($nombre,$clave,$abreviacion,$codigoMaestro=NULL) {
 		$cnx = $this -> conexion -> getConexion();
 		
@@ -136,6 +169,12 @@ class EstructuraMdl extends ModeloStr {
 	function consultaDepartamento(){
 		
 	}
+	
+	/**
+	 * This function return all the Departments in a list
+	 * @param None
+	 * @return return FALSE if the querry was not made, NULL if the querry return an empty result and a mysqi_result object if the querry was succesfully done
+	 */
 	function consultaDepartamentos() {
 		$cnx = $this -> conexion -> getConexion();
 		$sql = "SELECT * FROM jefesdpto";
