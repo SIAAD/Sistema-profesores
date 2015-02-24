@@ -168,7 +168,20 @@ class EstructuraCtrl extends CtrlStr{
 					echo "ERROR NO SE REALIZO LA CONSULTA";
 				}
 				break;
+				
 			case 'carrera' :
+				$var= array();
+				$var['idCarrera']=$_GET['idCarrera'];
+				$var['nombreCarrera']=$_GET['nombreCarrera'];
+				if(parent::verificarParametros($var)){
+					echo 'variables correctas iniciando consulta';
+				}else{
+					echo 'error en las variables necesarias para la consulta';
+				}
+				
+				//problema>> ocupamos verificar el idCarrera y el nombre para prevenir inyeccion de SQL
+				
+				
 				break;
 
 			case 'departamentos' :

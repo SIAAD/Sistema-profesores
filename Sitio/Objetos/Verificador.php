@@ -91,7 +91,7 @@ class Verificador {
 		else return FALSE;
 	}
 	function validaIds($id){
-		if (preg_match("/^([1-9][0-9]*|0)$/", $cadena))return TRUE;
+		if (preg_match("/^([1-9][0-9]*|0[0-9]*)$/", $id))return TRUE;
 		else return FALSE;
 	}
 	

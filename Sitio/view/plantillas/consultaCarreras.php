@@ -10,22 +10,22 @@ class ConsultaCarreras extends PlantillaStr {
 	public function generaPagina($res) {
 	
 		$contenido = parent::generarHead();
-		$contenido .= '<h1>Carreras</h1><br><table><tr>';
+		$contenido .= '<h1>Carreras</h1><hr><table><thead><tr>';
 		
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 			$contenido.='<th>Eliminar</th>';
 		}
-		$contenido.='<th>Carrera</th><th>Clave</th></tr>';
+		$contenido.='<th>Carrera</th><th>Clave</th></tr></thead><tbody>';
 
 		while ($fila = $res -> fetch_assoc()) {
 			
+			$contenido.='<tr>';
 			if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
-				$contenido.='<tr><td><input type="checkbox" id="idCarrera" name="id_carrera" value="'.$fila['idCarreras'].'">'.'</td><td>'.$fila['nombre'].'</td><td>'.$fila['clave'].'</td></tr>';
-			}else{
-				$contenido.='<tr><td>'.$fila['nombre'].'</td><td>'.$fila['clave'].'</td></tr>';
+				$contenido.='<td><input type="checkbox" id="'.$fila['idCarreras'].'" name="id_carrera" value="'.$fila['idCarreras'].'">';
 			}
+			$contenido.='<td><a href="index.php?controlador=Estructura&accion=consulta&objeto=carrera&idCarrera='.$fila['idCarreras'].'&nombreCarrera='.$fila['nombre'].'">'.$fila['nombre'].'</td><td>'.$fila['clave'].'</td></tr>';
 		}
-		$contenido.='</table></br>';
+		$contenido.='</tbody></table></br>';
 		
 		$contenido.='<a href="index.php">Vinculo pagina principal</a></br>';
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){

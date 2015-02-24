@@ -10,7 +10,7 @@ class ConsultaDepartamento extends PlantillaStr {
 	public function generaPagina($res) {
 	
 		$contenido = parent::generarHead();
-		$contenido .= '<h1>Departamentos</h1><br><table><tr>';
+		$contenido .= '<h1>Departamentos</h1><hr><br><table><tr>';
 		
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 			$contenido.='<th>Eliminar</th>';
