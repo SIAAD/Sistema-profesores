@@ -75,6 +75,10 @@ class Verificador {
 		if (preg_match("/^[a-zA-Z]+[a-zA-Z0-9\._-]{2,}[a-zA-Z0-9]@[a-zA-Z0-9]+[.][a-zA-Z]+([.][a-zA-Z]+)*$/", $correo))return TRUE;
 		else return FALSE;
 	}//BIEN
+	function validaMaestro($cadena){
+		if (preg_match("/[A-Za-z\s]+[\s]\([\s][0-9]{7}[\s]\)/", $cadena))return TRUE;
+		else return FALSE;
+	}
 	function validaCadena($cadena) {//Function to validate the syntax of name
 
 		$cadena = ltrim($cadena);
@@ -87,7 +91,7 @@ class Verificador {
 		else return FALSE;
 	}
 	function validaIds($id){
-		if (preg_match("/^([1-9][0-9]*|0)$/", $cadena))return TRUE;
+		if (preg_match("/^([1-9][0-9]*|0[0-9]*)$/", $id))return TRUE;
 		else return FALSE;
 	}
 	
@@ -107,12 +111,4 @@ class Verificador {
 		else return FALSE;
 	}
 }
-
-/*$ver = new Verificador();
-var_dump($ver -> validaNombreCarrera('Licenciatura en Ingenieria en Comunicaciones y Electronica'));
-var_dump($ver -> validaNombreCarrera('aaaaaaaaaa'));
-var_dump($ver -> validaNombreCarrera('Lice'));
-var_dump($ver -> validaNombreCarrera('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'));
-var_dump($ver -> validaCodigo('2093663'));
-*/
 ?>
