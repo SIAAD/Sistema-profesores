@@ -1,6 +1,8 @@
 <?php
-	if(!file_exists('ModeloStr.php'))exit();
-	else require_once('ModeloStr.php');	
+	$path=dirname(dirname(dirname(__FILE__))).'\Sitio\model\ModeloStr.php';
+	
+if(file_exists($path))require_once $path;
+else exit();
 
  	 class AdminMdl extends  ModeloStr{
 		
@@ -9,17 +11,25 @@
 			parent::__construct();
 		}
 		
-		function altaUsuario($nombre,$pass){
+		function altaUsuario($nombre,$correo,$roles){
 			$cnx=$this->conexion->getConexion();
 			$sql = "SELECT * FROM usuarios WHERE nombre = '$nombre'";
-			$pass = md5($pass);
+			$pass = '1234567';
 			if($res=$cnx->query($sql)){
 				if($res->num_rows>0){	
 					return FALSE;
 				}else{
-					$sql="INSERT INTO usuarios (nombre,contrasena) VALUES ('$nombre','$pass')";
+					$sql="INSERT INTO usuarios (nombre,contrasena,correo) VALUES ('$nombre','$pass','$correo')";
 					$res = $cnx -> query($sql);
-					return $res;
+					$sql="SELECT MAX(idUsuarios) AS idUsuarios FROM usuarios";
+					$res = $cnx -> query($sql);
+					$fila = $res -> fetch_assoc();
+					$idUsuarios = $fila['idUsuarios'];
+					foreach ($roles as $key => $idPrivilegios) {
+					$sql="INSERT INTO roles (idUsuarios,idPrivilegios) VALUES ($idUsuarios,$idPrivilegios)";
+					$res = $cnx -> query($sql);
+					}
+					return $res;	
 				}
 			}else{
 				return FALSE;
@@ -43,7 +53,7 @@
 		
 		function consultaUsuarios(){
 			$cnx=$this->conexion->getConexion();
-			$sql = "SELECT * FROM usuarios us,roles rol, privilegios pri WHERE us.idusuarios = rol.idusuarios AND rol.idPrivilegios = pri.idPrivilegios";
+			$sql = "SELECT * FROM usuarios";
 			if($res=$cnx->query($sql)){
 				if($res->num_rows>0){
 					return $res;

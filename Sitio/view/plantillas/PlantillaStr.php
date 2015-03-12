@@ -32,7 +32,8 @@ abstract class PlantillaStr {
 		else $nav.="<a href='../../index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario=$idUsuario'>";
 		$nav.='Usuarios</a></h3><ul><li>';
 		if(CtrlStr::esAdmin($_SESSION['roles']))$nav.='<a href="../../index.php?controlador=Admin&accion=alta&objeto=usuario">Alta Usuario</a></li><li>';
-		$nav.="<a href='../../index.php?controlador=Admin&accion=modificar&objeto=usuario&idUsuario=$idUsuario'>Modificar Usuario</a></li></ul></li>";
+		$nav.="<a href='../../index.php?controlador=Admin&accion=modificar&objeto=usuario&idUsuario=$idUsuario'>Modificar Usuario</a></li>";
+		$nav.="<li><a href='../../index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario=$idUsuario'>Consultar Usuario</a></li></ul>";
 		
 		//MENU ESTRUCTURA
 		//departamento

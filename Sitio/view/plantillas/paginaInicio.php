@@ -14,7 +14,6 @@ class PaginaInicio extends PlantillaStr{
 		$roles = $_SESSION['roles'];
 
 		echo "<h1>BIENVENIDO $codigo</h1><a href='../../logout.php'>Cerrar Sesion</a>";
-		var_dump($_COOKIE);
 		
 		echo parent::generarNav();		
 	}

@@ -1,6 +1,11 @@
 <?php
-if (!file_exists('ctrl/CtrlStr.php'))exit();
-else require_once ('CtrlStr.php');
+/** @author:Jesus Alberto Ley Ayon
+ * @since: 04/Feb/2015
+ * @version 1.5
+ */ 
+$path=dirname(dirname(dirname(__FILE__))).'\Sitio\Ctrl\CtrlStr.php';
+if(file_exists($path))require_once $path;
+else exit();
 
 class AdminCtrl extends CtrlStr {
 	function __construct() {
@@ -20,39 +25,34 @@ class AdminCtrl extends CtrlStr {
 			//////USUARIO
 			case 'usuario' :
 			if(parent::esAdmin($_SESSION['roles'])){
-				if (isset($_POST['enviar'])) {
-					if(parent::verificar($_POST['nombre'])) {
-						$nombre = $_POST['nombre'];
-						$this -> verificador -> validaCodigo($nombre);
-						if (parent::verificar($_POST['pass'])) {
-							$pass = $_POST['pass'];
-							$this -> verificador -> validaPass($pass);
-							if(parent::verificar($_POST['correo'])){
-								$correo = $_POST['correo'];
-								$this -> verificador -> validaCorreo($correo);
-								$res = $this -> modelo -> altaUsuario($nombre, $pass);
-								if ($res) {
-									//header("Location: view/paginaInicio.php");
-									require_once('View/formularios/AltaUsuario.php');
-								} else {
-									echo "Error no se pudo dar de alta";
-								}
-							}else{
-								require_once 'View/formularios/AltaUsuario.php';
-							}				
-						} else {
-							require_once 'View/formularios/AltaUsuario.php';
+				if(parent::verificarParametros($_POST)){
+					$nombre = $_POST['nombreUsuario'];
+					$correo = $_POST['correo'];
+					$roles = array();
+					if(isset($_POST['maestro']))$roles['maestro'] = 2;
+					if(isset($_POST['asistente']))$roles['asistente'] = 3;
+					if(isset($_POST['revisor']))$roles['revisor'] = 4;
+					if(isset($_POST['jefe']))$roles['jefe'] = 5;
+					$resultado = $this->checarCombinaciones($roles);
+					if($resultado != FALSE){
+						$res = $this -> modelo ->altaUsuario($nombre, $correo,$resultado); 	
+						if($res){
+							header("refresh:2;index.php?controlador=Admin&accion=consulta&objeto=usuarios");
+						}else{
+							echo "No se pudo dar de alta";
 						}
-					} else {
-						require_once 'View/formularios/AltaUsuario.php';
+					}else{
+						echo "Combinacion de roles invalida";
 					}
-				}else {
+					
+				}else{
 					require_once 'View/formularios/AltaUsuario.php';
 				}
 			}
-				
-				break;
-				
+			else{
+				echo "Permiso denegado";
+			}	
+			break;	
 		}
 
 	}
@@ -83,13 +83,12 @@ class AdminCtrl extends CtrlStr {
 		}
 	}
 
-	protected final function consultas($objetos) {
+	protected final function consultas($objeto) {
 		$res;
 		switch($objeto){
 			case 'usuarios':
 				if(parent::esAdmin($_SESSION['roles'])){
-					$res= $this->modelo->consultaUsuarios();
-					echo"entro a consultas";					
+					$res= $this->modelo->consultaUsuarios();					
 					if ($res!=FALSE) {
 						if($res!=null){
 							if(file_exists('View/plantillas/consultaUsuarios.php')){
@@ -110,21 +109,24 @@ class AdminCtrl extends CtrlStr {
 				
 			break;
 			case 'usuario':
-				if(isset($_POST['enviar'])){
-					if(parent::verificar($_POST['id'])){
-						$id= $_POST['id'];
+				if($_REQUEST['idUsuario']==$_SESSION['idUsuario']){
+					if(parent::verificar($_REQUEST['idUsuario'])){
+						$id= $_REQUEST['idUsuario'];
 						$this -> verificador -> validaNumero($id);
 						$res = $this -> modelo -> consultaUsuario($id);
 						if($res){
 							require_once('view/plantillas/consultaUsuario.php');
+							$plantilla = new ConsultaUsuario();
+							$pagina=$plantilla->generaPagina($res);
+							echo $pagina;
 						}else{
 							echo "No se puede realizar la consulta";
 						}
 					}else{
-						require_once ('view/formularios/modificarUsuario.php');
+						echo "REGISTRO INEXISTENTE";
 					}
 				}else{
-					require_once ('view/formularios/modificarUsuario.php');
+					echo "NO SE REALIZO LA CONSULTA";
 				}
 				
 			}
@@ -133,40 +135,11 @@ class AdminCtrl extends CtrlStr {
 	protected final function modificaciones($objetos) {
 		switch ($objeto) {
 			case 'usuario':
+				if(parent::esAdmin($_SESSION['roles'])){
+					
+				}
 				if(isset($_POST['enviar'])){
-					if(parent::esAdmin($_SESSION['roles'])){
-						$longitud = '';
-						// Cambiado por la funcion de verificar datos
-						if(parent::verificar($_POST['nombre'])){
-							$nombre = $_POST['nombre'];
-							$this -> verificador -> validaCodigo($nombre);
-							if(parent::verificar($_POST['pass'])){
-								$pass = $_POST['pass'];
-								$this-> verificador -> validaPass($pass);	
-								$pass = md5($_POST['pass']);
-								if(parent::verificar($_POST['correo'])){
-									$correo = $_POST['correo'];
-									$this ->verificador -> validaCorreo($correo);
-									if(parent::verificar($_POST['estatus'])){
-										$estatus = $POST['estatus'];
-										$this -> verificador -> validaEstatus($estatus);
-									}else{
-										
-									}
-								}else{
-									
-								}
-							}else{
-								
-							}
-						}else{
-							
-						}
-					}else{
-						if(parent::verificar($_POST['pass'])){
-							$pass = md5($_POST['pass']);
-						}
-					}
+					
 				}
 				break;		
 		}
@@ -177,6 +150,25 @@ class AdminCtrl extends CtrlStr {
 		
 	}
 	
+	private function checarCombinaciones($roles){
+		$resultado = array_values($roles);
+		$error1 = array(2,3,4,5);
+		$error2 = array(3,5);
+		$error3 = array(4,5);
+		$error4 = array(2,4);
+		$error5 = array(5);
+		$error6 = array(4);
+		if (is_array($resultado) && !empty($resultado)) {
+			if($resultado == $error1 || $resultado == $error2 || $resultado == $error3 || $resultado == $error4){
+				echo "error";
+				return FALSE;
+			}else{
+				echo "correcto";
+				return $resultado;	
+			}
+		}
+		else return FALSE;
+	}
 }
 
 /*$controlador = new AdminCtrl();

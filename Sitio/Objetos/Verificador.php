@@ -83,7 +83,7 @@ class Verificador {
 		else return FALSE;
 	}
 	function validaNumero($numero){
-		if (preg_match("/^[-]?([0-9]+([.][0-9]+)?|[0][.][0-9]+)$/", $cadena))return TRUE;
+		if (preg_match("/^[-]?([0-9]+([.][0-9]+)?|[0][.][0-9]+)$/", $numero))return TRUE;
 		else return FALSE;
 	}
 	function validaIds($id){
@@ -100,6 +100,11 @@ class Verificador {
 			}
 		}//Look this wonderful code :D we are gonna to use to another controllers to clean the values.
 		return $variables;
+	}
+	
+	public function validaCheckbox($variable){
+		if(preg_match("/^on$/",$variable)) return TRUE;
+		else return FALSE;
 	}
 }
 

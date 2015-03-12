@@ -171,7 +171,21 @@ abstract class CtrlStr {
 			$keys = array_keys($variables);
 			foreach ($keys as $key) {
 				if (!$this -> verificar($variables[$key])) {
-					return FALSE;
+					//return FALSE;
+					switch ($key) {
+						case 'maestro':
+						case 'revisor':
+						case 'asistente':
+						case 'jefe':
+							if(!isset($variables[$key]) && !is_string($variables[$key])){
+								return FALSE;
+							}		
+							break;
+						
+						default:
+							return FALSE;
+							break;
+					}
 				} else {
 					switch ($key) {
 						case 'enviar' :
@@ -320,7 +334,14 @@ abstract class CtrlStr {
 
 						case 'teoriaPractica' :
 							break;
-
+						
+						case 'maestro':
+						case 'asistente':
+						case 'revisor':
+						case 'jefe':
+							if(!$this -> verificador -> validaCheckbox($variables[$key]))
+								return FALSE;
+							break;
 						default :
 							echo "No se encontro >>>> " . $key . ">>>>>>" . $variables[$key];
 							exit();

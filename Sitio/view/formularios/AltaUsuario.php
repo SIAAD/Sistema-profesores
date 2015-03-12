@@ -8,6 +8,7 @@
 	</head>
 
 	<body>
+		<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Lista de Usuarios</a>
 		<div>
 			<form class="span8" name="form01" method="post" action="index.php?controlador=Admin&accion=alta&objeto=usuario">
 				<fieldset>
@@ -16,11 +17,21 @@
 					<input type="text" name="nombreUsuario" id="nombreUsuario" placeholder="Codigo" onkeypress="validar(event)"/>
 					<label for="correo">Correo</label>
 					<input type="email" name="correo" id="correo" placeholder="Correo" >
-					<label for="pass">Password</label>
-					<input type="password" name="pass" id="pass" placeholder="Password" />
+					<p>Roles</p>
+					<label for="maestro">Maestro</label>
+					<input type="checkbox" name="maestro" id="maestro" />
+					<label for="asistente">Asistente</label>
+					<input type="checkbox" name="asistente" id="asistente"/>
+					<label for="revisor">Revisor</label>
+					<input type="checkbox" name="revisor" id="revisor" />
+					<label for="jefe">Jefe de Departamento</label>
+					<input type="checkbox" name="jefe" id="jefe" />
+					<input type="submit" name="enviar" id="enviar" />
 				</fieldset>
 			</form>
 		</div>
+		
+		
 	</body>
 	
 	<script>
