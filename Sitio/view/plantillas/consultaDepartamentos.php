@@ -18,12 +18,13 @@ class ConsultaDepartamento extends PlantillaStr {
 		$contenido.='<th>Departamento</th><th>Clave</th><th>Abreviacion</th><th>Jefe</th></tr>';
 
 		while ($fila = $res -> fetch_assoc()) {
+			var_dump($fila);
+			$contenido.='<tr>';
 			if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
-				$contenido.='<tr><td><input type="checkbox" id="idCarrera" name="id_carrera" value="'.$fila['idDepto'].'">'.'</td><td>'.$fila['nombreDepto'].'</td><td>'.$fila['claveDepto'].'</td><td>'.$fila['abreviacionDepto'];
-				$contenido.='</td><td>'.$fila['nombresMaestro'].' '.$fila['apellidosMaestro'].' ( '.$fila['codigoMaestro'].' )'.'</td></tr>';
-			}else{
-				$contenido.='<tr><td>'.$fila['nombreDepto'].'</td><td>'.$fila['claveDepto'].'</td><td>'.$fila['abreviacionDepto'].'</td><td>'.$fila['nombresMaestro'].' '.$fila['apellidosMaestro'].' ( '.$fila['codigoMaestro'].' )</td></tr>';
+				$contenido.='<td><input type="checkbox" id="'.$fila['idDepto'].'" name="'.$fila['idDepto'].'" value="'.$fila['idDepto'].'">'.'</td>';
 			}
+			$contenido.='<td>'.$fila['nombreDepto'].'</td><td>'.$fila['claveDepto'].'</td><td>'.$fila['abreviacionDepto'].'</td><td>'.$fila['nombresMaestro'].' '.$fila['apellidosMaestro'].' ( '.$fila['codigoMaestro'].' )</td></tr>';
+			
 		}
 		$contenido.='</table></br>';
 		

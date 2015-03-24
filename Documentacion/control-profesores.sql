@@ -1,4 +1,4 @@
-﻿SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
@@ -21,10 +21,10 @@ ENGINE = InnoDB;
 -- Table `control-profesores`.`estatus`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `control-profesores`.`estatus` (
-  `idestatus` INT NOT NULL AUTO_INCREMENT,
+  `idEstatus` INT NOT NULL AUTO_INCREMENT,
   `estatus` VARCHAR(1) NOT NULL,
   `descripcion` VARCHAR(45) NULL,
-  PRIMARY KEY (`idestatus`))
+  PRIMARY KEY (`idEstatus`))
 ENGINE = InnoDB;
 
 
@@ -36,12 +36,12 @@ CREATE TABLE IF NOT EXISTS `control-profesores`.`maestros` (
   `codigo` VARCHAR(7) NOT NULL,
   `nombres` VARCHAR(45) NOT NULL,
   `apellidos` VARCHAR(45) NOT NULL,
-  `idestatus` INT NOT NULL DEFAULT 1,
+  `idEstatus` INT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idMaestros`),
-  INDEX `fk_maestros_estatus1_idx` (`idestatus` ASC),
+  INDEX `fk_maestros_estatus1_idx` (`idEstatus` ASC),
   CONSTRAINT `fk_maestros_estatus1`
-    FOREIGN KEY (`idestatus`)
-    REFERENCES `control-profesores`.`estatus` (`idestatus`)
+    FOREIGN KEY (`idEstatus`)
+    REFERENCES `control-profesores`.`estatus` (`idEstatus`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -53,8 +53,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `control-profesores`.`departamento` (
   `idDepartamento` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
-  `clave` VARCHAR(45) NULL,
-  `abreviacion` VARCHAR(45) NULL,
+  `clave` VARCHAR(5) NULL,
+  `abreviacion` VARCHAR(7) NULL,
   `idMaestros` INT NOT NULL,
   PRIMARY KEY (`idDepartamento`),
   INDEX `fk_departamento_maestros1_idx` (`idMaestros` ASC),
@@ -73,7 +73,6 @@ CREATE TABLE IF NOT EXISTS `control-profesores`.`academia` (
   `idAcademia` INT NOT NULL AUTO_INCREMENT,
   `abreviacion` VARCHAR(45) NULL,
   `nombre` VARCHAR(45) NULL,
-  `clave` VARCHAR(45) NULL,
   `idMaestros` INT NOT NULL,
   `idDepartamento` INT NOT NULL,
   PRIMARY KEY (`idAcademia`),
@@ -99,9 +98,16 @@ CREATE TABLE IF NOT EXISTS `control-profesores`.`materia` (
   `idMateria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   `clave` VARCHAR(5) NULL,
-  `idAcademia` INT NOT NULL,
+  `idDepartamento` INT NOT NULL,
+  `idAcademia` INT NULL DEFAULT 0,
   PRIMARY KEY (`idMateria`),
+  INDEX `fk_materia_departamento1_idx` (`idDepartamento` ASC),
   INDEX `fk_materia_academia1_idx` (`idAcademia` ASC),
+  CONSTRAINT `fk_materia_departamento1`
+    FOREIGN KEY (`idDepartamento`)
+    REFERENCES `control-profesores`.`departamento` (`idDepartamento`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_materia_academia1`
     FOREIGN KEY (`idAcademia`)
     REFERENCES `control-profesores`.`academia` (`idAcademia`)
@@ -363,14 +369,14 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `control-profesores`.`usuarios` (
   `idUsuarios` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(7) NOT NULL,
-  `contraseña` VARCHAR(32) NOT NULL,
+  `contrasena` VARCHAR(32) NOT NULL,
   `correo` VARCHAR(45) NOT NULL,
-  `idestatus` INT NOT NULL DEFAULT 1,
+  `idEstatus` INT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idUsuarios`),
-  INDEX `fk_usuarios_estatus1_idx` (`idestatus` ASC),
+  INDEX `fk_usuarios_estatus1_idx` (`idEstatus` ASC),
   CONSTRAINT `fk_usuarios_estatus1`
-    FOREIGN KEY (`idestatus`)
-    REFERENCES `control-profesores`.`estatus` (`idestatus`)
+    FOREIGN KEY (`idEstatus`)
+    REFERENCES `control-profesores`.`estatus` (`idEstatus`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -520,6 +526,29 @@ CREATE TABLE IF NOT EXISTS `control-profesores`.`edificioAulas` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `control-profesores`.`AsistentesDepto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`AsistentesDepto` (
+  `idAsistentesDepto` INT NOT NULL,
+  `idDepartamento` INT NOT NULL,
+  `idUsuarios` INT NOT NULL,
+  PRIMARY KEY (`idAsistentesDepto`),
+  INDEX `fk_AsistentesDepto_departamento1_idx` (`idDepartamento` ASC),
+  INDEX `fk_AsistentesDepto_usuarios1_idx` (`idUsuarios` ASC),
+  CONSTRAINT `fk_AsistentesDepto_departamento1`
+    FOREIGN KEY (`idDepartamento`)
+    REFERENCES `control-profesores`.`departamento` (`idDepartamento`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_AsistentesDepto_usuarios1`
+    FOREIGN KEY (`idUsuarios`)
+    REFERENCES `control-profesores`.`usuarios` (`idUsuarios`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `control-profesores` ;
 
 -- -----------------------------------------------------
@@ -561,6 +590,11 @@ CREATE TABLE IF NOT EXISTS `control-profesores`.`carrerasDepartamento` (`nombre`
 -- Placeholder table for view `control-profesores`.`privilegiosUsuarios`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `control-profesores`.`privilegiosUsuarios` (`nombre` INT, `tipo` INT, `descripcion` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `control-profesores`.`datosMaestros`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `control-profesores`.`datosMaestros` (`idMaestros` INT, `codigo` INT, `nombres` INT, `apellidos` INT, `Estatus` INT, `descripcion` INT);
 
 -- -----------------------------------------------------
 -- View `control-profesores`.`incidencia`
@@ -665,6 +699,16 @@ CREATE  OR REPLACE VIEW `privilegiosUsuarios` AS
 SELECT us.nombre,pr.tipo,pr.descripcion FROM usuarios us 
 JOIN  roles ro ON ro.idUsuarios=us.idUsuarios
 JOIN privilegios pr ON ro.idPrivilegios=pr.idPrivilegios;
+
+-- -----------------------------------------------------
+-- View `control-profesores`.`datosMaestros`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `control-profesores`.`datosMaestros`;
+USE `control-profesores`;
+CREATE  OR REPLACE VIEW `datosMaestros` AS
+SELECT ma.idMaestros,ma.codigo,ma.nombres,ma.apellidos,es.Estatus,es.descripcion
+FROM maestros ma
+JOIN estatus es ON ma.idEstatus = es.idEstatus;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

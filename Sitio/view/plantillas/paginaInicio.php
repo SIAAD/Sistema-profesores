@@ -8,19 +8,17 @@
 require_once 'PlantillaStr.php';
 
 class PaginaInicio extends PlantillaStr{
+	
 	public final function generaPagina($datos){
 		if (session_id() == '')session_start();
 		$codigo = $_SESSION['codigo'];
 		$roles = $_SESSION['roles'];
 
-		echo "<h1>BIENVENIDO $codigo</h1><a href='../../logout.php'>Cerrar Sesion</a>";
+		$pagina=parent::generarHead();
+		$pagina.=parent::generaHeader($codigo);
+		$pagina.=parent::generarNav();
 		
-		echo parent::generarNav();		
+		echo $pagina;		
 	}
 }
-
-
-$plantilla = new PaginaInicio();
-$plantilla->generaPagina(NULL);
-
 ?>

@@ -60,6 +60,9 @@ class EstructuraMdl extends ModeloStr {
 	 */
 	function consultaCarrera($idCarrera=NULL,$nombreCarrera=NULL) {
 		if($idCarrera==NULL || $nombreCarrera==NULL){
+			$cnx = $this-> conexion ->getConexion();
+			$sql="SELECT * FROM carreras where idCarreras=$idCarrera;";
+			
 			echo "error alguno de los parametros esta vacio";
 		}else{
 			echo "iniciando consulta";
@@ -142,16 +145,14 @@ class EstructuraMdl extends ModeloStr {
 				return FALSE;
 			} else {
 				if($codigoMaestro==NULL){
-					echo "CodigoMaestro NULL";
-					var_dump($codigoMaestro);
 					$sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='1111111'));";
 				}else{
 					 $sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='$codigoMaestro'));";
 				}
 				$sql.="INSERT INTO `academia`( `nombre`, `abreviacion`, `idMaestros`, `idDepartamento`) VALUES ('Sin Academia ".$nombre."','N/A ".$abreviacion."',(SELECT (IdMaestros)FROM maestros WHERE codigo='$codigoMaestro')";
 				$sql.=",(SELECT (IdDepartamento)FROM departamento WHERE nombre='$nombre' AND clave = '$clave'))";
+				//ASEGURARME QUE EL MAESTRO SEA USUARIO Y SI
 				
-				//if($res = $cnx -> query($sql)) return TRUE;
 				if($res=$cnx->multi_query($sql)) return TRUE;
 				else{
 					if(mysqli_errno($cnx)=='1048'){
