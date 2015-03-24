@@ -9,8 +9,12 @@ else exit();
 class ConsultaDepartamento extends PlantillaStr {
 	public function generaPagina($res) {
 	
+		$codigo = $_SESSION['codigo'];
+		
 		$contenido = parent::generarHead();
-		$contenido .= '<h1>Departamentos</h1><hr><br><table><tr>';
+		$contenido .= parent::generaHeader($codigo);
+		$contenido .= parent::generarNav2();
+		$contenido .= '<h3>Departamentos</h3><hr><br><table><tr>';
 		
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 			$contenido.='<th>Eliminar</th>';
@@ -34,6 +38,8 @@ class ConsultaDepartamento extends PlantillaStr {
 			$contenido.='<a href="index.php?controlador=Estructura&accion=alta&objeto=departamento">Vinculo alta departamento</a>';
 		}
 		$res -> free();
+		
+		$contenido.=parent::generaFooter();
 		return $contenido;
 	}
 }

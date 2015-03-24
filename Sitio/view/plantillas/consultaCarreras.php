@@ -9,8 +9,13 @@ else exit();
 class ConsultaCarreras extends PlantillaStr {
 	public function generaPagina($res) {
 	
+		$codigo = $_SESSION['codigo'];
+		
 		$contenido = parent::generarHead();
-		$contenido .= '<h1>Carreras</h1><hr><table><thead><tr>';
+		$contenido .= parent::generaHeader($codigo);
+		$contenido .= parent::generarNav2();
+		
+		$contenido .= '<h3>Carreras</h3><hr><table><thead><tr>';
 		
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 			$contenido.='<th>Eliminar</th>';
@@ -35,6 +40,8 @@ class ConsultaCarreras extends PlantillaStr {
 			$contenido.='<a href="index.php?controlador=Estructura&accion=alta&objeto=carrera">Vinculo alta carrera</a>';
 		}
 		$res -> free();
+		
+		$contenido.=parent::generaFooter();
 		return $contenido;
 	}
 }

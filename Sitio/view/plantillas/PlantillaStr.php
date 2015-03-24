@@ -11,15 +11,15 @@ abstract class PlantillaStr {
 	public abstract function generaPagina($datos);
 	
 	protected static function generarHead(){
-		return '<head>
-			<meta charset="utf-8">
-			<meta http-equiv="X-UA-Compatible" content="IE=edge">
-			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>SIIAD</title>
-			<link rel="stylesheet" type="text/css" href="View/bootstrap/css/bootstrap.css"/>
-			<!--LINK PARA TUS PROPIOS ESTILOS-->
-			<link rel="stylesheet" type="text/css" href="View/bootstrap/css/styles.css" />
-		</head>';	
+		return '<!DOCTYPE html>
+		<html lang="en">
+			<head>
+				<meta charset="utf-8">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<title>SIIAD</title>
+				<link rel="stylesheet" type="text/css" href="View/bootstrap/css/bootstrap.css"/>
+			</head>';	
 	}
 	protected static function generaHeader($codigo){
 		
@@ -89,10 +89,66 @@ abstract class PlantillaStr {
 		$nav.='</ul>';
 		
 		return $nav;
-		//'</ul></nav>'
 	}
-	protected function generaFooter(){
+	protected function generarNav2(){
+		$nav='
+			<div class="row ">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar-content">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="index.php">SIAAD</a>
+						</div>
+						<div class="collapse navbar-collapse" id="mynavbar-content">
+							<ul class="nav navbar-nav">
+								<li>';
+								
+		if(CtrlStr::esAdmin($_SESSION['roles'])) $nav.='<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">';
+		else $nav.="<a href='index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario=$idUsuario'>";
 		
+		$nav.='Usuarios</a></li>';
+		
+		$nav.='<li>
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Estructura <b class="caret"> </b> </a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="index.php?controlador=Estructura&accion=consulta&objeto=departamentos">Departamentos</a>
+										</li>
+										<li>
+											<a href="index.php?controlador=Estructura&accion=consulta&objeto=academias">Academias</a>
+										</li>
+										<li class="divider">
+
+										</li>
+										<li>
+											<a href="index.php?controlador=Estructura&accion=consulta&objeto=carreras">Carreras</a>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">Feedback</a>
+								</li>
+							</ul>
+						</div>
+
+					</div>
+				</nav>
+			</div>';			
+		
+		return $nav;
+	}
+
+	protected function generaFooter(){
+		return '</div>
+		<script src="View/bootstrap/js/jquery.js"></script>
+		<script src="View/bootstrap/js/bootstrap.js"></script>
+	</body>
+</html>';
 	}
 	
 	protected function generaSider(){

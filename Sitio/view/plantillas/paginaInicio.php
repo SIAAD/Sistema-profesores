@@ -16,7 +16,8 @@ class PaginaInicio extends PlantillaStr{
 
 		$pagina=parent::generarHead();
 		$pagina.=parent::generaHeader($codigo);
-		$pagina.=parent::generarNav();
+		$pagina.=parent::generarNav2();
+		$pagina.=parent::generaFooter();
 		
 		echo $pagina;		
 	}

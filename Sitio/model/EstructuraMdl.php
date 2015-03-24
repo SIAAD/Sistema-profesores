@@ -145,7 +145,7 @@ class EstructuraMdl extends ModeloStr {
 				return FALSE;
 			} else {
 				if($codigoMaestro==NULL){
-					$sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='1111111'));";
+					$sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='1111111') AND nombre='Staff');";
 				}else{
 					 $sql="INSERT INTO `departamento`( `nombre`, `clave`, `abreviacion`, `idMaestros`) VALUES ('$nombre','$clave','$abreviacion',(SELECT (IdMaestros)FROM maestros WHERE codigo='$codigoMaestro'));";
 				}
