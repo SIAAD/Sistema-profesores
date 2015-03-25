@@ -21,8 +21,13 @@ abstract class PlantillaStr {
 				<link rel="stylesheet" type="text/css" href="View/bootstrap/css/bootstrap.css"/>
 			</head>';	
 	}
-	protected static function generaHeader($codigo){
+	protected static function generaHeader($codigo=NULL){
 		
+		
+		if($codigo==NULL){
+			echo "no se ingreso codigo";
+			exit();
+		}
 		return "<body>
 		<div class='container'>
 			<header class='page-header'>
@@ -106,12 +111,14 @@ abstract class PlantillaStr {
 						<div class="collapse navbar-collapse" id="mynavbar-content">
 							<ul class="nav navbar-nav">
 								<li>';
-								
-		if(CtrlStr::esAdmin($_SESSION['roles'])) $nav.='<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">';
-		else $nav.="<a href='index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario=$idUsuario'>";
 		
-		$nav.='Usuarios</a></li>';
-		
+		if (!session_id() == ''){
+			if(CtrlStr::esAdmin($_SESSION['roles'])) $nav.='<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Usuarios</a></li>';
+			else{
+				$idUsuario=$_SESSION['idUsuario'];
+				$nav.="<a href='index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario=$idUsuario'>Usuario</a></li>";
+			}
+		}								
 		$nav.='<li>
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Estructura <b class="caret"> </b> </a>

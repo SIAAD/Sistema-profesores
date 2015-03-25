@@ -8,14 +8,12 @@ else exit();
 
 class ConsultaCarreras extends PlantillaStr {
 	public function generaPagina($res) {
-	
-		$codigo = $_SESSION['codigo'];
 		
 		$contenido = parent::generarHead();
-		$contenido .= parent::generaHeader($codigo);
+		$contenido .= parent::generaHeader($_SESSION['codigo']);
 		$contenido .= parent::generarNav2();
 		
-		$contenido .= '<h3>Carreras</h3><hr><table><thead><tr>';
+		$contenido .= '<h3 class="sub-header">Carreras</h3><hr><div class="table-responsive"><table class="table table-striped"><thead><tr>';
 		
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 			$contenido.='<th>Eliminar</th>';
@@ -30,14 +28,17 @@ class ConsultaCarreras extends PlantillaStr {
 			}
 			$contenido.='<td><a href="index.php?controlador=Estructura&accion=consulta&objeto=carrera&idCarrera='.$fila['idCarreras'].'&nombreCarrera='.$fila['nombre'].'">'.$fila['nombre'].'</td><td>'.$fila['clave'].'</td></tr>';
 		}
-		$contenido.='</tbody></table></br>';
-		
-		$contenido.="Total de Carreras en el sistemas: ".$res->num_rows."<br>";
-		
-		$contenido.='<a href="index.php">Vinculo pagina principal</a></br>';
+		$contenido.='</tbody><tfoot><tr>';
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
-			$contenido.='<button type="eliminar">Eliminar Seleccionados</button><br>';	
-			$contenido.='<a href="index.php?controlador=Estructura&accion=alta&objeto=carrera">Vinculo alta carrera</a>';
+			$contenido.='<th colspan="2">Total de Carreras</th><td>';
+		}else{
+			$contenido.='<th>Total de Carreras</th><td>';
+		}
+		$contenido.=$res->num_rows.'</td></tr></tfood></table></div></br>';
+		
+		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
+			$contenido.='<button class="btn btn-lg btn-primary btn-block" type="eliminar">Eliminar Seleccionados</button><br>';	
+			$contenido.='<a class="btn btn-lg btn-primary btn-block" href="index.php?controlador=Estructura&accion=alta&objeto=carrera">Vinculo alta carrera</a>';
 		}
 		$res -> free();
 		
