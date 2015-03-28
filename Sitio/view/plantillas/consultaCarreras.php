@@ -2,6 +2,7 @@
 /** @author:Jorge Eduardo Garza Martinez
  * @since: 26/Ene/2015
  * @version BETA
+ * @see PlantillaStr.php
  */ 
 if(file_exists('View/plantillas/PlantillaStr.php'))require_once 'View/plantillas/PlantillaStr.php';
 else exit();

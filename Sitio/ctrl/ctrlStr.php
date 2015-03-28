@@ -1,17 +1,26 @@
 <?php
 /** @author:Jorge Eduardo Garza Martinez
  * @author:Jesus Alberto Ley Ayón
- * @since: 04/Feb/2015
- * @version 2.0
+ * @since: 25/Mar/2015
+ * @version 2.2
  */
 
 $path = dirname(dirname(__FILE__)) . '\Objetos\Verificador.php';
-if (!file_exists($path))exit();
-else require_once $path;
+if (!file_exists($path))
+	exit();
+else
+	require_once $path;
+
+$path = dirname(dirname(__FILE__)) . '\Objetos\outPutFormarter.php';
+if (!file_exists($path))
+	exit();
+else
+	require_once $path;
 
 abstract class CtrlStr {
 	protected $modelo;
 	protected $verificador;
+	protected $formato;
 	const ADMIN = 0;
 	const MTRS = 1;
 	const ASIS = 2;
@@ -20,47 +29,59 @@ abstract class CtrlStr {
 
 	public function __construct() {
 		$this -> verificador = new Verificador();
+		$this -> formato = new outPutFormarter();
 	}
 
 	/**
 	 *
 	 */
 	public static function esAdmin($var) {
-		if (in_array(self::ADMIN, $var))return TRUE;
-		else return FALSE;
+		if (in_array(self::ADMIN, $var))
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 	/**
 	 *
 	 */
 	static function esMstr($var) {
-		if (in_array(self::MTRS, $var)) return TRUE;
-		else return FALSE;
+		if (in_array(self::MTRS, $var))
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 	/**
 	 *
 	 */
 	static function esAsis($var) {
-		if (in_array(self::ASIS, $var)) return TRUE;
-		else return FALSE;
+		if (in_array(self::ASIS, $var))
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 	/**
 	 *
 	 */
 	static function esRevis($var) {
-		if (in_array(self::REVIS, $var))return TRUE;
-		else return FALSE;
+		if (in_array(self::REVIS, $var))
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 	/**
 	 *
 	 */
 	static function esJefDep($var) {
-		if (in_array(self::JEFDEP, $var))return TRUE;
-		else return FALSE;
+		if (in_array(self::JEFDEP, $var))
+			return TRUE;
+		else
+			return FALSE;
 	}
+
 	/**
 	 *Function that all the controllers used to choose with accion must be excecuted
 	 * @param none
@@ -71,29 +92,35 @@ abstract class CtrlStr {
 			if ($this -> checarAcciones()) {
 				$accion = $_GET['accion'];
 				$objeto = $_GET['objeto'];
-				switch ($accion) {
-					case 'alta' :
-						$this -> altas($objeto);
-						break;
+				if ($accion == 'consulta') {
+					$this -> consultas($objeto);
+				} else {
+					if (session_id() == '')session_start();
+					if (!isset($_SESSION['codigo'])) {
+						header('Location: view/formularios/login.html');
+					} else {
 
-					case 'baja' :
-						$this -> bajas($objeto);
-						break;
+						switch ($accion) {
+							case 'alta' :
+								$this -> altas($objeto);
+								break;
 
-					case 'consulta' :
-						$this -> consultas($objeto);
-						break;
+							case 'baja' :
+								$this -> bajas($objeto);
+								break;
 
-					case 'modificacion' :
-						$this -> modificaciones($objeto);
-						break;
+							case 'modificacion' :
+								$this -> modificaciones($objeto);
+								break;
 
-					case 'clonar' :
-						$this -> clonaciones($objeto);
-						break;
+							case 'clonar' :
+								$this -> clonaciones($objeto);
+								break;
 
-					default :
-						break;
+							default :
+								break;
+						}
+					}
 				}
 			} else {
 				header("Location: view/paginaInicio.php");
@@ -118,17 +145,22 @@ abstract class CtrlStr {
 	 * @return return TRUE if it is correct or FALSE
 	 */
 	protected function verificar($variable) {
-		if (isset($variable) && !empty($variable) && is_string($variable))return TRUE;
-		else return FALSE;
+		if (isset($variable) && !empty($variable) && is_string($variable))
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 	/**
 	 *
+
 	 */
 	protected function checarAcciones() {
 		if (isset($_GET['accion']) && !empty($_GET['accion'])) {
-			if (isset($_GET['objeto']) && !empty($_GET['objeto']))return TRUE;
-			else return FALSE;
+			if (isset($_GET['objeto']) && !empty($_GET['objeto']))
+				return TRUE;
+			else
+				return FALSE;
 		}
 	}
 
@@ -173,16 +205,16 @@ abstract class CtrlStr {
 				if (!$this -> verificar($variables[$key])) {
 					//return FALSE;
 					switch ($key) {
-						case 'maestro':
-						case 'revisor':
-						case 'asistente':
-						case 'jefe':
-							if(!isset($variables[$key]) && !is_string($variables[$key])){
+						case 'maestro' :
+						case 'revisor' :
+						case 'asistente' :
+						case 'jefe' :
+							if (!isset($variables[$key]) && !is_string($variables[$key])) {
 								return FALSE;
-							}		
+							}
 							break;
-						
-						default:
+
+						default :
 							return FALSE;
 							break;
 					}
@@ -264,11 +296,11 @@ abstract class CtrlStr {
 
 						case 'descripcionEstatus' :
 							break;
-						case 'datosMaestro':
-							if(!$this->verificador->validaMaestro($variables[$key]))
+						case 'datosMaestro' :
+							if (!$this -> verificador -> validaMaestro($variables[$key]))
 								return FALSE;
 							break;
-							
+
 						case 'nombreMaestro' :
 							break;
 
@@ -342,12 +374,12 @@ abstract class CtrlStr {
 
 						case 'teoriaPractica' :
 							break;
-						
-						case 'maestro':
-						case 'asistente':
-						case 'revisor':
-						case 'jefe':
-							if(!$this -> verificador -> validaCheckbox($variables[$key]))
+
+						case 'maestro' :
+						case 'asistente' :
+						case 'revisor' :
+						case 'jefe' :
+							if (!$this -> verificador -> validaCheckbox($variables[$key]))
 								return FALSE;
 							break;
 						default :
