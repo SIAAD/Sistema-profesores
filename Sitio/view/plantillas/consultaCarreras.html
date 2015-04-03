@@ -1,0 +1,22 @@
+{% extends "consultasStr.html" %}
+
+{% block eliminarFila %}
+	<td>
+		{% autoescape %}
+		<input type="checkbox" id="{{fila.id}}" name="id_carrera[]" value="{{fila.id}}">
+		{% endautoescape %}
+	</td>						
+{% endblock %}
+{% block datosTabla%}
+	<td>
+		{% autoescape %}
+		<a href="index.php?controlador=Estructura&accion=consulta&objeto=carrera&idCarrera='{{fila.id}}'&nombreCarrera='{{fila.nombre}}'">{{fila.nombre}}</a>
+		{% endautoescape %}
+	</td>
+	<td>
+		{{fila.clave}}
+	</td>
+{% endblock %}
+{% block acciones %}
+
+{% endblock %}

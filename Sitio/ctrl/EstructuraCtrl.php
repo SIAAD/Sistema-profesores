@@ -53,8 +53,6 @@ class EstructuraCtrl extends CtrlStr{
 						$datosMaestro=$_POST['datosMaestro'];
 						$corte = preg_split("/(([A-Za-z]+\s){2,}\s*)|((\([\s]*)|([\s]*\)))/",$datosMaestro,-1,PREG_SPLIT_NO_EMPTY);
 						$codigoMaestro=$corte[0];
-						
-						//exit();
 						if ($this -> modelo -> altaDepartamento($nombre, $clave, $abreviacion,$codigoMaestro)) {
 							header("refresh:2;index.php?controlador=Estructura&accion=consulta&objeto=departamentos");
 						} else {
@@ -154,8 +152,8 @@ class EstructuraCtrl extends CtrlStr{
 				$res = $this -> modelo -> consultaCarreras();
 				if ($res != FALSE) {
 					if ($res != null) {
-						if (file_exists('View/plantillas/consultaCarreras.php')) {
-							require_once 'View/plantillas/consultaCarreras.php';
+						if (file_exists('View/plantillas/plantillas viejas/consultaCarreras.php')) {
+							require_once 'View/plantillas/plantillas viejas/consultaCarreras.php';
 							$plantilla = new ConsultaCarreras();
 							$pagina = $plantilla -> generaPagina($res);
 							echo $pagina;

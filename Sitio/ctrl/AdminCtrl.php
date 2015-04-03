@@ -91,8 +91,8 @@ class AdminCtrl extends CtrlStr {
 					$res= $this->modelo->consultaUsuarios();					
 					if ($res!=FALSE) {
 						if($res!=null){
-							if(file_exists('View/plantillas/consultaUsuarios.php')){
-								require_once 'View/plantillas/consultaUsuarios.php';
+							if(file_exists('View/plantillas/plantillas viejas/consultaUsuarios.php')){
+								require_once 'View/plantillas/plantillas viejas/consultaUsuarios.php';
 								$plantilla = new ConsultaUsuarios();
 								$pagina=$plantilla->generaPagina($res);	
 								echo $pagina;

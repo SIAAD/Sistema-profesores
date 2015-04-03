@@ -1,11 +1,66 @@
 {% extends "plantillaStr.html" %}
 
 {% block content %}
-	<h3 class="sub-header">{{ nombreConsulta }}</h3>
-	<hr>
-	<div class="table-responsive">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Eliminar</th>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="sub-header">{{ nombreConsulta }}</h3>
+	</div>
+	<div class="panel-body table-responsive">
+		{% if datos %}
+		<!--div class="table-responsive"-->
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						{% if rol == 0 %}
+						<th>Eliminar</th>
+						{% endif %}
+						
+						{% for titular in encabezado %}
+						<th>{{titular}}</th>
+						{% endfor %}
+						
+					</tr>
+				</thead>
+				<tbody>
+					{% for fila in datos %}
+					<tr>
+						{% if rol == 0 %}
+						<td>
+							{% block eliminarFila %}
+							
+							{% endblock %}
+						</td>
+						{% endif %}
+						
+						{% block datosTabla%}
+
+						{% endblock %}
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						{% if rol == 0 %}
+						<th colspan="2">Total de {{nombreConsulta}}</th>
+						{% else %}
+						<th>Total de {{nombreConsulta}}</th>
+						{% endif %}
+						<td>{{totalFilas}}</td>
+					</tr>
+				</tfoot>
+			</table>
+			<!--/div-->
+		{% else %}
+		<div class="alert alert-warning" role="alert">
+			<span class="glyphicon glyphicon glyphicon-grain" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<strong>Error: </strong>No hay informacion en el Sistema
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+{% block acciones %}
+
+
+{% endblock %}
 {% endblock %}
