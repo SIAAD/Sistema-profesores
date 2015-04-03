@@ -17,10 +17,18 @@ if (!file_exists($path))
 else
 	require_once $path;
 
+$path = dirname(dirname(__FILE__)) . '\View\Twig\Autoloader.php';
+if (!file_exists($path))
+	exit();
+else
+	require_once $path;
+
 abstract class CtrlStr {
 	protected $modelo;
 	protected $verificador;
 	protected $formato;
+	protected $twig;
+	protected $diccionario;
 	const ADMIN = 0;
 	const MTRS = 1;
 	const ASIS = 2;
@@ -30,6 +38,13 @@ abstract class CtrlStr {
 	public function __construct() {
 		$this -> verificador = new Verificador();
 		$this -> formato = new outPutFormarter();
+		
+		Twig_Autoloader::register();
+		$loader = new Twig_Loader_Filesystem('view/plantillas');
+		$this -> twig = new Twig_Environment($loader, array(
+			//'cache' => '/path/to/compilation_cache',
+		));
+		$this -> diccionario = array();
 	}
 
 	/**
@@ -88,6 +103,12 @@ abstract class CtrlStr {
 	 * @return NULL
 	 */
 	public function ejecutar() {
+		if (session_id() == '')session_start();
+		if (isset($_SESSION['codigo'])){		
+			$this->diccionario['codigo']=$_SESSION['codigo'];
+			$this->diccionario['idUsuario']=$_SESSION['idUsuario'];
+			$this->diccionario['rol']=min($_SESSION['roles']);
+		}
 		if (isset($_GET)) {
 			if ($this -> checarAcciones()) {
 				$accion = $_GET['accion'];
@@ -95,7 +116,6 @@ abstract class CtrlStr {
 				if ($accion == 'consulta') {
 					$this -> consultas($objeto);
 				} else {
-					if (session_id() == '')session_start();
 					if (!isset($_SESSION['codigo'])) {
 						header('Location: view/formularios/login.html');
 					} else {

@@ -3,15 +3,14 @@
  * @since: 02/Dic/2014
  * @version BETA SOPORTE DE COOKIES
  */
-//require_once('view/plantillas/paginaInicio.php');
-//$inicio= new PaginaInicio();
-
 require_once 'View/Twig/Autoloader.php';
+
 Twig_Autoloader::register();
 $loader = new Twig_Loader_Filesystem('view/plantillas');
 $twig = new Twig_Environment($loader, array(
 //'cache' => '/path/to/compilation_cache',
 ));
+$diccionario= array();
 
 /*
  //creamos la sesion
@@ -28,16 +27,11 @@ $twig = new Twig_Environment($loader, array(
  } else {*/
 if (session_id() == '')session_start();
 if (!isset($_GET['controlador']) && empty($_GET['controlador'])) {
-	//header("Location: view/plantillas/paginaInicio.php");
-	//$inicio->generaPagina(NULL);
-	if (isset($_SESSION['codigo'])){
-		//var_dump($_SESSION);
-		//exit();
-		
-		$codigo=$_SESSION['codigo'];
-		$idUsuario=$_SESSION['idUsuario'];
-		$rol=$_SESSION['roles'];
-		echo $twig -> render('index.html', array('codigo'=>$codigo,'idUsuario'=>$idUsuario,'rol'=>min($rol)));
+	if (isset($_SESSION['codigo'])){		
+		$diccionario['codigo']=$_SESSION['codigo'];
+		$diccionario['idUsuario']=$_SESSION['idUsuario'];
+		$diccionario['rol']=min($_SESSION['roles']);
+		echo $twig -> render('index.html', $diccionario);
 	}else echo $twig -> render('index.html', array());
 } else {
 	$controlador = $_GET['controlador'] . 'Ctrl';
@@ -51,12 +45,8 @@ if (!isset($_GET['controlador']) && empty($_GET['controlador'])) {
 			require_once ('VISTAS/ERRORES/opcionInvalida.html');
 		}
 	} else {
-		if (isset($_SESSION['codigo'])) echo $twig -> render('index.html', array('codigo'=>$_SESSION['codigo'],'idUsuario'=>$_SESSION['idUsuario'],'rol'=>min($_SESSION['roles'])));
+		if (isset($_SESSION['codigo'])) echo $twig -> render('index.html', $diccionario);
 		else echo $twig -> render('index.html', array());
-		//header("Location: view/plantillas/paginaInicio.php");
-		//ctrl default
-		//require_once ('ctrl/alumnosCtrl.php');
-		//$ctrl = new alumnosCtrl();
 	}
 }
 

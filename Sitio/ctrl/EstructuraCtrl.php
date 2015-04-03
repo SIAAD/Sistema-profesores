@@ -150,7 +150,7 @@ class EstructuraCtrl extends CtrlStr{
 			case 'carreras' :
 				//BIEN
 				$res = $this -> modelo -> consultaCarreras();
-				if ($res != FALSE) {
+				/*if ($res != FALSE) {
 					if ($res != null) {
 						if (file_exists('View/plantillas/plantillas viejas/consultaCarreras.php')) {
 							require_once 'View/plantillas/plantillas viejas/consultaCarreras.php';
@@ -165,7 +165,37 @@ class EstructuraCtrl extends CtrlStr{
 					}
 				} else {
 					echo "ERROR NO SE REALIZO LA CONSULTA";
+				}*/
+				if($res != FALSE){
+					if($res != NULL){
+				 		$this->diccionario['nombreConsulta']='Carreras';
+						$this->diccionario['encabezado']=array('Nombre','Clave');
+						$this->diccionario['datos']=$this->formato->datosObjetos($res);
+						$this->diccionario['totalFilas']=4;
+					}else{
+						$this->diccionario['datos']=FALSE;
+					}
+				}else{
+				 	//DEJA EN BLANCO LA SECCION DATOS PORQUE OCURRIO UN ERROR
+					//$this->diccionario['datos']=FALSE;
 				}
+				
+				/*$datos=array(
+					array('id'=>'1',
+						  'nombre'=>'Ingenieria en Computacion',
+						  'clave'=>'INCO'),
+					array('id'=>'2',
+						  'nombre'=>'Ingenieria en Informatica',
+						  'clave'=>'INFO'),
+					array('id'=>'3',
+						  'nombre'=>'Ingenieria en Biomedica',
+						  'clave'=>'INBI'),
+					array('id'=>'4',
+						  'nombre'=>'Ingenieria en Comunicaciones y Electronica',
+						  'clave'=>'INCE'),
+				);*/
+				//$this->diccionario['totalFilas']=4;
+				echo $this->twig->render('consultaCarreras.html',$this->diccionario);
 				break;
 				
 			case 'carrera' :

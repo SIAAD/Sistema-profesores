@@ -1,12 +1,15 @@
 {% extends "plantillaStr.html" %}
 
 {% block content %}
+<div class="row">
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="sub-header">{{ nombreConsulta }}</h3>
 	</div>
 	<div class="panel-body table-responsive">
-		{% if datos %}
+		{% if datos is defined%}
+		
+		{% if datos%}
 		<!--div class="table-responsive"-->
 			<table class="table table-striped">
 				<thead>
@@ -24,7 +27,7 @@
 				<tbody>
 					{% for fila in datos %}
 					<tr>
-						{% if rol == 0 %}
+						{% if rol is defined and rol == 0 %}
 						<td>
 							{% block eliminarFila %}
 							
@@ -36,10 +39,11 @@
 
 						{% endblock %}
 					</tr>
+					{% endfor %}
 				</tbody>
 				<tfoot>
 					<tr>
-						{% if rol == 0 %}
+						{% if rol is defined and rol == 0 %}
 						<th colspan="2">Total de {{nombreConsulta}}</th>
 						{% else %}
 						<th>Total de {{nombreConsulta}}</th>
@@ -56,9 +60,16 @@
 			<strong>Error: </strong>No hay informacion en el Sistema
 		</div>
 		{% endif %}
+		{% else %}
+		<div class="alert alert-danger" role="alert">
+			<span class="glyphicon glyphicon glyphicon-fire" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<strong>Error: </strong>No se pudo realizar la operacion
+		</div>
+		{% endif %}
 	</div>
 </div>
-
+</div>
 {% block acciones %}
 
 

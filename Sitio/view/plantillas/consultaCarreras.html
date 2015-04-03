@@ -1,12 +1,11 @@
 {% extends "consultasStr.html" %}
 
 {% block eliminarFila %}
-	<td>
-		{% autoescape %}
-		<input type="checkbox" id="{{fila.id}}" name="id_carrera[]" value="{{fila.id}}">
-		{% endautoescape %}
-	</td>						
+	{% autoescape %}
+	<input type="checkbox" id="{{fila.id}}" name="id_carrera[]" value="{{fila.id}}">
+	{% endautoescape %}					
 {% endblock %}
+
 {% block datosTabla%}
 	<td>
 		{% autoescape %}
