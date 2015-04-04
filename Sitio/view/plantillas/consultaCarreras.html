@@ -1,9 +1,18 @@
 {% extends "consultasStr.html" %}
+{% block eliminar %}
+	{% if rol is defined and rol == 0 %}
+		<th>Eliminar</th>
+	{% endif %}
+{% endblock %}
 
 {% block eliminarFila %}
-	{% autoescape %}
-	<input type="checkbox" id="{{fila.id}}" name="id_carrera[]" value="{{fila.id}}">
-	{% endautoescape %}					
+	{% if rol is defined and rol == 0 %}
+	<td> 
+		{% autoescape %}
+		<input type="checkbox" id="{{fila.idCarrera}}" name="id_carrera[]" value="{{fila.idCarrera}}">
+		{% endautoescape %}	
+	</td>
+	{% endif %}					
 {% endblock %}
 
 {% block datosTabla%}
