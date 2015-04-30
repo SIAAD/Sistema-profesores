@@ -13,12 +13,12 @@ class PaginaInicio extends PlantillaStr{
 		if (session_id() == '')session_start();
 		$codigo = $_SESSION['codigo'];
 		$roles = $_SESSION['roles'];
-
+		//var_dump($_SESSION) ;
+		
 		$pagina=parent::generarHead();
 		$pagina.=parent::generaHeader($codigo);
 		$pagina.=parent::generarNav2();
 		$pagina.=parent::generaFooter();
-		
 		echo $pagina;		
 	}
 }

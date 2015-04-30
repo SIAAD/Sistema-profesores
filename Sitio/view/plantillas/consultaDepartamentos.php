@@ -14,7 +14,7 @@ class ConsultaDepartamento extends PlantillaStr {
 		$contenido = parent::generarHead();
 		$contenido .= parent::generaHeader($codigo);
 		$contenido .= parent::generarNav2();
-		$contenido .= '<h3>Departamentos</h3><hr><br><table><tr>';
+		$contenido .= '<h3>Departamentos</h3><hr><br><div class="table-responsive"><table class="table table-striped"><tr>';
 		
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 			$contenido.='<th>Eliminar</th>';
@@ -22,7 +22,7 @@ class ConsultaDepartamento extends PlantillaStr {
 		$contenido.='<th>Departamento</th><th>Clave</th><th>Abreviacion</th><th>Jefe</th></tr>';
 
 		while ($fila = $res -> fetch_assoc()) {
-			var_dump($fila);
+			//var_dump($fila);
 			$contenido.='<tr>';
 			if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){
 				$contenido.='<td><input type="checkbox" id="'.$fila['idDepto'].'" name="'.$fila['idDepto'].'" value="'.$fila['idDepto'].'">'.'</td>';
@@ -30,7 +30,7 @@ class ConsultaDepartamento extends PlantillaStr {
 			$contenido.='<td>'.$fila['nombreDepto'].'</td><td>'.$fila['claveDepto'].'</td><td>'.$fila['abreviacionDepto'].'</td><td>'.$fila['nombresMaestro'].' '.$fila['apellidosMaestro'].' ( '.$fila['codigoMaestro'].' )</td></tr>';
 			
 		}
-		$contenido.='</table></br>';
+		$contenido.='</table></div></br>';
 		
 		$contenido.='<a href="index.php">Vinculo pagina principal</a></br>';
 		if(CtrlStr::esAdmin($_SESSION['roles'])|| CtrlStr::esAsis($_SESSION['roles']) || CtrlStr::esJefDep($_SESSION['roles'])){

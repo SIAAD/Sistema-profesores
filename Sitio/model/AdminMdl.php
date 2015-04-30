@@ -38,23 +38,29 @@ else exit();
 		
 		function bajaUsuario($id){
 			$cnx = $this -> conexion -> getConexion();
-			$sql = "UPDATE administradores SET estatus = 1 WHERE id = $id";
-			$res = $cnx -> query($sql);
+			$sql = "UPDATE usuarios SET idestatus = 0 WHERE idUsuarios = $id";
+			$res = $cnx -> query($sql);	
 			if($res){
-				return $res;
-			}else {
-				return FALSE;
-			}
+					return $res;
+				}else {
+					return FALSE;
+				}
 		}
 		
-		function modificaUsuario($id){
+		function modificaUsuario($nombre,$correo,$pass,$roles){
 			$cnx=$this->conexion->getConexion();
 			$sql = "SELECT * FROM usuarios WHERE nombre = '$nombre'";
-			$pass = '1234567';
 			if($res=$cnx->query($sql)){
 				if($res->num_rows>0){	
 					return FALSE;
 				}else{
+					echo "UPDATE administradores SET nombre = '$nombre', apellidos = '$apellido', email = '$email',imagen = '$imagen'  WHERE id = $id ";
+					
+					$sql="UPDATE usuarios SET nombre = '$nombre', correo = '$correo', pass = $pass";
+						
+						
+					
+					
 					$sql="INSERT INTO usuarios (nombre,contrasena,correo) VALUES ('$nombre','$pass','$correo')";
 					$res = $cnx -> query($sql);
 					$sql="SELECT MAX(idUsuarios) AS idUsuarios FROM usuarios";
@@ -74,7 +80,7 @@ else exit();
 		
 		function consultaUsuarios(){
 			$cnx=$this->conexion->getConexion();
-			$sql = "SELECT * FROM usuarios";
+			$sql = "SELECT * FROM usuarios WHERE  idestatus != 0";
 			if($res=$cnx->query($sql)){
 				if($res->num_rows>0){
 					return $res;
@@ -88,7 +94,7 @@ else exit();
 		
 		function consultaUsuario($id){
 			$cnx=$this->conexion->getConexion();
-			$sql = "SELECT * FROM usuarios us,roles rol, privilegios pri WHERE us.idusuarios = $id AND us.idusuarios = rol.idusuarios AND rol.idPrivilegios = pri.idPrivilegios";
+			$sql = "SELECT * FROM usuarios us,roles rol, privilegios pri WHERE us.idusuarios = $id AND us.idusuarios = rol.idusuarios AND rol.idPrivilegios = pri.idPrivilegios AND us.idestatus!=0";
 			if($res=$cnx->query($sql)){
 				if($res->num_rows>0){
 					return $res;

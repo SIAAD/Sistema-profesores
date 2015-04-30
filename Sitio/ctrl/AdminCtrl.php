@@ -26,13 +26,19 @@ class AdminCtrl extends CtrlStr {
 			case 'usuario' :
 			if(parent::esAdmin($_SESSION['roles'])){
 				if(parent::verificarParametros($_POST)){
+					
+					$test = new EstructuraCtrl();
+					$test -> ejecutar();
+						
 					$nombre = $_POST['nombreUsuario'];
 					$correo = $_POST['correo'];
 					$roles = array();
+					//Asignar los valores de los roles
 					if(isset($_POST['maestro']))$roles['maestro'] = 2;
 					if(isset($_POST['asistente']))$roles['asistente'] = 3;
 					if(isset($_POST['revisor']))$roles['revisor'] = 4;
 					if(isset($_POST['jefe']))$roles['jefe'] = 5;
+					//verificar combinacion de roles
 					$resultado = $this->checarCombinaciones($roles);
 					if($resultado != FALSE){
 						$res = $this -> modelo ->altaUsuario($nombre, $correo,$resultado); 	
@@ -44,7 +50,6 @@ class AdminCtrl extends CtrlStr {
 					}else{
 						echo "Combinacion de roles invalida";
 					}
-					
 				}else{
 					require_once 'View/formularios/AltaUsuario.php';
 				}
@@ -58,25 +63,36 @@ class AdminCtrl extends CtrlStr {
 	}
 
 	protected final function bajas($objeto) {
+		var_dump($_POST['idUsuarios']);
 		switch($objeto){
-			case 'usuario':
+			case 'usuarios':
 				if(parent::esAdmin($_SESSION['roles'])){
-					if (isset($_POST['enviar'])) {
-						if(parent::verificar($_POST['id'])) {
-							$id = $_POST['id'];
-							$this -> verificador -> validaNumero($_POST['id']);
-							$res = $this -> modelo -> bajaUsuario($id);
-							if ($res) {
-								//header("Location: view/paginaInicio.php");
-								require_once('view/formularios/bajaUsuario.php');
-							} else {
-								echo "Error no se pudo dar de baja";
-							}	
-						} else {
-							require_once ('view/formularios/bajaUsuario.php');
+					if(parent::verificar($_POST['idUsuarios'])) {
+						$idUsuarios = $_POST['idUsuarios'];
+						$idUsuarios = explode(',', $idUsuarios);
+						if($var=is_array($idUsuarios)){
+							$idUsuarios=array_unique($idUsuarios);
+							//var_dump($idUsuarios);
+							foreach ($idUsuarios as $key => $id) {
+								$this -> verificador -> validaIds($id);
+								$res = $this -> modelo -> bajaUsuario($id);
+								//var_dump($id);
+							}
+							
 						}
-					}else {
-						require_once ('view/formularios/bajaUsuario.php');
+						else {if(is_string($idUsuarios)){
+							$this -> verificador -> validaIds($idUsuarios);
+						}
+						$res = $this -> modelo -> bajaUsuario($idUsuarios);
+						}
+						var_dump($res);
+						if ($res) {
+							echo "Baja Exitosa";
+						} else {
+							echo "Error no se pudo dar de baja";
+						}	
+					} else {
+						echo "No tienes permisos suficientes";
 					}
 				}
 			break; 
@@ -109,10 +125,10 @@ class AdminCtrl extends CtrlStr {
 				
 			break;
 			case 'usuario':
-				if($_REQUEST['idUsuario']==$_SESSION['idUsuario']){
+				if($_REQUEST['idUsuario']==$_SESSION['idUsuario'] || in_array('0',$_SESSION['roles'])){
 					if(parent::verificar($_REQUEST['idUsuario'])){
 						$id= $_REQUEST['idUsuario'];
-						$this -> verificador -> validaNumero($id);
+						$this -> verificador -> validaIds($id);
 						$res = $this -> modelo -> consultaUsuario($id);
 						if($res){
 							require_once('view/plantillas/consultaUsuario.php');
@@ -126,7 +142,7 @@ class AdminCtrl extends CtrlStr {
 						echo "REGISTRO INEXISTENTE";
 					}
 				}else{
-					echo "NO SE REALIZO LA CONSULTA";
+					echo "NO SE TIENEN LOS PERMISOS";
 				}
 				
 			}
@@ -135,8 +151,32 @@ class AdminCtrl extends CtrlStr {
 	protected final function modificaciones($objetos) {
 		switch ($objeto) {
 			case 'usuario':
-				if(parent::esAdmin($_SESSION['roles'])){
-					
+				if(parent::esAdmin($_SESSION['roles']) || $_SESSION['codigo'] == $POST['codigo']) {
+					if(parent::verificarParametros($_POST)){
+						$nombre = $_POST['nombreUsuario'];
+						$correo = $_POST['correo'];
+						$pass = $_POST['pass'];
+						$roles = array();
+						//Asignar los valores de los roles
+						if(isset($_POST['maestro']))$roles['maestro'] = 2;
+						if(isset($_POST['asistente']))$roles['asistente'] = 3;
+						if(isset($_POST['revisor']))$roles['revisor'] = 4;
+						if(isset($_POST['jefe']))$roles['jefe'] = 5;
+						//verificar combinacion de roles
+						$resultado = $this->checarCombinaciones($roles);
+						if($resultado != FALSE){
+							$res = $this -> modelo -> modificaUsuario($nombre, $correo,$resultado); 	
+							if($res){
+								header("refresh:2;index.php?controlador=Admin&accion=consulta&objeto=usuarios");
+							}else{
+								echo "No se pudo modificar";
+							}
+						}else{
+							echo "Combinacion de roles invalida";
+						}
+					}else{
+						require_once 'View/formularios/AltaUsuario.php';
+					}
 				}
 				if(isset($_POST['enviar'])){
 					

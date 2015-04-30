@@ -2,31 +2,31 @@
 <html lang="en">
 	<head>
 		<title>SIAAD</title>
-		<link href="bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
-		<script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
-		<script src="jquery/jquery-1.8.3.min.js"></script>
+		<link href="view/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<script src="view/bootstrap/js/jquery.js"></script>
+		<script src="view/bootstrap/js/bootstrap.js"></script>
 	</head>
 
 	<body>
-		<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Lista de Usuarios</a>
+		<h2><a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Lista de Usuarios</a></h2>
 		<div>
 			<form class="span8" name="form01" method="post" action="index.php?controlador=Admin&accion=alta&objeto=usuario">
 				<fieldset>
 					<legend>Alta Usuario</legend>
 					<label for="nombreUsuario">Codigo</label>
-					<input type="text" name="nombreUsuario" id="nombreUsuario" placeholder="Codigo" onkeypress="validar(event)"/>
+					<input type="text" name="nombreUsuario" id="nombreUsuario" placeholder="Codigo" maxlength="7" onkeypress="return validar(event);" required="required"/>
 					<label for="correo">Correo</label>
 					<input type="email" name="correo" id="correo" placeholder="Correo" >
-					<p>Roles</p>
+					<h4>Roles</h4>
 					<label for="maestro">Maestro</label>
-					<input type="checkbox" name="maestro" id="maestro" />
+					<input type="checkbox" name="maestro" id="maestro" onclick="altaMaestro(this);" />
 					<label for="asistente">Asistente</label>
-					<input type="checkbox" name="asistente" id="asistente"/>
+					<input type="checkbox" name="asistente" id="asistente" on/>
 					<label for="revisor">Revisor</label>
 					<input type="checkbox" name="revisor" id="revisor" />
 					<label for="jefe">Jefe de Departamento</label>
 					<input type="checkbox" name="jefe" id="jefe" />
-					<input type="submit" name="enviar" id="enviar" />
+					<input type="submit" class="btn btn-default" name="enviar" id="enviar" />
 				</fieldset>
 			</form>
 		</div>
@@ -44,5 +44,14 @@
 		    }
 		    return true;
 		}
+		
+		function altaMaestro(casilla){
+			//var marcado = $(casilla).prop("checked") ? true : false;
+			
+			//$(casilla).prop("checked"); 
+			console.log($(casilla).prop("checked"));
+		}
+		
+		
 	</script>
 </html>

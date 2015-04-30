@@ -113,10 +113,28 @@ abstract class PlantillaStr {
 								<li>';
 		
 		if (!session_id() == ''){
-			if(CtrlStr::esAdmin($_SESSION['roles'])) $nav.='<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Usuarios</a></li>';
+			if(CtrlStr::esAdmin($_SESSION['roles'])) //$nav.='<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Usuarios</a></li>';
+			$nav.='<li>
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Usuarios <b class="caret"> </b> </a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="index.php?controlador=Admin&accion=alta&objeto=usuario">Alta Usuario</a>
+										</li>
+										<li>
+											<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Consulta Usuarios</a>
+										</li>
+										<li>
+											<a href="index.php?controlador=Admin&accion=modificar&objeto=usuario">Modificar Usuario</a>
+										</li>
+									</ul>
+								</li>
+								';
+			/////////////////
 			else{
 				$idUsuario=$_SESSION['idUsuario'];
 				$nav.="<a href='index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario=$idUsuario'>Usuario</a></li>";
+				
 			}
 		}								
 		$nav.='<li>
