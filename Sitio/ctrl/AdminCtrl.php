@@ -51,7 +51,14 @@ class AdminCtrl extends CtrlStr {
 						echo "Combinacion de roles invalida";
 					}
 				}else{
-					require_once 'View/formularios/AltaUsuario.php';
+					if(file_exists('View/formularios/AltaUsuario.php')){
+						$datos = '1';
+						require_once 'View/formularios/AltaUsuario.php';
+						$plantilla = new AltaUsuario();
+						$pagina=$plantilla->generaPagina($datos);
+						echo $pagina;
+					}
+					
 				}
 			}
 			else{
@@ -63,7 +70,7 @@ class AdminCtrl extends CtrlStr {
 	}
 
 	protected final function bajas($objeto) {
-		var_dump($_POST['idUsuarios']);
+		//var_dump($_POST['idUsuarios']);
 		switch($objeto){
 			case 'usuarios':
 				if(parent::esAdmin($_SESSION['roles'])){
@@ -85,7 +92,7 @@ class AdminCtrl extends CtrlStr {
 						}
 						$res = $this -> modelo -> bajaUsuario($idUsuarios);
 						}
-						var_dump($res);
+						//var_dump($res);
 						if ($res) {
 							echo "Baja Exitosa";
 						} else {
@@ -148,10 +155,11 @@ class AdminCtrl extends CtrlStr {
 			}
 		}
 
-	protected final function modificaciones($objetos) {
+	protected final function modificaciones($objeto) {
+		echo "entra";
 		switch ($objeto) {
 			case 'usuario':
-				if(parent::esAdmin($_SESSION['roles']) || $_SESSION['codigo'] == $POST['codigo']) {
+				if(parent::esAdmin($_SESSION['roles']) || $_SESSION['codigo'] == $POST['nombreUsuario']) {
 					if(parent::verificarParametros($_POST)){
 						$nombre = $_POST['nombreUsuario'];
 						$correo = $_POST['correo'];
@@ -167,7 +175,7 @@ class AdminCtrl extends CtrlStr {
 						if($resultado != FALSE){
 							$res = $this -> modelo -> modificaUsuario($nombre, $correo,$resultado); 	
 							if($res){
-								header("refresh:2;index.php?controlador=Admin&accion=consulta&objeto=usuarios");
+								echo "Modificacion Realizada";
 							}else{
 								echo "No se pudo modificar";
 							}
@@ -175,7 +183,14 @@ class AdminCtrl extends CtrlStr {
 							echo "Combinacion de roles invalida";
 						}
 					}else{
-						require_once 'View/formularios/AltaUsuario.php';
+						$res = $this->modelo->consultaUsuario($id);
+						if(file_exists('View/formularios/modificarUsuario.php')){
+						$datos = '1';
+						require_once 'View/formularios/modificarUsuario.php';
+						$plantilla = new modificarUsuario();
+						$pagina=$plantilla->generaPagina($datos);
+						echo $pagina;
+					}
 					}
 				}
 				if(isset($_POST['enviar'])){
@@ -200,10 +215,10 @@ class AdminCtrl extends CtrlStr {
 		$error6 = array(4);
 		if (is_array($resultado) && !empty($resultado)) {
 			if($resultado == $error1 || $resultado == $error2 || $resultado == $error3 || $resultado == $error4){
-				echo "error";
+				
 				return FALSE;
 			}else{
-				echo "correcto";
+				
 				return $resultado;	
 			}
 		}

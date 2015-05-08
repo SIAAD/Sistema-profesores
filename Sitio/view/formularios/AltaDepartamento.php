@@ -16,7 +16,7 @@
 					<label for="nombreDepartamento">Nombre</label>
 					<input type="text" name="nombreDepartamento" id="nombreDepartamento" placeholder="Nombre" maxlength="45" required="required"/>
 					<label for="claveDepartamento">Clave</label>
-					<input type="text" name="claveDepartamento" id="claveDepartamento" placeholder="Clave" maxlength="5" required="required"/>
+					<input type="text" name="claveDepartamento" id="claveDepartamento" placeholder="Clave" maxlength="5" required="required" />
 					<label for="abreviacionDepartamento">Abreviacion</label>
 					<input type="text" name="abreviacionDepartamento" id="abreviacionDepartamento" placeholder="Abreviacion" maxlength="7" required="required"/>
 					<label for="idMaestro">Jefe Departamento</label>

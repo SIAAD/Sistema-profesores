@@ -125,7 +125,7 @@ abstract class PlantillaStr {
 											<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Consulta Usuarios</a>
 										</li>
 										<li>
-											<a href="index.php?controlador=Admin&accion=modificar&objeto=usuario">Modificar Usuario</a>
+											<a href="index.php?controlador=Admin&accion=modificacion&objeto=usuario">Modificar Usuario</a>
 										</li>
 									</ul>
 								</li>

@@ -24,7 +24,7 @@ class ConsultaUsuarios extends PlantillaStr {
 		while ($fila = $res -> fetch_assoc()) {
 			
 			if(CtrlStr::esAdmin($_SESSION['roles'])){
-				$contenido.='<tr><td><input type="checkbox" id="idUsuarios'.$fila['idUsuarios'].'" name="idUsuarios[]" value="'.$fila['idUsuarios'].'" onclick="marca()">'.'</td><td><a href="index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario='.$fila['idUsuarios'].'">'.$fila['nombre'].'</a></td><td>'.$fila['correo'].'</td></tr>';
+				$contenido.='<tr><td><input type="checkbox" id="idUsuarios'.$fila['idUsuarios'].'" name="idUsuarios[]" value="'.$fila['idUsuarios'].'" >'.'</td><td><a href="index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario='.$fila['idUsuarios'].'">'.$fila['nombre'].'</a></td><td>'.$fila['correo'].'</td></tr>';
 			}else{
 				$contenido.='<tr><td>'.$fila['nombre'].'</td><td>'.$fila['correo'].'</td></tr>';
 			}
@@ -43,17 +43,16 @@ class ConsultaUsuarios extends PlantillaStr {
 		
 				var eliminados = new Array();
 				
-				function marca(checkbox){
-					
-				}
+				
 				
 				
 				function eliminar(){
-					$(\"input[name='idUsuarios[]']:checked\").each(function() {
-						//eliminar elementos repetidos	
+					eliminados.length = 0;
+					
+					$(\"input[name='idUsuarios[]']:checked\").each(function() {	
 						eliminados.push($(this).val());
 					});
-					alert(eliminados);
+					console.log(eliminados);
 					//Probar que muestre los checkboxes, sus valores
 					if(confirm(\"Desea Eliminar Los Registros?\")){
 						$.ajax({

@@ -24,7 +24,10 @@ class ConsultaUsuario extends PlantillaStr {
 		while ($fila = $res -> fetch_assoc()) {
 			if(CtrlStr::esAdmin($_SESSION['roles'])){
 				if($idUsuario!=$fila['idUsuarios']){
-					$contenido.='<tr><td><input type="checkbox" id="idUsuarios" name="idUsuarios[]" value="'.$fila['idUsuarios'].'" onclick="marca();">'.'</td><td>'.$fila['nombre'].'</td><td>'.$fila['correo'].'</td><td>'.$fila['descripcion'].'</td>';	
+					$contenido.='<tr id="'.$fila['idUsuarios'].'"><td><input type="checkbox" id="idUsuarios" name="idUsuarios[]" value="'.$fila['idUsuarios'].'" onclick="marca();">'.'</td>
+					<td><input type="text" name="nombreUsuario" id="nombreUsuario" value="'.$fila['nombre'].'" placeholder="Codigo" maxlength="7" disabled="" onkeypress="return validar(event);"/></td>
+					<td><input type="email" name="correo" id="correo" value="'.$fila['correo'].'" placeholder="Correo" required="required" disabled=""></td>
+					<td>'.$fila['descripcion'].'</td>';	
 				}
 				else{
 					$contenido.='<td>'.$fila['descripcion'].'</td>';
@@ -32,7 +35,10 @@ class ConsultaUsuario extends PlantillaStr {
 				}
 			}else{
 				if($idUsuario!=$fila['idUsuarios']){
-					$contenido.='<tr id="'.$fila['idUsuarios'].'"><td>'.$fila['nombre'].'</td><td>'.$fila['correo'].'</td><td>'.$fila['descripcion'].'</td>';	
+					$contenido.='<tr id="'.$fila['idUsuarios'].'">
+					<td><input type="text" name="nombreUsuario" id="nombreUsuario" value="'.$fila['nombre'].'" placeholder="Codigo" maxlength="7" disabled="" onkeypress="return validar(event);"/></td>
+					<td><input type="email" name="correo" id="correo" value="'.$fila['correo'].'" placeholder="Correo" required="required" disabled=""></td>
+					<td>'.$fila['descripcion'].'</td>';	
 				}
 				else{
 					$contenido.='<td>'.$fila['descripcion'].'</td>';
@@ -46,7 +52,8 @@ class ConsultaUsuario extends PlantillaStr {
 		
 		
 		if(CtrlStr::esAdmin($_SESSION['roles'])){
-			$contenido.='<button type="eliminar" onclick="eliminar();">Eliminar Seleccionados</button><br>';	
+			$contenido.='<button onclick="eliminar();">Eliminar Seleccionados</button><br>';	
+			$contenido.='<button id="editar">Editar</button><br>';	
 			$contenido.='<a href="index.php?controlador=Admin&accion=alta&objeto=usuario">Vinculo alta usuario</a></br>';
 		}
 		$contenido.='<a href="index.php">Vinculo pagina principal</a>';
@@ -61,7 +68,39 @@ class ConsultaUsuario extends PlantillaStr {
 						eliminados.push($(this).val());
 					});
 				}
+				/*
+				$('input[type=text]').click(function(){
+					var campo = $(this);
+					console.log('asdasd');
+					campo.attr('disabled','disabled');
+					//campo.removeAttr('disabled');
+				});*/
 				
+				/*$('input[type=email]').dblclick(function(){
+					var campo = $(this);
+					//console.log('asdasd');
+					//campo.attr('disabled','disabled');
+					//campo.prop('disabled',false);
+					$('input[type=text]').prop('disabled',false);
+				});*/
+				
+				$('#editar').click(function(){
+					var boton = $(this);
+					console.log('asdasd');
+					$('input[type=text]').prop('disabled',false);
+					$('input[type=email]').prop('disabled',false);
+				})
+				
+				
+				function validar(evento) {
+					//propiedad which regresa cual tecla o boton de raton fue presionada
+					evento = (evento) ? evento : window.event;
+				    var charCode = (evento.which) ? evento.which : evt.keyCode;
+				    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				        return false;
+				    }
+				    return true;
+				}
 				
 				function eliminar(){
 						//Probar que muestre los checkboxes, sus valores
@@ -84,13 +123,30 @@ class ConsultaUsuario extends PlantillaStr {
 					}
 				}
 				
-				function editar(id){
-					$('#contenido').load(\"editar_admin.php?idA=\"+id+\"\");
-				}
-				
-				function ver(id){
-					$('#contenido').load(\"ver_admin.php?idA=\"+id+\"\");
-				}
+				$('input').blur(function(){
+			        var campo = $(this);
+			        var parent = field.parent().attr('id');
+			        field.css('background-color','#F3F3F3');
+					/*efectos de edicion
+			        if($('#'+parent).find('.ok').length){
+			            $('#'+parent+' .ok').remove();
+			            $('#'+parent+' .loader').remove();
+			            $('#'+parent).append('<div><img src='images/loader.gif'/></div>').fadeIn('slow');
+			        }else{
+			            $('#'+parent).append('<div><img src='images/loader.gif'/></div>').fadeIn('slow');
+			        }*/
+			
+			        var datos = 'valor='+campo.val()+'&campo='+campo.attr('name');
+			        $.ajax({
+			            type: 'POST',
+			            url: 'edit.php',
+			            data: datos,
+			            success: function(res) {
+			                field.val(res);//ver como hacerle para verificar las variables con funcion usada o una nueva
+			            }
+			        });
+			    });
+			});
 				
 				
 				
