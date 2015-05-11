@@ -3,12 +3,12 @@
  * @since: 2/Dic/2014
  * @version 1.5 INCLUSION DE COOKIES
  */
- 
+/*
 if(file_exists('Objetos/cookies.php')){
 	require_once('Objetos/cookies.php');
 }else{
 	exit();
-}
+}*/
  
 if (isset($_POST['enviar'])) {
 	if (isset($_POST['codigo'])&&!empty($_POST['codigo'])) {

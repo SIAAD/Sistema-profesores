@@ -1,0 +1,33 @@
+{% extends "consultasStr.html" %}
+{% block eliminar %}
+	{% if rol is defined and rol == 0 %}
+		<th>Eliminar</th>
+	{% endif %}
+{% endblock %}
+
+{% block eliminarFila %}
+	{% if rol is defined and rol == 0%}
+	<td> 
+		{% autoescape %}
+		<input type="checkbox" id="{{fila.idDepto}}" name="id_depto[]" value="{{fila.idDepto}}">
+		{% endautoescape %}	
+	</td>
+	{% endif %}					
+{% endblock %}
+
+{% block datosTabla%}
+	<td>
+		{% autoescape %}
+		<a href="index.php?controlador=Estructura&accion=consulta&objeto=departamento&idDepto={{fila.idDepto}}&nombreDepto={{fila.nombreDepto}}">{{fila.nombreDepto}}</a>
+		{% endautoescape %}
+	</td>
+	<td>
+		{{fila.abreviacionDepto}}
+	</td>
+	<td>
+		{{fila.nombresMaestro}} {{fila.apellidosMaestro}} ( {{fila.codigoMaestro}} )
+	</td>
+{% endblock %}
+{% block acciones %}
+
+{% endblock %}

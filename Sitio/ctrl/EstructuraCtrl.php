@@ -53,8 +53,6 @@ class EstructuraCtrl extends CtrlStr{
 						$datosMaestro=$_POST['datosMaestro'];
 						$corte = preg_split("/(([A-Za-z]+\s){2,}\s*)|((\([\s]*)|([\s]*\)))/",$datosMaestro,-1,PREG_SPLIT_NO_EMPTY);
 						$codigoMaestro=$corte[0];
-						
-						//exit();
 						if ($this -> modelo -> altaDepartamento($nombre, $clave, $abreviacion,$codigoMaestro)) {
 							header("refresh:2;index.php?controlador=Estructura&accion=consulta&objeto=departamentos");
 						} else {
@@ -152,22 +150,20 @@ class EstructuraCtrl extends CtrlStr{
 			case 'carreras' :
 				//BIEN
 				$res = $this -> modelo -> consultaCarreras();
-				if ($res != FALSE) {
-					if ($res != null) {
-						if (file_exists('View/plantillas/consultaCarreras.php')) {
-							require_once 'View/plantillas/consultaCarreras.php';
-							$plantilla = new ConsultaCarreras();
-							$pagina = $plantilla -> generaPagina($res);
-							echo $pagina;
-						} else {
-							echo "Error no se pudo incluir la plantilla consultaCarreras";
-						}
-					} else {
-						echo "NO HAY NADA EN LA TABLA";
+				if($res != FALSE){
+					if($res != NULL){
+				 		$this->diccionario['nombreConsulta']='Carreras';
+						$this->diccionario['encabezado']=array('Nombre','Clave');
+						$this->diccionario['datos']=$this->formato->datosArray($res);
+						$this->diccionario['totalFilas']=$res->num_rows;
+					}else{
+						$this->diccionario['datos']=FALSE;
 					}
-				} else {
-					echo "ERROR NO SE REALIZO LA CONSULTA";
-				}
+				}else{
+				 	//DEJA EN BLANCO LA SECCION DATOS PORQUE OCURRIO UN ERROR
+					unset($this->diccionario['datos']);
+				}				
+				echo $this->twig->render('consultaCarreras.html',$this->diccionario);
 				break;
 				
 			case 'carrera' :
@@ -188,22 +184,21 @@ class EstructuraCtrl extends CtrlStr{
 
 			case 'departamentos' :
 				$res = $this -> modelo -> consultaDepartamentos();
-				if ($res != FALSE) {
-					if ($res != null) {				 
-						if (file_exists('View/plantillas/consultaDepartamentos.php')) {
-							require_once 'View/plantillas/consultaDepartamentos.php';
-							$plantilla = new ConsultaDepartamento();
-							$pagina = $plantilla -> generaPagina($res);
-							echo $pagina;
-						} else {
-							echo "Error no se pudo incluir la plantilla consultaCarreras";
-						}
-					} else {
-						echo "NO HAY NADA EN LA TABLA";
+				if($res != FALSE){
+					if($res != NULL){
+				 		$this->diccionario['nombreConsulta']='Departamentos';
+						$this->diccionario['encabezado']=array('Nombre','Abreviacion','Nombre Jefe');
+						$this->diccionario['datos']=$this->formato->datosArray($res);
+						$this->diccionario['totalFilas']=$res->num_rows;
+						$this->formato->datosXml($res);
+					}else{
+						$this->diccionario['datos']=FALSE;
 					}
-				} else {
-					echo "ERROR NO SE REALIZO LA CONSULTA";
-				}
+				}else{
+				 	//DEJA EN BLANCO LA SECCION DATOS PORQUE OCURRIO UN ERROR
+					unset($this->diccionario['datos']);
+				}			
+				echo $this->twig->render('consultaDepartamentos.html',$this->diccionario);
 				break;
 
 			case 'departamento' :
@@ -286,4 +281,6 @@ class EstructuraCtrl extends CtrlStr{
 	}
 
 }
+
+echo "";
 ?>
