@@ -281,4 +281,6 @@ class EstructuraCtrl extends CtrlStr{
 	}
 
 }
+
+echo "";
 ?>
