@@ -1,5 +1,134 @@
 </div>
 		<script src="View/bootstrap/js/jquery.js"></script>
 		<script src="View/bootstrap/js/bootstrap.js"></script>
+		
+		<script>
+			
+			$( document ).ready(function() {
+		    	var ids = $('input[type="checkbox"]');
+		    	var filas = [];
+		    	var elementos = [];
+		    	var id = [];
+		    	for (var i = 0; i < ids.length; i++) {
+				   id.push($(ids[i]).val());
+				   if(i>0){
+				   	if(id[i]==id[i-1]){
+				   		cantderoles = $('.descripcion').length;
+				   		roles = $('.descripcion');
+				   		//console.log(cantderoles);
+				   		for(i=cantderoles; i > 1; i--){
+				   			$(roles[i-1]).appendTo('tbody tr');
+				   			$("tbody tr").hide().filter(":first-child").show();
+				   		}
+				   	}
+				   }
+				}
+				//console.log(id);
+			});
+			
+			
+				var eliminados = new Array();
+				
+				function marca(checkbox){
+					$("input[name='idUsuarios[]']:checked").each(function() {
+						eliminados.push($(this).val());
+					});
+				}
+				/*
+				$('input[type=text]').click(function(){
+					var campo = $(this);
+					console.log('asdasd');
+					campo.attr('disabled','disabled');
+					//campo.removeAttr('disabled');
+				});*/
+				
+				/*$('input[type=email]').dblclick(function(){
+					var campo = $(this);
+					//console.log('asdasd');
+					//campo.attr('disabled','disabled');
+					//campo.prop('disabled',false);
+					$('input[type=text]').prop('disabled',false);
+				});*/
+				
+				$('#editar').click(function(){
+					var boton = $(this);
+					console.log('asdasd');
+					$('input[type=text]').prop('disabled',false);
+					$('input[type=email]').prop('disabled',false);
+				});
+				
+				
+				function validar(evento) {
+					//propiedad which regresa cual tecla o boton de raton fue presionada
+					evento = (evento) ? evento : window.event;
+				    var charCode = (evento.which) ? evento.which : evt.keyCode;
+				    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				        return false;
+				    }
+				    return true;
+				}
+				
+				function eliminar(){
+					//Probar que muestre los checkboxes, sus valores
+					
+					if(eliminados.length == 0){
+						$('#mensaje').html('Seleccione los que se eliminaran');
+					}else{
+						if(confirm("Desea Eliminar Los Registros?")){
+							$.ajax({
+								url		: 'index.php?controlador=Admin&accion=baja&objeto=usuarios',
+								type	: 'post',
+								dataType: 'text',
+								data	: 'idUsuarios='+eliminados,
+								success : function(res){
+									$("input[name='idUsuarios[]']:checked").each(function() {
+										$(this).parent().parent().hide();
+										$('#mensaje').html(res);	
+									});									
+								},error: function(){
+									//alert('No se encontro el archivo');
+								}
+							});
+						}else{
+							eliminados.length = 0;
+						}
+					}
+					
+				}
+				//funcion para editar registros en linea
+				function modificarUsuario(objeto){
+			        var campo = $(objeto);
+			        var id = $('input[type="checkbox"]:first').val();
+			        //campo.css('background-color','#F3F3F3');
+					/*efectos de edicion
+			        if($('#'+parent).find('.ok').length){
+			            $('#'+parent+' .ok').remove();
+			            $('#'+parent+' .loader').remove();
+			            $('#'+parent).append('<div><img src='images/loader.gif'/></div>').fadeIn('slow');
+			        }else{
+			            $('#'+parent).append('<div><img src='images/loader.gif'/></div>').fadeIn('slow');
+			        }*/
+			        var datos = 'valor='+campo.val()+'&campo='+campo.attr('name')+'&'+campo.attr('id')+'='+campo.val()+'&idUsuario='+id;
+			        console.log(datos);
+			        $('#mensaje').html('Espera... Editando');			
+				        $.ajax({
+				            type: 'POST',
+				            url: 'index.php?controlador=Admin&accion=modificacion&objeto=usuario',
+				            data: datos,
+				            success: function(res) {
+				              	//ver como hacerle para verificar las variables con funcion usada o una nueva
+				                $('#mensaje').html(res);
+				            }
+				          
+				        });   
+			    }
+				
+				
+				
+				
+	
+			
+		</script>
+
 	</body>
 </html>

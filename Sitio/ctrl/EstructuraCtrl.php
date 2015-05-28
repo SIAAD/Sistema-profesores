@@ -153,7 +153,7 @@ class EstructuraCtrl extends CtrlStr{
 				if($res != FALSE){
 					if($res != NULL){
 				 		$this->diccionario['nombreConsulta']='Carreras';
-						$this->diccionario['encabezado']=array('Nombre','Clave');
+						$this->diccionario['encabezado']=array('Codigo','Abreviacion');
 						$this->diccionario['datos']=$this->formato->datosArray($res);
 						$this->diccionario['totalFilas']=$res->num_rows;
 					}else{

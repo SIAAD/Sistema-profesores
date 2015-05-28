@@ -110,6 +110,23 @@ class AdminCtrl extends CtrlStr {
 		$res;
 		switch($objeto){
 			case 'usuarios':
+				$res = $this -> modelo -> consultaUsuarios();
+				if($res != FALSE){
+					if($res != NULL){
+				 		$this->diccionario['nombreConsulta']='Usuarios';
+						$this->diccionario['encabezado']=array('Codigo','Correo');
+						$this->diccionario['datos']=$this->formato->datosArray($res);
+						$this->diccionario['totalFilas']=$res->num_rows;
+						
+					}else{
+						$this->diccionario['datos']=FALSE;
+					}
+				}else{
+				 	//DEJA EN BLANCO LA SECCION DATOS PORQUE OCURRIO UN ERROR
+					unset($this->diccionario['datos']);
+				}				
+				echo $this->twig->render('consultaUsuarios.html',$this->diccionario);
+				/*
 				if(parent::esAdmin($_SESSION['roles'])){
 					$res= $this->modelo->consultaUsuarios();					
 					if ($res!=FALSE) {
@@ -128,10 +145,31 @@ class AdminCtrl extends CtrlStr {
 					}else{
 						echo "ERROR NO SE REALIZO LA CONSULTA";
 					}
-				}
+				}*/
 				
 			break;
 			case 'usuario':
+				if(parent::verificar($_REQUEST['idUsuario'])){
+					$id= $_REQUEST['idUsuario'];
+					$res = $this -> modelo -> consultaUsuario($id);
+					if($res != FALSE){
+						if($res != NULL){
+					 		$this->diccionario['nombreConsulta']='Usuarios';
+							$this->diccionario['encabezado']=array('Codigo','Correo','Roles');
+							$this->diccionario['datos']=$this->formato->datosArray($res);
+							//$this->diccionario['totalFilas']=$res->num_rows;						
+						}else{
+							$this->diccionario['datos']=FALSE;
+						}
+					}else{
+					 	//DEJA EN BLANCO LA SECCION DATOS PORQUE OCURRIO UN ERROR
+						unset($this->diccionario['datos']);
+					}				
+					echo $this->twig->render('consultaUsuario.html',$this->diccionario);
+				
+				}
+				
+				/*
 				if($_REQUEST['idUsuario']==$_SESSION['idUsuario'] || in_array('0',$_SESSION['roles'])){
 					if(parent::verificar($_REQUEST['idUsuario'])){
 						$id= $_REQUEST['idUsuario'];
@@ -150,52 +188,31 @@ class AdminCtrl extends CtrlStr {
 					}
 				}else{
 					echo "NO SE TIENEN LOS PERMISOS";
-				}
+				}*/
 				
 			}
+			
 		}
 
 	protected final function modificaciones($objeto) {
-		echo "entra";
 		switch ($objeto) {
 			case 'usuario':
 				if(parent::esAdmin($_SESSION['roles']) || $_SESSION['codigo'] == $POST['nombreUsuario']) {
 					if(parent::verificarParametros($_POST)){
-						$nombre = $_POST['nombreUsuario'];
-						$correo = $_POST['correo'];
-						$pass = $_POST['pass'];
-						$roles = array();
-						//Asignar los valores de los roles
-						if(isset($_POST['maestro']))$roles['maestro'] = 2;
-						if(isset($_POST['asistente']))$roles['asistente'] = 3;
-						if(isset($_POST['revisor']))$roles['revisor'] = 4;
-						if(isset($_POST['jefe']))$roles['jefe'] = 5;
-						//verificar combinacion de roles
-						$resultado = $this->checarCombinaciones($roles);
-						if($resultado != FALSE){
-							$res = $this -> modelo -> modificaUsuario($nombre, $correo,$resultado); 	
-							if($res){
-								echo "Modificacion Realizada";
-							}else{
-								echo "No se pudo modificar";
-							}
+						$dato = $_POST['valor'];
+						$campo = $_POST['campo'];
+						$id = $_POST['idUsuario'];
+						$res = $this -> modelo -> modificaUsuario($dato,$campo,$id); 
+						if($res){
+							echo "Modificacion Realizada";
 						}else{
-							echo "Combinacion de roles invalida";
+							echo "No se pudo modificar";
 						}
 					}else{
-						$res = $this->modelo->consultaUsuario($id);
-						if(file_exists('View/formularios/modificarUsuario.php')){
-						$datos = '1';
-						require_once 'View/formularios/modificarUsuario.php';
-						$plantilla = new modificarUsuario();
-						$pagina=$plantilla->generaPagina($datos);
-						echo $pagina;
-					}
+						echo "Error en la edicion";
 					}
 				}
-				if(isset($_POST['enviar'])){
-					
-				}
+				
 				break;		
 		}
 		

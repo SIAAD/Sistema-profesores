@@ -248,6 +248,8 @@ abstract class CtrlStr {
 						case 'modificar' :
 						case 'valor1' :
 						case 'valor2' :
+						case 'campo':
+						case 'valor':
 							//va ser para enteros utilizados para llaves secundarias
 							break;
 
@@ -255,6 +257,7 @@ abstract class CtrlStr {
 						case 'idDepartamento' :
 						case 'idMateria' :
 						case 'idMaestro' :
+						case 'idUsuario' :
 							if (!$this -> verificador -> validaIds($variables[$key]))
 								return FALSE;
 							break;

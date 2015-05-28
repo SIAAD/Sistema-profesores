@@ -1,0 +1,43 @@
+{% extends "consultasStr.html" %}
+{% block eliminar %}
+	{% if rol is defined and rol == 0 %}
+		<th>Eliminar</th>
+	{% endif %}
+{% endblock %}
+
+{% block eliminarFila %}
+	{% if rol is defined and rol == 0 %}
+	<td> 
+		{% autoescape %}
+		<input type="checkbox" id="{{fila.idUsuario}}" name="idUsuarios[]" value="{{fila.idUsuarios}}" onclick="marca();">
+		{% endautoescape %}	
+	</td>
+	{% endif %}					
+{% endblock %}
+
+{% block datosTabla%}
+	
+		
+			<td>
+				{% autoescape %}
+				<input type="text" name="nombre" id="nombreUsuario" value="{{fila.nombre}}" placeholder="Codigo" maxlength="7" disabled="" onkeypress="return validar(event);"  onblur="modificarUsuario(this);"/>
+				
+				{% endautoescape %}
+			</td>
+			<td>
+				<input type="email" name="correo" id="correo" value="{{fila.correo}}" placeholder="Correo" required="required" disabled="" onblur="modificarUsuario(this);">			
+			</td>
+			<td class="descripcion">
+				{{fila.descripcion}}
+			</td>
+		
+		
+	
+{% endblock %}
+{% block acciones %}
+			<button class="btn btn-default" onclick="eliminar();">Eliminar Seleccionados</button><br>
+			<button class="btn btn-default" id="editar">Editar</button><br>
+			<a href="index.php?controlador=Admin&accion=alta&objeto=usuario">Vinculo alta usuario</a><br>
+{% endblock %}
+
+

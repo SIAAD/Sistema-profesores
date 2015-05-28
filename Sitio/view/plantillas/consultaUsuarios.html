@@ -1,0 +1,34 @@
+{% extends "consultasStr.html" %}
+{% block eliminar %}
+	{% if rol is defined and rol == 0 %}
+		<th>Eliminar</th>
+	{% endif %}
+{% endblock %}
+
+{% block eliminarFila %}
+	{% if rol is defined and rol == 0 %}
+	<td> 
+		{% autoescape %}
+		<input type="checkbox" id="{{fila.idUsuario}}" name="idUsuarios[]" value="{{fila.idUsuarios}}">
+		{% endautoescape %}
+	</td>
+	{% endif %}
+{% endblock %}
+
+{% block datosTabla%}
+	<td>
+		{% autoescape %}
+		<a href="index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario='{{fila.idUsuarios}}'&nombreCarrera='{{fila.nombre}}'">{{fila.nombre}}</a>
+		{% endautoescape %}
+	</td>
+	<td>
+		{{fila.correo}}
+	</td>
+	<td>
+		{{fila.descripcion}}
+		{{fila.idRoles}}
+	</td>
+{% endblock %}
+{% block acciones %}
+
+{% endblock %}
