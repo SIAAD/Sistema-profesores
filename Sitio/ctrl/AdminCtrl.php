@@ -20,19 +20,18 @@ class AdminCtrl extends CtrlStr {
 	}
 
 	protected final function altas($objeto) {
-
+		
 		switch($objeto) {
 			//////USUARIO
+			
 			case 'usuario' :
+				
 			if(parent::esAdmin($_SESSION['roles'])){
+				
 				if(parent::verificarParametros($_POST)){
-					
-					$test = new EstructuraCtrl();
-					$test -> ejecutar();
-						
 					$nombre = $_POST['nombreUsuario'];
 					$correo = $_POST['correo'];
-					$roles = array();
+					$roles = array();									
 					//Asignar los valores de los roles
 					if(isset($_POST['maestro']))$roles['maestro'] = 2;
 					if(isset($_POST['asistente']))$roles['asistente'] = 3;
@@ -43,12 +42,16 @@ class AdminCtrl extends CtrlStr {
 					if($resultado != FALSE){
 						$res = $this -> modelo ->altaUsuario($nombre, $correo,$resultado); 	
 						if($res){
+							echo "Listo";
+							exit();
 							header("refresh:2;index.php?controlador=Admin&accion=consulta&objeto=usuarios");
 						}else{
 							echo "No se pudo dar de alta";
+							exit();
 						}
 					}else{
 						echo "Combinacion de roles invalida";
+						exit();
 					}
 				}else{
 					if(file_exists('View/formularios/AltaUsuario.php')){
@@ -56,7 +59,8 @@ class AdminCtrl extends CtrlStr {
 						require_once 'View/formularios/AltaUsuario.php';
 						$plantilla = new AltaUsuario();
 						$pagina=$plantilla->generaPagina($datos);
-						echo $pagina;
+						echo($pagina) ;
+						
 					}
 					
 				}
@@ -204,7 +208,7 @@ class AdminCtrl extends CtrlStr {
 						$id = $_POST['idUsuario'];
 						$res = $this -> modelo -> modificaUsuario($dato,$campo,$id); 
 						if($res){
-							echo "Modificacion Realizada";
+							echo "Modificacion realizada";
 						}else{
 							echo "No se pudo modificar";
 						}

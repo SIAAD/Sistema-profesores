@@ -1,5 +1,6 @@
 <?php
-$path=dirname(dirname(__FILE__)).'\plantillas\PlantillaStr.php';
+$path=dirname(dirname(__FILE__)).'\plantillas\plantillas viejas\PlantillaStr.php';
+
 if(file_exists($path))require_once $path;
 else exit();
 class AltaUsuario extends PlantillaStr {
@@ -31,6 +32,7 @@ class AltaUsuario extends PlantillaStr {
 					<input type='submit' class='btn btn-default' name='enviar' id='enviar' />
 				</fieldset>
 			</form>
+			<div id='mensaje'></div>
 		</div>
 		
 		
@@ -44,7 +46,7 @@ class AltaUsuario extends PlantillaStr {
 		function validar(evento) {
 			//propiedad which regresa cual tecla o boton de raton fue presionada
 			evento = (evento) ? evento : window.event;
-		    var charCode = (evento.which) ? evento.which : evt.keyCode;
+		    var charCode = (evento.which) ? evento.which : evento.keyCode;
 		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
 		        return false;
 		    }
@@ -58,6 +60,7 @@ class AltaUsuario extends PlantillaStr {
 		
 		
 		$(document).ready(function(){
+			
 		  $('#form01').submit(function() {
 		  	roles.length = 0;
 		    $(\"input[type=checkbox]:checked\").each(function() {
@@ -68,7 +71,8 @@ class AltaUsuario extends PlantillaStr {
 			campo.removeAttr('disabled');
 			console.log(roles);
 			if(checarRoles(roles)){
-				
+				alert('checarRoles dio true y se da de alta');
+				return true;
 			}
 			else{
 				return false;
@@ -78,9 +82,58 @@ class AltaUsuario extends PlantillaStr {
 		
 		
 		function checarRoles(roles){
+			var error1 = ['maestro','asistente','revisor','jefe'];
+			var error2 = ['asistente','jefe'];
+			var error3 = ['revisor','jefe'];
+			var error4 = ['maestro','revisor'];
+			var error5 = ['jefe'];
+			var error6 = ['revisor'];
 			
+			if (isArray(roles) && roles.length !=0 ) {
+				if(roles.equals(error1) || roles.equals(error2) || roles.equals(error3) || roles.equals(error4) || roles.equals(error5) || roles.equals(error6)){
+					$('#mensaje').html('Combinacion de roles invalidas');
+					return false;
+				}else{
+					$('#mensaje').html('Dando de alta');
+								
+					//return true;	
+				}
+			}
+			else {
+				$('#mensaje').html('Seleccione roles');
+				return false;
+			}
 		}
 		
+		function isArray(myArray) {
+		    return myArray.constructor.toString().indexOf('Array') > -1;
+		}
+		
+		
+		//funcion para saber si 2 arrays son identicos
+		Array.prototype.equals = function (array) {
+		    // if the other array is a falsy value, return
+		    if (!array)
+		        return false;
+		
+		    // compare lengths - can save a lot of time 
+		    if (this.length != array.length)
+		        return false;
+		
+		    for (var i = 0, l=this.length; i < l; i++) {
+		        // Check if we have nested arrays
+		        if (this[i] instanceof Array && array[i] instanceof Array) {
+		            // recurse into the nested arrays
+		            if (!this[i].equals(array[i]))
+		                return false;       
+		        }           
+		        else if (this[i] != array[i]) { 
+		            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+		            return false;   
+		        }           
+		    }       
+		    return true;
+		}   
 		
 		
 		</script>";

@@ -26,8 +26,15 @@
 					</tr>
 				</thead>
 				<tbody>
+					
 					{% for fila in datos %}
+					{% if nombreConsulta is defined and nombreConsulta == 'Usuarios' %}
+					{% set nombre = fila.nombre %}
+					<tr class="contenido" id="{{fila.idUsuarios}}">
+					{%else%}
 					<tr>
+					{% endif %}	
+					
 						{% block eliminarFila %}
 		
 						{% endblock %}

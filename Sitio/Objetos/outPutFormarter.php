@@ -43,7 +43,7 @@ class outPutFormarter{
 			foreach ($keys as $key) {
 				$arreglo[$key]=$fila[$key];
 			}
-			var_dump($fila);
+			
 			$res[]=$arreglo;
 		}
 		return $res;

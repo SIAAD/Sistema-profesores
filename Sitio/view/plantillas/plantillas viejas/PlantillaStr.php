@@ -40,7 +40,7 @@ abstract class PlantillaStr {
 					<div class='col-md-4 col-sm-2 col-xs-12'>
 						<div class='row text-center'>
 							<div class=' col-xs-12'>
-								<h3>$codigo</h3>
+								<h3><a href='index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario=$codigo'>$codigo</a></h3>
 							</div>
 							<div class='col-xs-12'>
 								<h3><a href='logout.php'>Cerrar Sesion</a></h3>

@@ -19,17 +19,27 @@ else exit();
 				if($res->num_rows>0){	
 					return FALSE;
 				}else{
-					$sql="INSERT INTO usuarios (nombre,contrasena,correo) VALUES ('$nombre','$pass','$correo')";
-					$res = $cnx -> query($sql);
-					$sql="SELECT MAX(idUsuarios) AS idUsuarios FROM usuarios";
-					$res = $cnx -> query($sql);
-					$fila = $res -> fetch_assoc();
-					$idUsuarios = $fila['idUsuarios'];
-					foreach ($roles as $key => $idPrivilegios) {
-					$sql="INSERT INTO roles (idUsuarios,idPrivilegios) VALUES ($idUsuarios,$idPrivilegios)";
-					$res = $cnx -> query($sql);
+					$sql = "SELECT * FROM usuarios WHERE correo = '$correo'";
+					if($res=$cnx->query($sql)){
+						if($res->num_rows>0){							
+							return FALSE;	
+						}else{
+							$sql="INSERT INTO usuarios (nombre,contrasena,correo) VALUES ('$nombre','$pass','$correo')";
+							$res = $cnx -> query($sql);
+							$sql="SELECT MAX(idUsuarios) AS idUsuarios FROM usuarios";
+							$res = $cnx -> query($sql);
+							$fila = $res -> fetch_assoc();
+							$idUsuarios = $fila['idUsuarios'];
+							foreach ($roles as $key => $idPrivilegios) {
+								$sql="INSERT INTO roles (idUsuarios,idPrivilegios) VALUES ($idUsuarios,$idPrivilegios)";
+								$res = $cnx -> query($sql);
+							}						
+							return $res;	
+							}
 					}
-					return $res;	
+					else{
+						return FALSE;
+					}				
 				}
 			}else{
 				return FALSE;
@@ -52,7 +62,8 @@ else exit();
 			if($campo == 'nombre'){
 				$sql = "SELECT * FROM usuarios WHERE $campo = '$dato'";
 				if($res=$cnx->query($sql)){
-					if($res->num_rows>0){	
+					if($res->num_rows>0){
+						echo "";
 						return FALSE;
 					}else{
 						$sql="UPDATE usuarios SET $campo = '$dato' WHERE idUsuarios = $id";

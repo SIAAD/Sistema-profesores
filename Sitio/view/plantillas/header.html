@@ -49,7 +49,19 @@
 								{% if codigo is defined %}
 								<li>
 									{% if rol == 0 %}
-									<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Usuarios</a>
+									<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Usuarios <b class="caret"> </b> </a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="index.php?controlador=Admin&accion=consulta&objeto=usuarios">Lista de Usuarios</a>
+										</li>
+										<li>
+											<a href="index.php?controlador=Admin&accion=alta&objeto=usuario">Alta de Usuarios</a>
+										</li>
+										
+									</ul>
+								</li>
+									
 									{% else %}
 									{% autoescape %}
 									<a href="index.php?controlador=Admin&accion=consulta&objeto=usuario&idUsuario={{idUsuario}}">Usuario</a>

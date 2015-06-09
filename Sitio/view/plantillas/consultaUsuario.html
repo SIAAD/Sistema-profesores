@@ -9,7 +9,7 @@
 	{% if rol is defined and rol == 0 %}
 	<td> 
 		{% autoescape %}
-		<input type="checkbox" id="{{fila.idUsuario}}" name="idUsuarios[]" value="{{fila.idUsuarios}}" onclick="marca();">
+		<input type="checkbox" id="{{fila.idUsuarios}}" name="idUsuarios[]" value="{{fila.idUsuarios}}" onclick="marca();">
 		{% endautoescape %}	
 	</td>
 	{% endif %}					
@@ -21,7 +21,6 @@
 			<td>
 				{% autoescape %}
 				<input type="text" name="nombre" id="nombreUsuario" value="{{fila.nombre}}" placeholder="Codigo" maxlength="7" disabled="" onkeypress="return validar(event);"  onblur="modificarUsuario(this);"/>
-				
 				{% endautoescape %}
 			</td>
 			<td>
@@ -36,7 +35,11 @@
 {% endblock %}
 {% block acciones %}
 			<button class="btn btn-default" onclick="eliminar();">Eliminar Seleccionados</button><br>
-			<button class="btn btn-default" id="editar">Editar</button><br>
+			
+			<p>{{nombre}}</p>
+			{% if rol is defined and rol == 0 or fila.nombre == codigo%}
+				<button class="btn btn-default" id="editar">Editar</button><br>
+			{% endif %}	
 			<a href="index.php?controlador=Admin&accion=alta&objeto=usuario">Vinculo alta usuario</a><br>
 {% endblock %}
 
